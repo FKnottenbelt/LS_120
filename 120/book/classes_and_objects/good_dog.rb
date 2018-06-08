@@ -1,29 +1,42 @@
 # good_dog.rb
 
 class GoodDog
-  def initialize(name)
-    @name = name
+  attr_accessor :name, :height, :weight
+
+  def initialize(n, h, w)
+    @name = n
+    @height = h
+    @weight = w
   end
 
   def speak
-    "#{@name} says arf!"
+    "#{self.name} says arf!"
   end
 
-  def name                  # This was renamed from "get_name"
-    @name
+  def change_info(n, h, w)
+    self.name = n
+    self.height = h
+    self.weight = w
   end
 
-  def name=(n)              # This was renamed from "set_name="
-    @name = n
-  end
+def info
+  "#{self.name} weighs #{self.weight} and is #{self.height} tall."
+end
 end
 
-sparky = GoodDog.new("Sparky")
+# sparky = GoodDog.new("Sparky")
+# puts sparky.speak
+
+# fido = GoodDog.new("Fido")
+# puts fido.speak
+
+# puts sparky.get_name
+# sparky.set_name = "Spartacus"
+# puts sparky.get_name
+
+sparky = GoodDog.new('Sparky', '12 inches', '10 lbs')
+puts sparky.info      # => Sparky weighs 10 lbs and is 12 inches tall.
+
+sparky.change_info('Spartacus', '24 inches', '45 lbs')
+puts sparky.info      # => Spartacus weighs 45 lbs and is 24 inches tall.
 puts sparky.speak
-
-fido = GoodDog.new("Fido")
-puts fido.speak
-
-puts sparky.get_name
-sparky.set_name = "Spartacus"
-puts sparky.get_name
