@@ -21,7 +21,8 @@ class MyCar
     self.speed = 0
   end
 
-  def spray_paint
+  def spray_paint(new_color)
+    self.color = new_color
   end
 end
 
@@ -40,3 +41,5 @@ p car.year
 car.speed = 100
 p car.speed
 #car.year = 2010
+car.spray_paint('blue')
+p car.color
