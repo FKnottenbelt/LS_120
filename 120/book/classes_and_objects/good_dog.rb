@@ -19,9 +19,9 @@ class GoodDog
     self.weight = w
   end
 
-def info
-  "#{self.name} weighs #{self.weight} and is #{self.height} tall."
-end
+  def info
+    "#{self.name} weighs #{self.weight} and is #{self.height} tall."
+  end
 end
 
 # sparky = GoodDog.new("Sparky")
