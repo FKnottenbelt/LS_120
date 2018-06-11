@@ -39,6 +39,15 @@ class Vehicle
   def self.no_of_vehicles
     puts "there are #{@@no_of_vehicles} vehicles"
   end
+
+  def age
+    puts "This vehicle is #{calculate_age} years old"
+  end
+
+  private
+  def calculate_age
+    Time.new.year - self.year
+  end
 end
 
 class MyCar < Vehicle
@@ -75,14 +84,5 @@ end
 
 car = MyCar.new(2018, 'red', 'Ford')
 truck = MyTruck.new(2010, 'blue', 'Toyota')
-car.milage(13, 351)
-truck.milage(5, 351)
-puts car
-puts truck
-Vehicle.no_of_vehicles
-truck.emergency_lighting = 'on'
-
-puts "lookup for car:"
-p MyCar.ancestors
-puts "lookup for truck:"
-p MyTruck.ancestors
+car.age
+truck.age

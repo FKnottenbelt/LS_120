@@ -7,7 +7,7 @@ end
 
 module Warnable
   def emergency_lighting=(on_off)
-    if on_off = 'on'
+    if on_off == 'on'
       puts "putting on emergency lighting"
     else
       puts "shutting of on emergency lighting"
