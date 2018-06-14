@@ -30,5 +30,7 @@ How do you know if it has a single responsibility?
 ### 3a- Depend on behavior, not data:
 - Hide instance variables
   Always wrap instance variables in accessor methods instead of directly
-  reffering to variables.
+  refering to variables.
 - hide data structures
+  isolate knowledge of datastructures (seperate structure from meaning)
+  you can use Struct to wrap a data structure away
