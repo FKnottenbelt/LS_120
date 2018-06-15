@@ -34,3 +34,14 @@ How do you know if it has a single responsibility?
 - hide data structures
   isolate knowledge of datastructures (seperate structure from meaning)
   you can use Struct to wrap a data structure away
+
+### 3b- Enforce singel responsibility everwhere
+- Extract extra responsibilities from methods
+  - seperate iteratation from the action that is being performed on each
+    element.
+- Isolate extra responsibilities in classes
+  - either make a new class
+  - or isolate as much as possible
+  Do postpone a decision until you are absolutely forced to make it. Any
+  decision you make in advance of an explicit requirement is just a guess.
+  Defer your decision, but preserve your ability to make a decision later.
