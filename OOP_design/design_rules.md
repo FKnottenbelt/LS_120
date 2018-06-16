@@ -35,7 +35,7 @@ How do you know if it has a single responsibility?
   isolate knowledge of datastructures (seperate structure from meaning)
   you can use Struct to wrap a data structure away
 
-### 3b- Enforce singel responsibility everywhere
+### 3b- Enforce single responsibility everywhere
 - Extract extra responsibilities from methods
   - seperate iteratation from the action that is being performed on each
     element.
