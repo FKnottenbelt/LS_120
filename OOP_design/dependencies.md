@@ -1,4 +1,4 @@
-# Dependencies
+# Managing Dependencies
 
 Reducing dependencies means recognizing and removing the ones you don't need
 
@@ -13,7 +13,8 @@ Other dependencies:
 - an object knows another that knows something
 - test on code that are to tightly coupled to the code
 
-# Coding techiniques that reduce dependencies by decoupling code
+# Writing loosely Coupled Code
+Coding techiniques that reduce dependencies by decoupling code
 
 ## 1 - Inject dependencies
 reducing dependencies by making sure that your methods don't know the name of
@@ -21,7 +22,6 @@ an other class. Pass in a object (any object) that responds to the message you w
 to send. Deal with the object in the initialize. This way you can handle all sorts
 objects that respond to that message
 => Know less, do more
-
 
 ## 2 - Isolate dependencies
 If you can not remove dependencies (like maybe in exsisting code base):
@@ -35,7 +35,16 @@ and explicitly expose the depenceny while reducing the reach into your class.
 Option 1: create object in initialize (@wheel = Wheel.new(...))
 Option 2: create object in seperate method (def wheel; @wheel ||= Wheel.new(...))
 
-### 2b - Isolate vulnarable external methods
+### 2b - Isolate vulnerable external methods
 if the call to your external methods is buried in other code, isolate (wrap) the
 call part in its own method. Let the rest of the code just call that method
 instead off object.method
+
+## 3 - Remove Argument-Order Dependencies
+
+### 3a - use hashes for initialization arguments
+To reduce depenceny on argument order (in the initialize method) you can
+pass in a hash instead of just arguments. It kind of depends on the
+circumstances and the stability of the argument list though. You can also
+mix: separate arguments for the stable ones, plus hash for the optional and/or
+less stable ones.
