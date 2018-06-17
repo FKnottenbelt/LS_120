@@ -48,3 +48,23 @@ pass in a hash instead of just arguments. It kind of depends on the
 circumstances and the stability of the argument list though. You can also
 mix: separate arguments for the stable ones, plus hash for the optional and/or
 less stable ones.
+
+### 3b - Explcitly define defaults
+3 ways for adding defaults to your input parameters
+
+1 - use the || : @chainring = args[:chainring] || 40
+  nb: only for non boolean values or when you do want to be able to set nil
+  @bool = args[:boolean_thing] || true
+  would never be able to give back nil or false
+
+2 - use fetch (more flexible then || since you can set nil)
+  @chainring = args.fetch(:chainring, 40)
+
+3 - use a default wrapper method.
+  This is for if you have realy complex defaults
+  args = default.merge(args)
+  @chainring = args[:chainring]
+
+  def defaults
+    {chainring: 40, cog: 18 }
+  end
