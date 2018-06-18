@@ -68,3 +68,8 @@ less stable ones.
   def defaults
     {chainring: 40, cog: 18 }
   end
+
+### 3c - Isolate multiparameter intialization
+If you can not explicitly define defaults (like if you are dealing with a
+third party framework/library/external interface):
+use a module wrapper, a factory.
