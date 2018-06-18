@@ -49,7 +49,7 @@ circumstances and the stability of the argument list though. You can also
 mix: separate arguments for the stable ones, plus hash for the optional and/or
 less stable ones.
 
-### 3b - Explcitly define defaults
+### 3b - Explicitly define defaults
 3 ways for adding defaults to your input parameters
 
 1 - use the || : @chainring = args[:chainring] || 40
@@ -72,4 +72,21 @@ less stable ones.
 ### 3c - Isolate multiparameter intialization
 If you can not explicitly define defaults (like if you are dealing with a
 third party framework/library/external interface):
-use a module wrapper, a factory.
+use a module wrapper, a **factory**.
+
+# Managing Dependency Direction
+You can choose with objects depends on which other object. (you can make Gear
+depend on Wheel, but also the other way around).
+How to choose?
+=> **depend on things that change less often then you do**
+
+- some classes are more likely than others to have changes in requirements
+- concrete classes are more likely to change than abstract classes.
+  ('a' object that has a diameter is less concrete than 'a wheel' that has
+  a diameter)
+- changing a class tha has many dependents will result in widespread
+  consquences
+
+When you have a contrete class that has many dependents, your alarm bells
+should ring.
+
