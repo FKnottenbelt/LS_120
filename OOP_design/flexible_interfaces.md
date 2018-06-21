@@ -36,3 +36,13 @@ Methods in the public interface should
 
 Either do not write tests for your private methods, or segregate those
 tests from the tests of public methods
+
+# Demeters Law
+Demeters Law is a set of coding rules that results in loosly
+coupled objects. It restricts the set of object to which a method
+may send messages; it prohibits routing a message to a
+third obje t via a second object of a differnt type. "Only talk to
+your immediate neighbours / use ony one dot".
+
+If you find yourself breaking Demeter, go back to a message based
+perspective to find a better public interface
