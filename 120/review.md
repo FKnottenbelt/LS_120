@@ -51,3 +51,19 @@ puts "There are #{Hybrid.total_count} hybrids on the road!"
 
 ## more class variable versus class instance variable
 see ~/ls_solo/OOP_manning/more_on_class_variables.rb
+
+## Accessor methods
+#=> 120/small_problems/04_accessor_methods/07_prefix_the_name.rb
+Using the following code, add the appropriate accessor methods so that @name
+is returned with the added prefix 'Mr.'.
+
+class Person
+end
+
+person1 = Person.new
+person1.name = 'James'
+puts person1.name
+
+Expected output:
+
+Mr. James
