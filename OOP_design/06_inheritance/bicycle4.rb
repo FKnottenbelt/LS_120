@@ -1,10 +1,9 @@
-  def spares
-    { chain: '10-speed',
-      tire_size: '23',
-      tape_color: tape_color }
-  end# subclassing mountainbike the wrong way
-# overriding initialize and spares
+# inheritance the right way. starting by demoting bicycle to roadbike
+
 class Bicycle
+end
+
+class RoadBike < Bicycle
   attr_reader :size, :tape_color, :style, :front_shock, :rear_shock
 
   def initialize(args)
@@ -16,9 +15,9 @@ class Bicycle
   end
 
   def spares
-   { chain: '10-speed',
-     tire_size: '23',
-     tape_color: tape_color }
+    { chain: '10-speed',
+      tire_size: '23',
+      tape_color: tape_color }
   end
 end
 
@@ -36,18 +35,10 @@ class Mountainbike < Bicycle
   end
 end
 
-bike = Bicycle.new( size: 'M', tape_color: 'red')
-p bike.size
-p bike.spares
-
-# "M"
-# {:chain=>"10-speed", :tire_size=>"2.1", :rear_shock=>nil}
-
+road_bike = RoadBike.new(size: 'M', tape_color: 'red')
+p road_bike.size
 mountain_bike = Mountainbike.new(
                   size: 'S',
                   front_shock: 'Manitou',
                   rear_shock: "Fox")
-p mountain_bike.size
-p mountain_bike.spares
-# "S"
-# {:chain=>"10-speed", :tire_size=>"23", :tape_color=>nil, :rear_shock=>"Fox"}
+p mountain_bike.size # error on size
