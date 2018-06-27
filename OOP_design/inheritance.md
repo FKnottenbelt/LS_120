@@ -20,7 +20,9 @@ code via Modules.
 # Two rules of inheritance:
 1- the object you are modeling must truly have a generalization-
 specialization relationship
-2- you must use the correct coding techniques [?]
+2- you must use the correct coding techniques
+   - create an abstract superclass by promoting abstractions
+   - use the temple method pattern
 
 Create an abstract superclass.
 Abstract classes exist to be subclassed. This is their sole purpose
@@ -32,4 +34,12 @@ behavior up to the superclass. NOT the other way around!
 (the general rule for refactoring into a new inheritance
 hierarchy is to arrange code so that you can promote abstractions
 rather than demote concretions)
+
+Use the temple method pattern
+This is the technique of defining a basic structure in the
+superclass and sending messages to acquire subclass-specific
+contributions. (see bicycle6.rb)
+Always document template method requirements by implementing
+matching methods that raise usefull errors ('warn' new subclasses)
+
 
