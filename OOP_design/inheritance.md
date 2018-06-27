@@ -41,5 +41,3 @@ superclass and sending messages to acquire subclass-specific
 contributions. (see bicycle6.rb)
 Always document template method requirements by implementing
 matching methods that raise usefull errors ('warn' new subclasses)
-
-
