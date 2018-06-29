@@ -16,17 +16,19 @@ classes. Because ducktypes cut across classes, the do not use
 classical inheritance to share common behavior. Duck types share
 code via Modules.
 
-= anki:
 # Two rules of inheritance:
 1- the object you are modeling must truly have a generalization-
 specialization relationship
 2- you must use the correct coding techniques
    - create an abstract superclass by promoting abstractions
    - use the temple method pattern
+   - Do not let subs send super but let super send hook messages
+     (like: use post_initialize hook messages. NB sub change
+     their initialize to post_initialize!)
 
 Create an abstract superclass.
 Abstract classes exist to be subclassed. This is their sole purpose
-They provede a common repository for bahavior that is shared
+They provide a common repository for bahavior that is shared
 across a set of subclassess - subclasses that in turn supply
 specialization.
 => first make your class a subclass. Than promote the abstract
@@ -35,9 +37,16 @@ behavior up to the superclass. NOT the other way around!
 hierarchy is to arrange code so that you can promote abstractions
 rather than demote concretions)
 
-Use the temple method pattern
+Use the temple method pattern:
 This is the technique of defining a basic structure in the
 superclass and sending messages to acquire subclass-specific
 contributions. (see bicycle6.rb)
-Always document template method requirements by implementing
+- Always document template method requirements by implementing
 matching methods that raise usefull errors ('warn' new subclasses)
+
+You can let your subclasses initialize their specialized
+attribute and then send args to super for the rest. (see
+bicycle7.rb.) But this is still knowing to much. Instead use
+hook messages (like post_initialize) to give full responsibilty
+to the superclass instead of making the subs know about the
+super. (see bicycle9.rb)

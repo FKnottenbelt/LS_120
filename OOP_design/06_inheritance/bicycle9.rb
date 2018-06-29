@@ -1,4 +1,4 @@
-# implementing spares the easy way (but produces thighter coupling)
+# using hook messages
 class Bicycle
   attr_reader :size, :chain, :tire_size
 
@@ -6,10 +6,13 @@ class Bicycle
     @size = args[:size]
     @chain = args[:chain] || default_chain
     @tire_size = args[:tire_size] || default_tire_size
+
+    post_initialize(args) # calling hook message
   end
 
-  def default_chain # common default. can be overridden by subclass
-    '10-speed'
+  def spares
+    { tire_size: tire_size,
+      chain: chain }.merge(local_spares) # calling hook
   end
 
   # default_tire_size is not implemented here so MUST be implemented
@@ -19,51 +22,74 @@ class Bicycle
     "This #{self.class} cannot respond to default_tire_size"
   end
 
-  def spares
-    { tire_size: tire_size,
-      chain: chain }
+  # subclasses may override this hook messages:
+  def post_initialize(args) # implement hook message. sub can override
+    nil
+  end
+
+  def local_spares #implementing hook message
+    {}
+  end
+
+  def default_chain # common default. can be overridden by subclass
+    '10-speed'
   end
 end
 
 class RoadBike < Bicycle
   attr_reader :tape_color
 
-  def initialize(args)
+  def post_initialize(args)  #changed to post_intialize (overriding super)
     @tape_color = args[:tape_color]
-    super(args)
   end
 
   def default_tire_size # subclass default
     '23'
   end
 
-  def spares
-    super.merge({tape_color: tape_color})
+  def local_spares # overriding hook
+    { tape_color: tape_color }
   end
 end
 
 class Mountainbike < Bicycle
   attr_reader :front_shock, :rear_shock
 
-  def initialize(args)
+  def post_initialize(args)
     @front_shock = args[:front_shock]
     @rear_shock = args[:rear_shock]
-    super(args)
   end
 
   def default_tire_size # subclass default
     '2.1'
   end
 
-  def spares
-    super.merge(rear_shock: rear_shock)
+  def local_spares
+    { rear_shock: rear_shock }
   end
 end
 
 class MethodNotImplemented < StandardError
 end
 
-class RecumbentBike < Bicycle
+class RecumbentBike < Bicycle  # new
+  attr_reader :flag
+
+  def post_initialize(args)
+    @flag = args[:flag]
+  end
+
+  def local_spares
+    { flag: flag }
+  end
+
+  def default_chain
+    '9-speed'
+  end
+
+  def default_tire_size
+    '28'
+  end
 end
 
 
@@ -87,6 +113,7 @@ p mountain_bike.chain
 # "10-speed"
 # "2.1"
 # "10-speed"
-p bent = RecumbentBike.new
-# bicycle6.rb:18:in `default_tire_size': This RecumbentBike cannot respond
-# to default_tire_size (MethodNotImplemented)
+p bent = RecumbentBike.new(flag: 'tall and orange')
+p bent.spares
+#<RecumbentBike:0x000000018a8f08 @flag="tall and orange">
+#{:tire_size=>nil, :chain=>nil, :flag=>"tall and orange"}

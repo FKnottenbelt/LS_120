@@ -1,4 +1,5 @@
 # implementing spares the easy way (but produces thighter coupling)
+# and see here the trouble of knowing to much about super
 class Bicycle
   attr_reader :size, :chain, :tire_size
 
@@ -63,7 +64,24 @@ end
 class MethodNotImplemented < StandardError
 end
 
-class RecumbentBike < Bicycle
+class RecumbentBike < Bicycle  # new
+  attr_reader :flag
+
+  def initialize(args)
+    @flag = args[:flag] # forgot to send to super
+  end
+
+  def spares
+    super.merge({ flag: flag })
+  end
+
+  def default_chain
+    '9-speed'
+  end
+
+  def default_tire_size
+    '28'
+  end
 end
 
 
@@ -87,6 +105,7 @@ p mountain_bike.chain
 # "10-speed"
 # "2.1"
 # "10-speed"
-p bent = RecumbentBike.new
-# bicycle6.rb:18:in `default_tire_size': This RecumbentBike cannot respond
-# to default_tire_size (MethodNotImplemented)
+p bent = RecumbentBike.new(flag: 'tall and orange')
+p bent.spares
+#<RecumbentBike:0x000000018a8f08 @flag="tall and orange">
+#{:tire_size=>nil, :chain=>nil, :flag=>"tall and orange"}
