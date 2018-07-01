@@ -55,6 +55,7 @@
 # Refactor these classes so they all use a common superclass, and inherit
 # behavior as needed.
 
+# assuming wheeled vehicles...:
 class Vehicle
   attr_reader :wheels, :make, :model
 
