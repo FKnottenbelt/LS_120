@@ -9,20 +9,20 @@ This message passing takes place along 'public' interfaces; well-defined
 public interfaces consist of stable methods that expose the responsibilities
 of their underlying classes and provide maximal benefit at minimal cost.
 
-Focusing on messages reveals objects that might oterwise be overlooked.
+Focusing on messages reveals objects that might otherwise be overlooked.
 Messages should be trusting and ask for what the sender wants instead of
 telling the receiver how to behave.
 
 Use sequence diagrams to help you define de messages and find responders
 
-Ask for what instead of how
+Ask for *what* instead of *how*
 
-seek context independence (like dependency indjection, but in the
+Seek context independence (like dependency indjection, but in the
 other direction)
 
-trust other object to do their thing
+Trust other object to do their thing
 
-you can put an array in you object with objects that can respond to
+You can put an array in your object with objects that can respond to
 your message (like prepare_trip). This makes it easy to expand if you get
 more 'prepareres'.
 
@@ -41,7 +41,7 @@ tests from the tests of public methods
 Demeters Law is a set of coding rules that results in loosly
 coupled objects. It restricts the set of object to which a method
 may send messages; it prohibits routing a message to a
-third obje t via a second object of a differnt type. "Only talk to
+third object via a second object of a differnt type. "Only talk to
 your immediate neighbours / use ony one dot".
 
 If you find yourself breaking Demeter, go back to a message based

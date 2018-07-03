@@ -1,11 +1,11 @@
 # Inheritance
 
 Inheritance is at its core, a mechanism for automatic message
-delegation. It defines a pathe for not-understood messages.
+delegation. It defines a path for not-understood messages.
 
 Like with ducktyping there is a pattern to detect 'missing
 subclasses':
-If the code contains an if statement that check an attribute that
+If the code contains an if statement that checks an attribute that
 holds the category of self to determine what message to send to
 self.
 "if style == :road"
@@ -17,9 +17,9 @@ classical inheritance to share common behavior. Duck types share
 code via Modules.
 
 # Two rules of inheritance:
-1- the object you are modeling must truly have a generalization-
+1- The object you are modeling must truly have a generalization-
 specialization relationship
-2- you must use the correct coding techniques
+2- You must use the correct coding techniques
    - create an abstract superclass by promoting abstractions
    - use the temple method pattern
    - Do not let subs send super but let super send hook messages
@@ -28,10 +28,10 @@ specialization relationship
 
 Create an abstract superclass.
 Abstract classes exist to be subclassed. This is their sole purpose
-They provide a common repository for bahavior that is shared
-across a set of subclassess - subclasses that in turn supply
+They provide a common repository for behavior that is shared
+across a set of subclasses - subclasses that in turn supply
 specialization.
-=> first make your class a subclass. Than promote the abstract
+=> first make your class a subclass. Then promote the abstract
 behavior up to the superclass. NOT the other way around!
 (the general rule for refactoring into a new inheritance
 hierarchy is to arrange code so that you can promote abstractions
