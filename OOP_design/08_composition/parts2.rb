@@ -67,3 +67,7 @@ p mountain_bike.size
 p mountain_bike.spares
 
 
+p mountain_bike.spares.size # 3
+#p mountain_bike.parts.size
+# undefined method `size' for #<Part => returns instantance of Parts
+p mountain_bike.parts.parts.size # 4
