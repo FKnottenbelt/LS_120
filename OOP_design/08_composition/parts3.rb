@@ -1,4 +1,5 @@
 # The compromise
+# https://vaidehijoshi.github.io/blog/2015/03/31/delegating-all-of-the-things-with-ruby-forwardable/
 require 'forwardable'
 
 class Bicycle
@@ -16,10 +17,15 @@ end
 
 class Parts
   extend Forwardable  # makes this available as class methods
+  # method of Forwardable with arguments: object to sent to (in this case
+  # the array @parts), list of methods to foward to it. is same as:
+  # delegate [:size, :each] => :@parts
+  # "if I, the Parts object call these methods, send it to @parts to
+  # handle"
   def_delegators :@parts, :size, :each
 
-  # makes this available to Parts objects and gives our @parts
-  # array some array like behaviour (size, each etc)
+  # makes this available to Parts objects and gives that it had
+  # something to forward to our @parts array?
   include Enumerable
 
   def initialize(parts)
@@ -28,7 +34,10 @@ class Parts
 
   def spares # @parts is an array of part objects
     select{ |part| part.needs_spare } # gives array of
-                            # part objects that need spares
+         # part objects that need spares. We can do the select
+         # because enumerable gave :each (giving it :select would
+         # also have worked) to us to foward to the
+         # @parts array
   end
 
 end
@@ -62,6 +71,7 @@ road_bike = Bicycle.new(size: 'L',
                         parts: Parts.new([chain, road_tire, tape]))
 p road_bike.size
 p road_bike.spares # array with 3 part objects
+
 
 mountain_bike = Bicycle.new(
                   size: 'L',
