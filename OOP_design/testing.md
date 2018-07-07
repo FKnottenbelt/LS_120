@@ -17,3 +17,11 @@ state (here): return value
 command message: has side effects (a file gets written, a database
 record is saved, an action is taken by an observer etc)
 query message: asking for state => is tested by receiving object.
+
+## How to test
+
+Your test should remain as ignorant as possible about context (everything
+that is not the object under test)
+
+Delete unused interfaces (incomming messages that has no dependents)
+Yes, really. Unused code costs more to keep than to recover.
