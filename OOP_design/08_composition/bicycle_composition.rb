@@ -60,3 +60,27 @@ mountain_config =
    ['rear_shock', 'Fox']]
 
 # making bikes
+road_bike = Bicycle.new(
+              size: 'L',
+              parts: PartsFactory.build(road_config))
+
+p road_bike.spares
+# [#<OpenStruct name="chain", description="10-speed", needs_spare=true>, #<OpenStruct name="tire_size", description="23", needs_spare=true>, #<OpenStruct name="tape_coler", description="red", needs_spare=true>]
+
+mountain_bike = Bicycle.new(
+                  size: 'L',
+                  parts: PartsFactory.build(mountain_config))
+
+p mountain_bike.spares
+
+# lets add a totally new bike
+recumbent_config =
+  [['chain', '9-speed'],
+   ['tire_size', '28'],
+   ['flag', 'tall and orange']]
+
+recumbent_bike = Bicycle.new(
+                   size: 'L',
+                   parts: PartsFactory.build(recumbent_config))
+
+p recumbent_bike.spares
