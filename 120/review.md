@@ -70,3 +70,6 @@ Mr. James
 
 ## 3 - Pet Shelter
 120/small_problems/06_easy2/07_pet_shelter.rb
+
+## 4 - Nobility
+120/small_problems/06_easy2/10_nobility.rb
