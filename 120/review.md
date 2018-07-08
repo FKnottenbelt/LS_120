@@ -67,3 +67,6 @@ puts person1.name
 Expected output:
 
 Mr. James
+
+## 3 - Pet Shelter
+120/small_problems/06_easy2/07_pet_shelter.rb
