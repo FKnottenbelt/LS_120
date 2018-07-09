@@ -87,3 +87,9 @@ The new method is a constructor: a method whose purpose is to manufacture and re
 erhm? vs:
 A constructor is a special kind of a method. It is automatically called when an object is created. Constructors do not return values. The purpose of the constructor is to initiate the state of an object. The constructor in Ruby is called initialize. Constructors do not return any values.
 (zetcode and www.tutorialspoint.com)
+
+## Privacy
+120/small_problems/07_medium1/01_privacy.rb
+
+## Fixed Array
+120/small_problems/07_medium1/02_fixed_array.rb
