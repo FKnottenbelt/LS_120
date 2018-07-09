@@ -29,3 +29,9 @@ Yes, really. Unused code costs more to keep than to recover.
 When the code in your tests uses the same collaborating objects
 as the code in your application, your tests always break when they
 should
+If you have dependency injection and you have only one canditate
+for the role this makes sense.
+However, it can be slow. And if you have many candidates you don't
+want to have to inject all of them in your test.
+Solution: make a fake one, a test double (stub) that gives only what
+you need. (see test_double.rb)

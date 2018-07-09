@@ -1,6 +1,6 @@
-# when diameter in Wheel changes, but it does not change
-# in Gear, the test fails as it should
-# (the interface of the Diameterizable changed!)
+# we need to test the Gear incomming message 'gear-inches' that uses
+# wheel.diameter. We are injecting a wheel like object and using a
+# stub to provide the wheel like object with a diameter of 10
 
 class Wheel
   attr_reader :rim, :tire
@@ -10,7 +10,7 @@ class Wheel
     @tire = tire
   end
 
-  def width # <= used to be diameter
+  def diameter
     rim + (tire * 2)
   end
 end
@@ -28,7 +28,7 @@ class Gear
     chainring / cog.to_f
   end
 
-  def gear_inches
-    ratio * wheel.diameter # <= obsolete
+  def gear_inches # incomming
+    ratio * wheel.diameter
   end
 end
