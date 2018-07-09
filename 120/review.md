@@ -73,3 +73,17 @@ Mr. James
 
 ## 4 - Nobility
 120/small_problems/06_easy2/10_nobility.rb
+
+## Operator overloading (??)
+unclear if I need this.
+https://strugglingwithruby.blogspot.com/2010/04/operator-overloading.html
+see also
+https://www.tutorialspoint.com/ruby/ruby_object_oriented.htm
+
+## constructors (??)
+what is a constructor?
+The new method is a constructor: a method whose purpose is to manufacture and return to you a new instance of the class, a newly minted object.
+
+erhm? vs:
+A constructor is a special kind of a method. It is automatically called when an object is created. Constructors do not return values. The purpose of the constructor is to initiate the state of an object. The constructor in Ruby is called initialize. Constructors do not return any values.
+(zetcode and www.tutorialspoint.com)
