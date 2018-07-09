@@ -25,3 +25,7 @@ that is not the object under test)
 
 Delete unused interfaces (incomming messages that has no dependents)
 Yes, really. Unused code costs more to keep than to recover.
+
+When the code in your tests uses the same collaborating objects
+as the code in your application, your tests always break when they
+should
