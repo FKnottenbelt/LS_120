@@ -47,4 +47,13 @@ document the role. Assert the fact that a class plays the rol and
 prove that it implements its interface correctly
 (see document_role_test.rb: assert_respond_to(@wheel, :diameter))
 NB: still doesn't solve all problems
-TO BE CONTINUED!
+**TO BE CONTINUED!**
+
+## Testing private messages
+Never write private messages if you can help it. And if you do,
+never test them, unless of course it makes sense to do so. Therefore,
+be biased against writing these test but do not fear to do so if
+this would improve your lot.
+
+## Testing outgoing messages
+Don't test query messages.
