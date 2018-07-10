@@ -33,13 +33,15 @@ class GearTest < MiniTest::Test
   end
 
   def test_notifies_observer_when_cogs_change
-    @observer.expect(:change, true, [52,27]) # priming Mock
+    # .expect(name, retval, args=[]) – Expect that method name is
+    # called, optionally with args or a blk, and returns retval. 
+    @observer.expect(:changed, true,[52, 27]) # priming Mock
     @gear.set_cog(27) # triggering behaviour
     @observer.verify # see if message was send
   end
 
   def test_notifies_observer_when_chainrings_change
-    @observer.expect(:change, true, [42,11]) # priming Mock
+    @observer.expect(:changed, true,[52,42]) # priming Mock
     @gear.set_cog(42) # triggering behaviour
     @observer.verify # see if message was send
   end

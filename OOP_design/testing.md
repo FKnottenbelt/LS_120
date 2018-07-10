@@ -40,7 +40,7 @@ you need. (see test_double.rb)
 However, this will not break the test if you change the interface.
 (like rename the diameter method in a wheel like object)
 
-If you change an interface, all player of the role should inplement
+If you change an interface, all player of the role should implement
 the new rol.
 To make sure you don't forget test double playing the role is to
 document the role. Assert the fact that a class plays the rol and
@@ -57,3 +57,5 @@ this would improve your lot.
 
 ## Testing outgoing messages
 Don't test query messages.
+Use Mocks to prove your outgoing command messages get send.
+(see observer_test.rb)
