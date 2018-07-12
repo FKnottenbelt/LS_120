@@ -21,8 +21,21 @@ query message: asking for state => is tested by receiving object.
 ## How to test
 
 ### Testing incomming messages
-Your test should remain as ignorant as possible about context (everything
-that is not the object under test)
+Your test should remain as ignorant as possible about context
+(everything that is not the object under test)
+```ruby
+require 'minitest/autorun'
+require_relative 'incomming_messages'
+
+class WheelTest < MiniTest::Test
+
+  def test_calculate_diameter
+    wheel = Wheel.new(26, 1.5)
+
+    assert_in_delta(29, wheel.diameter, 0.01)
+  end
+end
+```
 
 Delete unused interfaces (incomming messages that has no dependents)
 Yes, really. Unused code costs more to keep than to recover.
@@ -30,24 +43,64 @@ Yes, really. Unused code costs more to keep than to recover.
 When the code in your tests uses the same collaborating objects
 as the code in your application, your tests always break when they
 should.
+```ruby
+class GearTest < MiniTest::Test
+
+  def test_calculates_gear_inches
+    gear = Gear.new(chainring: 52, cog: 11,
+                    wheel: Wheel.new(26, 1.5))
+
+    assert_in_delta(137,gear.gear_inches, 0.9)
+  end
+end
+```
 If you have *dependency injection* and you have only one canditate
 for the role this makes sense.
 However, it can be slow. And if you have many candidates you don't
 want to have to inject all of them in your test.
 
-Solution: make a fake one, a *test double* (stub) that gives only what
+Solution: make a fake one, a **test double (stub)** that gives only what
 you need. (see test_double.rb)
-However, this will not break the test if you change the interface.
-(like rename the diameter method in a wheel like object)
+- the test double is it's own class (e.g. DiameterDouble)
+  ```ruby
+  class DiameterDouble
+    def diameter
+      10
+    end
+  end
+  ```
+- the test double fills a role (Diameterizable). Make a module
+  that test the implementation of this roll and include that
+  for all objects that fill that role plus in the test for the
+  class that is on 'the other side' of the interface: the one
+  injecting the dependency
+  ```ruby
+  module DiameterizableInterfaceTest
+    def test_implements_the_diameterizable_interface
+      assert_respond_to(@object, :diameter)
+    end
+  end
 
-If you change an interface, all player of the role should implement
-the new rol.
-To make sure you don't forget test double playing the role is to
-document the role. Assert the fact that a class plays the rol and
-prove that it implements its interface correctly
-(see document_role_test.rb: assert_respond_to(@wheel, :diameter))
-NB: still doesn't solve all problems
-**TO BE CONTINUED!**
+  class WheelTest < MiniTest::Test
+    include DiameterizableInterfaceTest
+
+    def setup # implement module by adding @object
+      @wheel = @object = Wheel.new(26, 1.5)
+    end
+  end
+
+  ```
+- the test double is an object implementing the role and thus
+  needs its own testclass that checks wether it implements the role
+  ```ruby
+  class DiameterDoubleTest < MiniTest::Test
+    include DiameterizableInterfaceTest
+    def setup
+      @object = DiameterDouble.new
+    end
+  end
+  ```
+see OOP_design/09_testing/role_tests_test.rb
 
 ## Testing private messages
 Never write private messages if you can help it. And if you do,
@@ -57,5 +110,22 @@ this would improve your lot.
 
 ## Testing outgoing messages
 Don't test query messages.
-Use Mocks to prove your outgoing command messages get send.
+Use **Mocks** to prove your outgoing command messages get send.
 (see observer_test.rb)
+```ruby
+class GearTest < MiniTest::Test
+# setting up a Mock to test wether command message gets send
+  def setup
+    @observer = MiniTest::Mock.new
+    @gear = Gear.new(chainring: 52, cog: 11,
+                    wheel: DiameterDouble.new,
+                    observer: @observer)
+  end
+
+  def test_notifies_observer_when_cogs_change
+    # .expect(name, returnvalue, args=[])
+    @observer.expect(:changed, true,[52, 27]) # priming Mock
+    @gear.set_cog(27) # triggering behaviour
+    @observer.verify # see if message was send
+  end
+```
