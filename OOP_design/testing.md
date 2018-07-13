@@ -129,3 +129,39 @@ class GearTest < MiniTest::Test
     @observer.verify # see if message was send
   end
 ```
+
+## Testing Inherited Code
+The first goal is to prove that all objects in the hierachy
+honor their contract. The Liskov Subtitution Principle says
+that subtypes should be substituable for their supertypes.
+The easiest way to prove that every object in the hierachy
+obeys Liskov is to write a shared test module for the common
+contract (e.q. what it means to be a bicycle) and to include
+this test in every object.
+(see inherited_code_test.rb)
+```ruby
+module BicycleInterfaceTest
+  def test_responds_to_default_tire_size
+    assert_respond_to(@object, :default_tire_size)
+  end
+
+  def test_responds_to_default_chain
+    assert_respond_to(@object, :default_chain)
+  end
+
+  def test_responds_to_chain
+    assert_respond_to(@object, :chain)
+  end
+
+  ## etc
+end
+
+# using the 'does it act like a bicycle' test in the concrete
+# subclass Roadbike
+class RoadBikeTest < MiniTest::Test
+  include BicycleInterfaceTest
+  def setup
+    @bike = @object = RoadBike.new
+  end
+end
+```
