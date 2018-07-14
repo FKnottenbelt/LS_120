@@ -131,11 +131,12 @@ class GearTest < MiniTest::Test
 ```
 
 ## Testing Inherited Code
+### specifying the Inherited interface (Liskov)
 The first goal is to prove that all objects in the hierachy
 honor their contract. The Liskov Subtitution Principle says
 that subtypes should be substituable for their supertypes.
 The easiest way to prove that every object in the hierachy
-obeys Liskov is to write a shared test module for the common
+obeys **Liskov** is to write a shared test module for the common
 contract (e.q. what it means to be a bicycle) and to include
 this test in every object.
 (see inherited_code_test.rb)
@@ -165,3 +166,42 @@ class RoadBikeTest < MiniTest::Test
   end
 end
 ```
+NB: you should also include this test in the superclass.
+
+### Specifying Subclass Responsibilities
+#### confirming sublass behaviour
+You should also have a module that proves that each subclass acts
+like a proper subclass should. This is basically looking at the
+messages the subclass can override to make sure they don't break them
+```ruby
+# making sure that the more optional methods from the
+# superclass don't get broken by the subclasses.
+module BicycleSubclassTest
+   def test_responds_to_post_initialize
+     assert_respond_to(@object, :post_initialize)
+   end
+
+   def test_responds_to_local_spares
+     assert_respond_to(@object, :local_spares)
+   end
+
+   def test_responds_to_default_tire_size
+     assert_respond_to(@object, :default_tire_size)
+   end
+end
+```
+Your subclasses should thus include 2 modules, because every subclass
+should act both as the superclass and like the subclass.
+```ruby
+class RoadBikeTest < MiniTest::Test
+  include BicycleInterfaceTest # Liskov: act like a bicycle
+  include BicycleSubclassTest # also act like a subclass of bicycle
+
+  def setup
+    @bike = @object = RoadBike.new
+  end
+end
+```
+(see inherited_code_test2.rb)
+
+#### confirming superclass enforcement
