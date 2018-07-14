@@ -250,3 +250,32 @@ Since testing an abstract superclass behaviour can be
 difficult (due to not being able to initialize properly)
 it can be helpfull to create a sub for the superclass that
 supplies the behaviour of the subclasses.
+```ruby
+# sub for creation of abstract superclass Bicycle
+# provides needed subclass behavoir
+class StubbedBike < Bicycle
+  def default_tire_size
+    0
+  end
+  def local_spares
+    {saddle: 'painful'}
+  end
+end
+
+class BicycleTest < MiniTest:: Test
+  include BicycleInterfaceTest
+  def setup
+    @bike = @object = Bicycle.new({tire_size: 0})
+    @stubbed_bike = StubbedBike.new  # <== adding stub
+  end
+
+  def test_forces_subclasses_to_implement_default_tire_size
+  end
+
+  # testing superclass specific behavior
+  def test_includes_local_spares_in_spares
+    assert_equal @stubbed_bike.spares,
+      { tire_size: 0, chain: '10-speed', saddle: 'painful'}
+  end
+end
+```
