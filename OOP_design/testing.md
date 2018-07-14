@@ -205,3 +205,20 @@ end
 (see inherited_code_test2.rb)
 
 #### confirming superclass enforcement
+If the superclass enforces implementation by raising errors,
+the raising of this error has to be tested.
+We do this using `assert_raises(<error>) {<@object.method>}`
+```ruby
+class BicycleTest < MiniTest:: Test
+  include BicycleInterfaceTest
+  def setup
+    @bike = @object = Bicycle.new({tire_size: 0})
+  end
+
+  def test_forces_subclasses_to_implement_default_tire_size
+    # check if error is thrown when default tire size is not
+    # implemented
+    assert_raises(MethodNotImplemented) {@bike.default_tire_size}
+  end
+end
+```
