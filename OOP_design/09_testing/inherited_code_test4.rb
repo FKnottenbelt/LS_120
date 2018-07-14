@@ -55,7 +55,16 @@ class StubbedBike < Bicycle
   end
 end
 
-class BicycleTest < MiniTest:: Test
+# test your stub: it too should behave like su subclass of bicycle
+class StubbedBikeTest < MiniTest::Test
+  include BicycleSubclassTest
+
+  def setup
+    @object = StubbedBike.new
+  end
+end
+
+class BicycleTest < MiniTest::Test
   include BicycleInterfaceTest
   def setup
     @bike = @object = Bicycle.new({tire_size: 0})

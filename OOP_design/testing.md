@@ -279,3 +279,15 @@ class BicycleTest < MiniTest:: Test
   end
 end
 ```
+Of course it would now also be smart to test your stub.
+```ruby
+# test your stub: it too should behave like su subclass of bicycle
+class StubbedBikeTest < MiniTest::Test
+  include BicycleSubclassTest
+
+  def setup
+    @object = StubbedBike.new
+  end
+end
+```
+(see inherited_code_test4)
