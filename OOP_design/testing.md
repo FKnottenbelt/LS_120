@@ -228,3 +228,25 @@ end
 The shared modules allready prove most of the behaviour. The only
 thing left is to test the specialisations. But without embedding
 knowlegde of hte superclass in the test.
+```ruby
+class RoadBikeTest < MiniTest::Test
+  include BicycleInterfaceTest # Liskov: act like a bicycle
+  include BicycleSubclassTest # also act like a subclass of bicycle
+
+  def setup
+    @bike = @object = RoadBike.new(tape_color: 'red')
+  end
+
+  # test for RoadBike specialisations
+  def test_puts_tape_color_in_local_spares
+    assert_equal 'red', @bike.local_spares[:tape_color]
+  end
+end
+```
+(see inherited_code_test3)
+
+### Testing abstract superclass behaviour
+Since testing an abstract superclass behaviour can be
+difficult (due to not being able to initialize properly)
+it can be helpfull to create a sub for the superclass that
+supplies the behaviour of the subclasses.
