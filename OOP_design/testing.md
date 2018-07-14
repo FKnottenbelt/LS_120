@@ -222,3 +222,9 @@ class BicycleTest < MiniTest:: Test
   end
 end
 ```
+
+### Testing Unique Behaviour
+### Testing concrete subclass behaviour
+The shared modules allready prove most of the behaviour. The only
+thing left is to test the specialisations. But without embedding
+knowlegde of hte superclass in the test.
