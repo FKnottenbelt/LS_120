@@ -20,9 +20,9 @@ The game flow should go like this:
 
 ## Walkthrough To Do's
 Step 1 - Implement the choose method  [V]
-Step 2 - Implement the display_winner method
-Step 3 - play again
-Step 4 - set player names
+Step 2 - Implement the display_winner method  [V]
+Step 3 - play again  [V]
+Step 4 - set player names [V]
 
 At this point, we're done with the functionality of the object
 oriented RPS game.
