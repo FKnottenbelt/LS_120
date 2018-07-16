@@ -96,3 +96,6 @@ A constructor is a special kind of a method. It is automatically called when an 
 
 ## practicing classes and objects
 ~/ls_solo/120/lesson_2/01_classes_and_objects
+
+## find out how to test user input loops with wrong input
+will have to wait to 130...

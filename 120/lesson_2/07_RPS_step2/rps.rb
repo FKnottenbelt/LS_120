@@ -2,7 +2,7 @@ class Player
   attr_accessor :move
   def initialize(player_type = :human)
     @player_type = player_type
-    @move = nil
+    @move = 0
     # maybe a "name"? what about a "move"?
   end
 

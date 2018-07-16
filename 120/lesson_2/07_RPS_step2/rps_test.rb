@@ -3,14 +3,21 @@ file = (File.basename __FILE__, ".*").sub!('_test', '')
 puts "testing #{file}"
 require_relative file
 
-class HumanDouble < Player
-  def gets
-    @move
+
+module UserInput
+  attr_accessor :user_input
+
+  def types(user_input)
+    @user_input = user_input
   end
 
-  def human?
-    true
+  def gets
+    self.user_input
   end
+end
+
+class HumanDouble < Player
+  include UserInput
 end
 
 class PlayerTest < MiniTest::Test
@@ -25,16 +32,13 @@ class PlayerTest < MiniTest::Test
   end
 
   def test_human_chooses_valid_move
-     # not doable with my knowledge level
-     @human.move = 'rock'
-     assert_equal @human.choose, 'rock'
+     @human.types 'rock'
+     assert_equal 'rock', @human.choose
+     puts "player choice was rock"
   end
 
-  def test_error_when_human_chooses_invalid_move
+  def test_human_chooses_invalid_move
     # not doable with my knowledge level
-    # @human.move = 'ice'
-    # assert_equal @human.choose, "Sorry, invalid choice."
-    # break (gets into endless loop)
   end
 
 end
