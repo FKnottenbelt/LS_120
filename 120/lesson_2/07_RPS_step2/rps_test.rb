@@ -1,8 +1,7 @@
 require 'minitest/autorun'
 file = (File.basename __FILE__, ".*").sub!('_test', '')
-puts "testing #{file}"
+puts "testing file #{file}"
 require_relative file
-
 
 module UserInput
   attr_accessor :user_input
@@ -39,6 +38,7 @@ class PlayerTest < MiniTest::Test
 
   def test_human_chooses_invalid_move
     # not doable with my knowledge level
+    puts "MANUAL TEST: human_chooses_invalid_move"
   end
 
 end

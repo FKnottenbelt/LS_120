@@ -18,8 +18,8 @@ The game flow should go like this:
    - the winner is displayed
 
 
-## To Do's
-Step 1 - Implement the choose method
+## Walkthrough To Do's
+Step 1 - Implement the choose method  [V]
 Step 2 - Implement the display_winner method
 Step 3 - play again
 Step 4 - set player names
