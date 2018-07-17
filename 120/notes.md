@@ -41,13 +41,18 @@ The classical approach to object oriented programming is:
 
   - compare
   ```
+
 5 - The nouns are the classes and the verbs are the behaviors
     or methods.
-    Start coding thing up (just sketch outline)
+    Start coding thing up (just sketch outline). This is called to
+    *do a spike*: explare the problem with temporary code
 
-6 - Implement first feature
+6 - When you have a better idea of the problem, model your thoughts
+    into CRC cards.
 
-7 - Refactor
+7 - Implement first feature
+
+8 - Refactor
     So far:
 
     - hidden subclass antipattern
@@ -80,8 +85,10 @@ The classical approach to object oriented programming is:
     end
   end
   ```
-8 - repeat step 6 and 7 and somewhere in there run rubocop
-    and refactor some more.
+
+8 - run rubocop and refactor some more.
+
+9 - repeat step 7 to 9.
 
 
 
