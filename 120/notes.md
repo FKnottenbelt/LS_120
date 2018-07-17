@@ -80,7 +80,8 @@ The classical approach to object oriented programming is:
     end
   end
   ```
-8 - repeat step 6 and 7
+8 - repeat step 6 and 7 and somewhere in there run rubocop
+    and refactor some more.
 
 
 
@@ -207,3 +208,19 @@ remember Demeters law?: "Only talk to your immediate neighbours
 back to a message based perspective to find a better public
 interface
 ```
+
+## Avoid design patterns for now.
+
+One of the biggest mistakes beginner programmers make is mis-application
+of "best practices" or "design patterns" to improve performance or
+flexibility. This is such a common phenomenon that experienced
+programmers have a quote: "premature optimization is the root of all evil".
+
+Don't worry about optimization at this point. Don't write overly
+clever code. Granted, you won't know what's considered "clever" vs
+"normal" without reading a lot of code, but over time, you will start
+to hone your senses.
+
+You'll spend the rest of your career mastering design patterns and best
+practices. Most importantly, you should spend time understanding when to
+use those things.
