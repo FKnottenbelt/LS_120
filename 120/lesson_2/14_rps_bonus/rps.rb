@@ -75,14 +75,15 @@ class Computer < Player
 end
 
 class RPSGame
-  attr_accessor :human, :computer, :rounds
-  SCORE = { human: 0, computer: 0}
-  MATCH_ROUNDS = 2
+  attr_accessor :human, :computer, :rounds, :winner, :score
+  WINNING_SCORE = 2
 
   def initialize
     @human = Human.new
     @computer = Computer.new
     @rounds = []
+    @winner = nil
+    @score = { human: 0, computer: 0}
   end
 
   def display_welcome_message
@@ -106,27 +107,35 @@ class RPSGame
     return true if answer.downcase == 'y'
   end
 
+  def setup_new_match
+    self.score = { human: 0, computer: 0}
+    self.winner = nil
+  end
+
   def play
     display_welcome_message
-
-    MATCH_ROUNDS.times do  # change to first to reach!
-      rounds << Round.new(self)
-      rounds.last.play
+    loop do
+      until winner
+        rounds << Round.new(self)
+        rounds.last.play
+        @winner = human if score[:human] == WINNING_SCORE
+        @winner = computer if score[:computer] == WINNING_SCORE
+      end
+      break unless play_again
+      setup_new_match
     end
-
-    #break unless game.play_again
     display_goodbye_message
   end
 end
 
 class Round
- SCORE = { human: 0, computer: 0}
- attr_accessor :round_nr, :human, :computer, :game
+ attr_accessor :human, :computer, :score
 
   def initialize(game)
     @game = game
     @human = game.human
     @computer = game.computer
+    @score = game.score
   end
 
   def display_moves
@@ -137,18 +146,18 @@ class Round
   def display_winner
     if human.move > computer.move
       puts "#{human.name} won!"
-      SCORE[:human] += 1
+      score[:human] += 1
     elsif human.move < computer.move
       puts "#{computer.name} won!"
-      SCORE[:computer] += 1
+      score[:computer] += 1
     else
       puts "It's a tie!"
     end
   end
 
   def display_score
-    puts "The score is: #{human.name}: #{SCORE[:human]}" +
-      " - #{computer.name}: #{SCORE[:computer]}"
+    puts "The score is: #{human.name}: #{score[:human]}" +
+      " - #{computer.name}: #{score[:computer]}"
       puts
   end
 
