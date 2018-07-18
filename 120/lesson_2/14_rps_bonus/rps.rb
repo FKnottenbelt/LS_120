@@ -82,8 +82,6 @@ class RPSGame
     @human = Human.new
     @computer = Computer.new
     @rounds = []
-    @winner = nil
-    @score = { human: 0, computer: 0}
   end
 
   def display_welcome_message
@@ -108,19 +106,24 @@ class RPSGame
   end
 
   def setup_new_match
-    self.score = { human: 0, computer: 0}
+    self.score = { human: 0, computer: 0, round_winner: nil }
     self.winner = nil
+  end
+
+  def play_round
+    until winner
+      rounds << Round.new(self)
+      rounds.last.play
+      @winner = human if score[:human] == WINNING_SCORE
+      @winner = computer if score[:computer] == WINNING_SCORE
+    end
   end
 
   def play
     display_welcome_message
     loop do
-      until winner
-        rounds << Round.new(self)
-        rounds.last.play
-        @winner = human if score[:human] == WINNING_SCORE
-        @winner = computer if score[:computer] == WINNING_SCORE
-      end
+      setup_new_match
+      play_round
       break unless play_again
       setup_new_match
     end
@@ -129,7 +132,7 @@ class RPSGame
 end
 
 class Round
- attr_accessor :human, :computer, :score
+  attr_accessor :human, :computer, :score
 
   def initialize(game)
     @game = game
@@ -143,28 +146,40 @@ class Round
     puts "#{computer.name} chose #{computer.move} "
   end
 
-  def display_winner
+  def update_score
     if human.move > computer.move
-      puts "#{human.name} won!"
       score[:human] += 1
+      score[:round_winner] = 'human'
     elsif human.move < computer.move
-      puts "#{computer.name} won!"
       score[:computer] += 1
+      score[:round_winner] = 'computer'
+    else
+      score[:round_winner] = nil
+    end
+  end
+
+  def display_winner
+    case score[:round_winner]
+    when 'human'
+      puts "#{human.name} won!"
+    when 'computer'
+      puts "#{computer.name} won!"
     else
       puts "It's a tie!"
     end
   end
 
   def display_score
-    puts "The score is: #{human.name}: #{score[:human]}" +
+    puts "The score is: #{human.name}: #{score[:human]}" \
       " - #{computer.name}: #{score[:computer]}"
-      puts
+    puts
   end
 
   def play
     human.choose
     computer.choose
     display_moves
+    update_score
     display_winner
     display_score
   end
