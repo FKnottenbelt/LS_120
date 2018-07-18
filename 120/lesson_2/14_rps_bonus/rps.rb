@@ -40,15 +40,6 @@ class Player
   end
 end
 
-class Rule
-  def initialize
-    # not sure what the "state" of a rule object should be
-  end
-end
-
-# not sure where "compare" goes yet
-def compare(move1, move2); end
-
 class Human < Player
   def set_name
     n = ''
@@ -84,11 +75,14 @@ class Computer < Player
 end
 
 class RPSGame
-  attr_accessor :human, :computer
+  attr_accessor :human, :computer, :rounds
+  SCORE = { human: 0, computer: 0}
+  MATCH_ROUNDS = 2
 
   def initialize
     @human = Human.new
     @computer = Computer.new
+    @rounds = []
   end
 
   def display_welcome_message
@@ -97,21 +91,6 @@ class RPSGame
 
   def display_goodbye_message
     puts "Thanks for playing Rock, Paper, Scissors. Goodbye!"
-  end
-
-  def display_moves
-    puts "#{human.name} chose #{human.move}"
-    puts "#{computer.name} chose #{computer.move} "
-  end
-
-  def display_winner
-    if human.move > computer.move
-      puts "#{human.name} won!"
-    elsif human.move < computer.move
-      puts "#{computer.name} won!"
-    else
-      puts "It's a tie!"
-    end
   end
 
   def play_again
@@ -130,15 +109,55 @@ class RPSGame
   def play
     display_welcome_message
 
-    loop do
-      human.choose
-      computer.choose
-      diplay_moves
-      display_winner
-      break unless play_again
+    MATCH_ROUNDS.times do  # change to first to reach!
+      rounds << Round.new(self)
+      rounds.last.play
     end
 
+    #break unless game.play_again
     display_goodbye_message
+  end
+end
+
+class Round
+ SCORE = { human: 0, computer: 0}
+ attr_accessor :round_nr, :human, :computer, :game
+
+  def initialize(game)
+    @game = game
+    @human = game.human
+    @computer = game.computer
+  end
+
+  def display_moves
+    puts "#{human.name} chose #{human.move}"
+    puts "#{computer.name} chose #{computer.move} "
+  end
+
+  def display_winner
+    if human.move > computer.move
+      puts "#{human.name} won!"
+      SCORE[:human] += 1
+    elsif human.move < computer.move
+      puts "#{computer.name} won!"
+      SCORE[:computer] += 1
+    else
+      puts "It's a tie!"
+    end
+  end
+
+  def display_score
+    puts "The score is: #{human.name}: #{SCORE[:human]}" +
+      " - #{computer.name}: #{SCORE[:computer]}"
+      puts
+  end
+
+  def play
+    human.choose
+    computer.choose
+    display_moves
+    display_winner
+    display_score
   end
 end
 
