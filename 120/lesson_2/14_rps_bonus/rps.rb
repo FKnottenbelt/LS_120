@@ -79,17 +79,30 @@ class RPSGame
   WINNING_SCORE = 2
 
   def initialize
+    clear_screen
     @human = Human.new
     @computer = Computer.new
     @rounds = []
+    @score = { human: 0, computer: 0 }
+    @winner = nil
+  end
+
+  def clear_screen
+    system("cls") || system("clear")
   end
 
   def display_welcome_message
-    puts "Welcome to Rock, Paper, Scissors!"
+    puts "Welcome to Rock, Paper, Scissors #{human.name}!"
+    puts "We will play a match where the first one to reach " \
+      "#{WINNING_SCORE} points wins."
   end
 
   def display_goodbye_message
     puts "Thanks for playing Rock, Paper, Scissors. Goodbye!"
+  end
+
+  def display_winner
+    puts "#{self.winner.name} won this match!"
   end
 
   def play_again
@@ -106,7 +119,8 @@ class RPSGame
   end
 
   def setup_new_match
-    self.score = { human: 0, computer: 0, round_winner: nil }
+    clear_screen
+    self.score = { human: 0, computer: 0 }
     self.winner = nil
   end
 
@@ -122,8 +136,8 @@ class RPSGame
   def play
     display_welcome_message
     loop do
-      setup_new_match
       play_round
+      display_winner
       break unless play_again
       setup_new_match
     end
@@ -142,28 +156,30 @@ class Round
   end
 
   def display_moves
+    puts
     puts "#{human.name} chose #{human.move}"
     puts "#{computer.name} chose #{computer.move} "
   end
 
-  def update_score
+  def winner
     if human.move > computer.move
+      human
+    elsif computer.move > human.move
+      computer
+    end
+  end
+
+  def update_score
+    if winner == human
       score[:human] += 1
-      score[:round_winner] = 'human'
-    elsif human.move < computer.move
+    elsif winner == computer
       score[:computer] += 1
-      score[:round_winner] = 'computer'
-    else
-      score[:round_winner] = nil
     end
   end
 
   def display_winner
-    case score[:round_winner]
-    when 'human'
-      puts "#{human.name} won!"
-    when 'computer'
-      puts "#{computer.name} won!"
+    if winner
+      puts "#{winner.name} won!"
     else
       puts "It's a tie!"
     end

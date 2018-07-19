@@ -50,3 +50,7 @@ for each robot. For example, R2D2 can always choose "rock". Or, "Hal"
 can have a very high tendency to choose "scissors", and rarely "rock",
 but never "paper". You can come up with the rules or personalities for
 each robot. How would you approach a feature like this?
+
+# TO DO
+
+- adjust welcome message to match info
