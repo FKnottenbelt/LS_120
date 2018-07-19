@@ -17,6 +17,12 @@ better.
 This is a variation on the normal Rock Paper Scissors game by adding
 two more options - Lizard and Spock. The full explanation and rules
 are here: http://www.samkass.com/theories/RPSSL.html
+```
+scissors cuts paper covers rock crushes
+lizard poisons spock smashes scissors
+decapitates lizard eats paper disproves
+spock vaporizes rock crushes scissors.
+```
 
 # 3 Add a class for each move
 What would happen if we went even further and introduced 5 more
@@ -52,4 +58,6 @@ but never "paper". You can come up with the rules or personalities for
 each robot. How would you approach a feature like this?
 
 # TO DO
-
+- valid choice of move
+- no 2.
+- choose by first letters

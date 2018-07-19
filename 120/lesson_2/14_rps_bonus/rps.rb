@@ -1,35 +1,98 @@
+module Gameable
+  def play_again?
+    answer = ''
+    loop do
+      puts "Would you like to play again? (y/n)"
+      answer = gets.chomp.downcase
+      break if %w[y yeah yes yep n no nope].include?(answer)
+      puts 'Please answer y (yes) or n (no)'
+    end
+    %w[y yeah yes yep].include?(answer)
+  end
+
+  def clear_screen
+    system("cls") || system("clear")
+  end
+end
+
 class Move
   VALUES = ['rock', 'paper', 'scissors']
-  def initialize(value)
-    @value = value
+   # VALUES = ['rock', 'paper', 'scissors', 'lizard', 'spock']
+  #MOVES = [Rock.new, Paper.new, Scissors.new, Lizard.new, Spock.new]
+  # def initialize(value)
+  #   @value = value
+  # end
+
+  def self.make(choice)
+    case choice
+    when 'rock'
+      Rock.new
+    when 'paper'
+      Paper.new
+    when 'scissors'
+      Scissors.new
+    end
+
   end
 
-  def scissors?
-    @value == 'scissors'
-  end
+  # def scissors?
+  #   @value == 'scissors'
+  # end
 
-  def rock?
-    @value == 'rock'
-  end
+  # def rock?
+  #   @value == 'rock'
+  # end
 
-  def paper?
-    @value == 'paper'
-  end
+  # def paper?
+  #   @value == 'paper'
+  # end
 
-  def >(other_move)
-    (rock? && other_move.scissors?) ||
-      (scissors? && other_move.paper?) ||
-      (paper? && other_move.rock?)
-  end
+  # def >(other_move)
+  #   (rock? && other_move.scissors?) ||
+  #     (scissors? && other_move.paper?) ||
+  #     (paper? && other_move.rock?)
+  # end
 
-  def <(other_move)
-    (rock? && other_move.paper?) ||
-      (scissors? && other_move.rock?) ||
-      (paper? && other_move.scissors?)
-  end
+  # def <(other_move)
+  #   (rock? && other_move.paper?) ||
+  #     (scissors? && other_move.rock?) ||
+  #     (paper? && other_move.scissors?)
+  # end
 
   def to_s
     @value
+  end
+end
+
+class Rock < Move
+  attr_reader :name
+  def initialize
+    @name = 'rock'
+  end
+
+  def beats(other)
+    ['scissors', 'lizard'].include?(other.name)
+  end
+end
+
+class Scissors < Move
+  attr_reader :name
+  def initialize
+    @name = 'scissors'
+  end
+
+  def beats(other)
+    ['paper', 'lizard'].include?(other.name)
+  end
+end
+
+class Paper < Move
+  attr_reader :name
+  def initialize
+    @name = 'paper'
+  end
+  def beats(other)
+    ['rock', 'spock'].include?(other.name)
   end
 end
 
@@ -55,12 +118,12 @@ class Human < Player
   def choose
     choice = nil
     loop do
-      puts "Please choose rock, paper, or sissors:"
+      puts "Please choose rock, paper, sissors, lizard or spock:"
       choice = gets.chomp
       break if Move::VALUES.include?(choice)
       puts "Sorry, invalid choice."
     end
-    self.move = Move.new(choice)
+    self.move = Move.make(choice)
   end
 end
 
@@ -70,24 +133,7 @@ class Computer < Player
   end
 
   def choose
-    self.move = Move.new(Move::VALUES.sample)
-  end
-end
-
-module Gameable
-  def play_again?
-    answer = ''
-    loop do
-      puts "Would you like to play again? (y/n)"
-      answer = gets.chomp.downcase
-      break if %w[y yeah yes yep n no nope].include?(answer)
-      puts 'Please answer y (yes) or n (no)'
-    end
-    %w[y yeah yes yep].include?(answer)
-  end
-
-  def clear_screen
-    system("cls") || system("clear")
+   self.move = Move.make(Move::VALUES.sample)
   end
 end
 
@@ -119,19 +165,6 @@ class RPSGame
   def display_winner
     puts "#{self.winner.name} won this match!"
   end
-
-  # def play_again
-  #   answer = nil
-  #   loop do
-  #     puts "Would you like to play again? (y/n)"
-  #     answer = gets.chomp
-  #     break if ['y', 'n'].include? answer.downcase
-  #     puts "Sorry, must be y or n"
-  #   end
-
-  #   return false if answer.downcase == 'n'
-  #   return true if answer.downcase == 'y'
-  # end
 
   def setup_new_match
     clear_screen
@@ -177,9 +210,9 @@ class Round
   end
 
   def winner
-    if human.move > computer.move
+    if human.move.beats computer.move
       human
-    elsif computer.move > human.move
+    elsif computer.move.beats human.move
       computer
     end
   end
