@@ -74,7 +74,26 @@ class Computer < Player
   end
 end
 
+module Gameable
+  def play_again?
+    answer = ''
+    loop do
+      puts "Would you like to play again? (y/n)"
+      answer = gets.chomp.downcase
+      break if %w[y yeah yes yep n no nope].include?(answer)
+      puts 'Please answer y (yes) or n (no)'
+    end
+    %w[y yeah yes yep].include?(answer)
+  end
+
+  def clear_screen
+    system("cls") || system("clear")
+  end
+end
+
 class RPSGame
+  include Gameable
+
   attr_accessor :human, :computer, :rounds, :winner, :score
   WINNING_SCORE = 2
 
@@ -85,10 +104,6 @@ class RPSGame
     @rounds = []
     @score = { human: 0, computer: 0 }
     @winner = nil
-  end
-
-  def clear_screen
-    system("cls") || system("clear")
   end
 
   def display_welcome_message
@@ -105,18 +120,18 @@ class RPSGame
     puts "#{self.winner.name} won this match!"
   end
 
-  def play_again
-    answer = nil
-    loop do
-      puts "Would you like to play again? (y/n)"
-      answer = gets.chomp
-      break if ['y', 'n'].include? answer.downcase
-      puts "Sorry, must be y or n"
-    end
+  # def play_again
+  #   answer = nil
+  #   loop do
+  #     puts "Would you like to play again? (y/n)"
+  #     answer = gets.chomp
+  #     break if ['y', 'n'].include? answer.downcase
+  #     puts "Sorry, must be y or n"
+  #   end
 
-    return false if answer.downcase == 'n'
-    return true if answer.downcase == 'y'
-  end
+  #   return false if answer.downcase == 'n'
+  #   return true if answer.downcase == 'y'
+  # end
 
   def setup_new_match
     clear_screen
@@ -138,7 +153,7 @@ class RPSGame
     loop do
       play_round
       display_winner
-      break unless play_again
+      break unless play_again?
       setup_new_match
     end
     display_goodbye_message
@@ -200,5 +215,7 @@ class Round
     display_score
   end
 end
+
+
 
 RPSGame.new.play

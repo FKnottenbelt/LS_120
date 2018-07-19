@@ -53,4 +53,3 @@ each robot. How would you approach a feature like this?
 
 # TO DO
 
-- adjust welcome message to match info
