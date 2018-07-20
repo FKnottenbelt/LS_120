@@ -17,12 +17,19 @@ end
 
 class Move
   VALUES = ['rock', 'paper', 'scissors', 'lizard', 'spock']
-  #MOVES = [Rock.new, Paper.new, Scissors.new, Lizard.new, Spock.new]
-  # def initialize(value)
-  #   @value = value
-  # end
 
-  def self.make(choice)
+  def options
+    values = VALUES.dup
+    values << values.pop(2).join(' or ')
+    values.join(', ')
+  end
+
+  def valid_move?(choice)
+    VALUES.include?(choice)
+  end
+
+  def make(choice)
+    @value = choice
     case choice
     when 'rock'
       Rock.new
@@ -35,11 +42,6 @@ class Move
     when 'spock'
       Spock.new
     end
-
-  end
-
-  def to_s
-    @value
   end
 end
 
@@ -47,11 +49,19 @@ class Lizard < Move
   def >(other)
     other.class == Spock || other.class == Paper
   end
+
+  def to_s
+    'Lizard'
+  end
 end
 
 class Spock < Move
   def >(other)
     other.class == Scissors || other.class == Rock
+  end
+
+  def to_s
+    'Spock'
   end
 end
 
@@ -59,11 +69,19 @@ class Rock < Move
   def >(other)
     other.class == Scissors || other.class == Lizard
   end
+
+  def to_s
+    'Rock'
+  end
 end
 
 class Scissors < Move
   def >(other)
     other.class == Paper || other.class == Lizard
+  end
+
+  def to_s
+    'Sciccors'
   end
 end
 
@@ -71,13 +89,17 @@ class Paper < Move
   def >(other)
     other.class == Rock || other.class == Spock
   end
-end
 
+  def to_s
+    'Paper'
+  end
+end
 
 class Player
   attr_accessor :move, :name
   def initialize
     set_name
+    @move = Move.new
   end
 end
 
@@ -96,12 +118,12 @@ class Human < Player
   def choose
     choice = nil
     loop do
-      puts "Please choose rock, paper, sissors, lizard or spock:"
+      puts "Please choose #{move.options}: "
       choice = gets.chomp
-      break if Move::VALUES.include?(choice)
+      break if move.valid_move?(choice)
       puts "Sorry, invalid choice."
     end
-    self.move = Move.make(choice)
+    self.move = move.make(choice)
   end
 end
 
@@ -111,7 +133,7 @@ class Computer < Player
   end
 
   def choose
-   self.move = Move.make(Move::VALUES.sample)
+    self.move = move.make(Move::VALUES.sample)
   end
 end
 
@@ -141,7 +163,7 @@ class RPSGame
   end
 
   def display_winner
-    puts "#{self.winner.name} won this match!"
+    puts "#{winner.name} won this match!"
   end
 
   def setup_new_match
@@ -226,7 +248,5 @@ class Round
     display_score
   end
 end
-
-
 
 RPSGame.new.play
