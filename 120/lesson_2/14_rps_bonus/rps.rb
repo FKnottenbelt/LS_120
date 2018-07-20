@@ -16,8 +16,7 @@ module Gameable
 end
 
 class Move
-  VALUES = ['rock', 'paper', 'scissors']
-   # VALUES = ['rock', 'paper', 'scissors', 'lizard', 'spock']
+  VALUES = ['rock', 'paper', 'scissors', 'lizard', 'spock']
   #MOVES = [Rock.new, Paper.new, Scissors.new, Lizard.new, Spock.new]
   # def initialize(value)
   #   @value = value
@@ -31,70 +30,49 @@ class Move
       Paper.new
     when 'scissors'
       Scissors.new
+    when 'lizard'
+      Lizard.new
+    when 'spock'
+      Spock.new
     end
 
   end
-
-  # def scissors?
-  #   @value == 'scissors'
-  # end
-
-  # def rock?
-  #   @value == 'rock'
-  # end
-
-  # def paper?
-  #   @value == 'paper'
-  # end
-
-  # def >(other_move)
-  #   (rock? && other_move.scissors?) ||
-  #     (scissors? && other_move.paper?) ||
-  #     (paper? && other_move.rock?)
-  # end
-
-  # def <(other_move)
-  #   (rock? && other_move.paper?) ||
-  #     (scissors? && other_move.rock?) ||
-  #     (paper? && other_move.scissors?)
-  # end
 
   def to_s
     @value
   end
 end
 
-class Rock < Move
-  attr_reader :name
-  def initialize
-    @name = 'rock'
+class Lizard < Move
+  def >(other)
+    other.class == Spock || other.class == Paper
   end
+end
 
-  def beats(other)
-    ['scissors', 'lizard'].include?(other.name)
+class Spock < Move
+  def >(other)
+    other.class == Scissors || other.class == Rock
+  end
+end
+
+class Rock < Move
+  def >(other)
+    other.class == Scissors || other.class == Lizard
   end
 end
 
 class Scissors < Move
-  attr_reader :name
-  def initialize
-    @name = 'scissors'
-  end
-
-  def beats(other)
-    ['paper', 'lizard'].include?(other.name)
+  def >(other)
+    other.class == Paper || other.class == Lizard
   end
 end
 
 class Paper < Move
-  attr_reader :name
-  def initialize
-    @name = 'paper'
-  end
-  def beats(other)
-    ['rock', 'spock'].include?(other.name)
+  def >(other)
+    other.class == Rock || other.class == Spock
   end
 end
+
 
 class Player
   attr_accessor :move, :name
@@ -210,9 +188,9 @@ class Round
   end
 
   def winner
-    if human.move.beats computer.move
+    if human.move > computer.move
       human
-    elsif computer.move.beats human.move
+    elsif computer.move > human.move
       computer
     end
   end
