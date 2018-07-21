@@ -58,5 +58,5 @@ but never "paper". You can come up with the rules or personalities for
 each robot. How would you approach a feature like this?
 
 # TO DO
-- computer move choices
+
 - choose by first letters

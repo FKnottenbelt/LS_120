@@ -51,15 +51,15 @@ class Move
       Spock.new
     end
   end
+
+  def to_s
+    self.class.to_s
+  end
 end
 
 class Lizard < Move
   def >(other)
     other.class == Spock || other.class == Paper
-  end
-
-  def to_s
-    'Lizard'
   end
 end
 
@@ -67,19 +67,11 @@ class Spock < Move
   def >(other)
     other.class == Scissors || other.class == Rock
   end
-
-  def to_s
-    'Spock'
-  end
 end
 
 class Rock < Move
   def >(other)
     other.class == Scissors || other.class == Lizard
-  end
-
-  def to_s
-    'Rock'
   end
 end
 
@@ -87,19 +79,11 @@ class Scissors < Move
   def >(other)
     other.class == Paper || other.class == Lizard
   end
-
-  def to_s
-    'Sciccors'
-  end
 end
 
 class Paper < Move
   def >(other)
     other.class == Rock || other.class == Spock
-  end
-
-  def to_s
-    'Paper'
   end
 end
 
