@@ -15,17 +15,25 @@ module Gameable
   end
 end
 
+require 'forwardable'
 class Move
-  VALUES = ['rock', 'paper', 'scissors', 'lizard', 'spock']
+  attr_reader :moves
+  extend Forwardable
 
-  def options
-    values = VALUES.dup
+  def_delegator :@moves, :sample, :random
+
+  def initialize
+    @moves = ['rock', 'paper', 'scissors', 'lizard', 'spock']
+  end
+
+  def format_moves
+    values = moves.dup
     values << values.pop(2).join(' or ')
     values.join(', ')
   end
 
   def valid_move?(choice)
-    VALUES.include?(choice)
+    moves.include?(choice)
   end
 
   def make(choice)
@@ -118,7 +126,7 @@ class Human < Player
   def choose
     choice = nil
     loop do
-      puts "Please choose #{move.options}: "
+      puts "Please choose #{move.format_moves}: "
       choice = gets.chomp
       break if move.valid_move?(choice)
       puts "Sorry, invalid choice."
@@ -133,7 +141,7 @@ class Computer < Player
   end
 
   def choose
-    self.move = move.make(Move::VALUES.sample)
+    self.move = move.make(move.random)
   end
 end
 

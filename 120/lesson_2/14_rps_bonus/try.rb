@@ -1,42 +1,104 @@
+require 'forwardable'
+
 class Move
-  VALUES = ['rock', 'paper', 'scissors']
+  attr_reader :moves
+  extend Forwardable
 
-   # VALUES = ['rock', 'paper', 'scissors', 'lizard', 'spock']
-  #MOVES = [Rock.new, Paper.new, Scissors.new, Lizard.new, Spock.new]
+  def_delegator :@moves, :sample, :random
 
-  def self.make(choice)
+
+  def initialize
+  # @moves = ['rock', 'paper', 'scissors', 'lizard', 'spock']
+   @moves = make_moves
+
+   puts "available moves #{@moves}"
+  end
+##########
+  def self.make_moves
+    @make_moves
+  end
+
+  def make_moves
+    self.class.make_moves = 'all'
+    self.class.make_moves
+  end
+
+  def self.make_moves=(n)
+     @make_moves = ObjectSpace.each_object(Class).select { |klass| klass < self }
+  end
+##############
+  def format_moves
+    values = moves.dup
+    values << values.pop(2).join(' or ')
+    values.join(', ')
+  end
+
+  def valid_move?(choice)
+    moves.include?(choice)
+  end
+
+  def make(choice)
+    @value = choice
     case choice
     when 'rock'
-      Rock.new
+      Rock.allocate
     when 'paper'
-      Paper.new
+      Paper.allocate
     when 'scissors'
-      Scissors.new
+      Scissors.allocate
     when 'lizard'
-      Lizard.new
+      Lizard.allocate
     when 'spock'
-      Spock.new
+      Spock.allocate
     end
 
   end
 
-  def self.descendants
-    # The ObjectSpace module contains a number of routines that
-    # interact with the garbage collection facility and allow you
-    # to traverse all living objects with an iterator.
-    # So we get an array of descentants of Move. (as opposed to
-    # ancestors.)
-    ObjectSpace.each_object(Class).select { |klass| klass < self }
-  end
+  # def self.descendants
+  #   p self
+  #   # The ObjectSpace module contains a number of routines that
+  #   # interact with the garbage collection facility and allow you
+  #   # to traverse all living objects with an iterator.
+  #   # So we get an array of descentants of Move. (as opposed to
+  #   # ancestors.)
+  #   ObjectSpace.each_object(Class).select { |klass| klass < self }
+  # end
 
   def to_s
     @value
   end
 end
 
+class Human
+  attr_accessor :move
+  def choose
+    move = Move.new
+    choice = nil
+    loop do
+      puts "Please choose #{move.format_moves}: "
+      choice = gets.chomp
+      break if move.valid_move?(choice)
+      puts "Sorry, invalid choice."
+    end
+   p self.move = move.make(choice)
+  end
+end
+
+class Computer
+    attr_accessor :move
+  def choose
+    move = Move.new
+    p self.move = move.make(move.random)
+  end
+end
+
 class Lizard < Move
   def >(other)
     other.class == Spock || other.class == Paper
+  end
+
+  def to_s
+    'Lizard'
   end
 end
 
@@ -68,8 +130,8 @@ end
 
 #============================
 
-m1 = Move.make('lizard')
-m2 =  Move.make('spock')
+m1 = Move.new.make('lizard')
+m2 =  Move.new.make('spock')
 p m1
 p m2
 
@@ -84,4 +146,11 @@ else
   puts "no m2 beats m1"
 end
 
-p Move.descendants
+#p Move.descendants
+
+# m3 = Move.new
+# m3.options
+bob = Human.new
+bob.choose
+hal = Computer.new
+hal.choose
