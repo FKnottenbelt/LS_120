@@ -27,16 +27,25 @@ class Move
   end
 
   def format_moves
-    values = moves.dup
-    values << values.pop(2).join(' or ')
-    values.join(', ')
+    "(r)ock, (p)aper, (s)cissors, (l)izard or (sp)ock"
   end
 
   def valid_move?(choice)
+    choice = autocomplete_choice(choice) if choice.size <= 2
     moves.include?(choice)
   end
 
+  def autocomplete_choice(choice)
+    full_text = { r: 'rock',
+                  p: 'paper',
+                  s: 'scissors',
+                  sp: 'spock',
+                  l: 'lizard' }
+    full_text[choice.to_sym]
+  end
+
   def make(choice)
+    choice = autocomplete_choice(choice) if choice.size <= 2
     @value = choice
     case choice
     when 'rock'
