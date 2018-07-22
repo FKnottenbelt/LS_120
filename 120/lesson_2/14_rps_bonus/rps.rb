@@ -141,14 +141,13 @@ end
 class RPSGame
   include Gameable
 
-  attr_accessor :human, :computer, :rounds, :winner, :score
+  attr_accessor :human, :computer, :winner, :score
   WINNING_SCORE = 2
 
   def initialize
     clear_screen
     @human = Human.new
     @computer = Computer.new
-    @rounds = []
     @score = { human: 0, computer: 0 }
     @winner = nil
   end
@@ -175,8 +174,7 @@ class RPSGame
 
   def play_round
     until winner
-      rounds << Round.new(self)
-      rounds.last.play
+      Round.new(self).play
       @winner = human if score[:human] == WINNING_SCORE
       @winner = computer if score[:computer] == WINNING_SCORE
     end
