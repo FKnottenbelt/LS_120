@@ -138,10 +138,41 @@ class Computer < Player
   end
 end
 
+class History
+  attr_accessor :history
+  def initialize
+    @history = []
+  end
+
+  def remember(round)
+    old_round = { human: round.human.name,
+                  human_move: round.human.move,
+                  human_score: round.score[:human],
+                  computer: round.computer.name,
+                  computer_move: round.computer.move,
+                  computer_score: round.score[:computer] }
+    @history << old_round
+  end
+
+  def diplay_history
+    puts "Summary of the game:"
+    puts "--------------------"
+    history.each.with_index do |rnd, i|
+        puts "Round #{i + 1}:"
+        puts "#{rnd[:human]} choose #{rnd[:human_move]} and " \
+          "#{rnd[:computer]} choose #{rnd[:computer_move]}."
+        puts "The score was: " \
+          "#{rnd[:human]}: #{rnd[:human_score]}" \
+          " - #{rnd[:computer]}: #{rnd[:computer_score]}"
+        puts
+     end
+  end
+end
+
 class RPSGame
   include Gameable
 
-  attr_accessor :human, :computer, :winner, :score
+  attr_accessor :human, :computer, :winner, :score, :history
   WINNING_SCORE = 2
 
   def initialize
@@ -150,6 +181,7 @@ class RPSGame
     @computer = Computer.new
     @score = { human: 0, computer: 0 }
     @winner = nil
+    @history = History.new
   end
 
   def display_welcome_message
@@ -174,10 +206,13 @@ class RPSGame
 
   def play_round
     until winner
-      Round.new(self).play
+      round = Round.new(self)
+      round.play
       @winner = human if score[:human] == WINNING_SCORE
       @winner = computer if score[:computer] == WINNING_SCORE
+
     end
+    history.diplay_history
   end
 
   def play
@@ -192,14 +227,15 @@ class RPSGame
   end
 end
 
-class Round
-  attr_accessor :human, :computer, :score
+class Round < RPSGame
+  attr_accessor :human, :computer, :score, :history
 
   def initialize(game)
     @game = game
     @human = game.human
     @computer = game.computer
     @score = game.score
+    @history = game.history
   end
 
   def display_moves
@@ -245,6 +281,7 @@ class Round
     update_score
     display_winner
     display_score
+    history.remember(self)
   end
 end
 
