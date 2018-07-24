@@ -31,7 +31,7 @@ class Move
   end
 
   def valid_move?(choice)
-    choice = autocomplete_choice(choice) if choice.size <= 2
+    choice = autocomplete_choice(choice)
     moves.include?(choice)
   end
 
@@ -41,12 +41,11 @@ class Move
                   s: 'scissors',
                   sp: 'spock',
                   l: 'lizard' }
-    full_text[choice.to_sym]
+    choice.size <= 2 ? full_text[choice.to_sym] : choice
   end
 
   def make(choice)
-    choice = autocomplete_choice(choice) if choice.size <= 2
-    @value = choice
+    choice = autocomplete_choice(choice)
     case choice
     when 'rock'
       Rock.new
@@ -63,10 +62,6 @@ class Move
 
   def to_s
     self.class.to_s
-  end
-
-  def >(other)
-    #
   end
 end
 
@@ -162,14 +157,14 @@ class History
     puts "Summary of the game:"
     puts "--------------------"
     history.each.with_index do |rnd, i|
-        puts "Round #{i + 1}:"
-        puts "#{rnd[:human]} choose #{rnd[:human_move]} and " \
-          "#{rnd[:computer]} choose #{rnd[:computer_move]}."
-        puts "The score was: " \
-          "#{rnd[:human]}: #{rnd[:human_score]}" \
-          " - #{rnd[:computer]}: #{rnd[:computer_score]}"
-        puts
-     end
+      puts "Round #{i + 1}:"
+      puts "#{rnd[:human]} choose #{rnd[:human_move]} and " \
+        "#{rnd[:computer]} choose #{rnd[:computer_move]}."
+      puts "The score was: " \
+         "#{rnd[:human]}: #{rnd[:human_score]}" \
+         " - #{rnd[:computer]}: #{rnd[:computer_score]}"
+      puts
+    end
   end
 end
 
@@ -244,6 +239,11 @@ class RPSGame
     self.game_winner = nil
   end
 
+  def declare_game_winner
+    @game_winner = human.name if score[:human] == WINNING_SCORE
+    @game_winner = computer.name if score[:computer] == WINNING_SCORE
+  end
+
   def play_round
     until game_winner
       human.choose
@@ -253,8 +253,7 @@ class RPSGame
       display_winner
       display_score
       history.remember(self)
-      @game_winner = human.name if score[:human] == WINNING_SCORE
-      @game_winner = computer.name if score[:computer] == WINNING_SCORE
+      declare_game_winner
     end
     history.display_history
   end
