@@ -129,11 +129,31 @@ end
 
 class Computer < Player
   def set_name
-    self.name = ['R2D2', 'Hal', 'Chappie', 'Sonny', 'Number 5'].sample
+    self.name = ['Hal', 'Chappie', 'Sonny', 'Number 5'].sample
   end
 
   def choose
     self.move = move.make(move.random)
+  end
+end
+
+class R2D2 < Computer
+  def set_name
+    self.name = 'R2D2'
+  end
+
+  def choose
+    self.move = move.make(['rock', 'scissors'].sample)
+  end
+end
+
+class Number5 < Computer
+  def set_name
+    self.name = 'R2D2'
+  end
+
+  def choose
+    self.move = move.make('spock')
   end
 end
 
@@ -177,7 +197,7 @@ class RPSGame
   def initialize
     clear_screen
     @human = Human.new
-    @computer = Computer.new
+    @computer = [Computer.new, Number5.new, R2D2.new].sample
     @score = { human: 0, computer: 0 }
     @game_winner = nil
     @history = History.new

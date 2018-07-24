@@ -59,4 +59,4 @@ each robot. How would you approach a feature like this?
 
 # TO DO
 
-- choose by first letters
+- check attr_accessor for really needed
