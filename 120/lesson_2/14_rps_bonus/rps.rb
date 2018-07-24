@@ -64,6 +64,10 @@ class Move
   def to_s
     self.class.to_s
   end
+
+  def >(other)
+    #
+  end
 end
 
 class Lizard < Move
@@ -154,7 +158,7 @@ class History
     @history << old_round
   end
 
-  def diplay_history
+  def display_history
     puts "Summary of the game:"
     puts "--------------------"
     history.each.with_index do |rnd, i|
@@ -172,7 +176,7 @@ end
 class RPSGame
   include Gameable
 
-  attr_accessor :human, :computer, :winner, :score, :history
+  attr_accessor :human, :computer, :game_winner, :score, :history
   WINNING_SCORE = 2
 
   def initialize
@@ -180,7 +184,7 @@ class RPSGame
     @human = Human.new
     @computer = Computer.new
     @score = { human: 0, computer: 0 }
-    @winner = nil
+    @game_winner = nil
     @history = History.new
   end
 
@@ -194,70 +198,16 @@ class RPSGame
     puts "Thanks for playing Rock, Paper, Scissors. Goodbye!"
   end
 
-  def display_winner
-    puts "#{winner.name} won this match!"
-  end
-
-  def setup_new_match
-    clear_screen
-    self.score = { human: 0, computer: 0 }
-    self.winner = nil
-  end
-
-  def play_round
-    until winner
-      round = Round.new(self)
-      round.play
-      @winner = human if score[:human] == WINNING_SCORE
-      @winner = computer if score[:computer] == WINNING_SCORE
-
-    end
-    history.diplay_history
-  end
-
-  def play
-    display_welcome_message
-    loop do
-      play_round
-      display_winner
-      break unless play_again?
-      setup_new_match
-    end
-    display_goodbye_message
-  end
-end
-
-class Round < RPSGame
-  attr_accessor :human, :computer, :score, :history
-
-  def initialize(game)
-    @game = game
-    @human = game.human
-    @computer = game.computer
-    @score = game.score
-    @history = game.history
-  end
-
   def display_moves
     puts
     puts "#{human.name} chose #{human.move}"
     puts "#{computer.name} chose #{computer.move} "
   end
 
-  def winner
-    if human.move > computer.move
-      human
-    elsif computer.move > human.move
-      computer
-    end
-  end
-
-  def update_score
-    if winner == human
-      score[:human] += 1
-    elsif winner == computer
-      score[:computer] += 1
-    end
+  def display_score
+    puts "The score is: #{human.name}: #{score[:human]}" \
+      " - #{computer.name}: #{score[:computer]}"
+    puts
   end
 
   def display_winner
@@ -268,20 +218,56 @@ class Round < RPSGame
     end
   end
 
-  def display_score
-    puts "The score is: #{human.name}: #{score[:human]}" \
-      " - #{computer.name}: #{score[:computer]}"
-    puts
+  def winner
+    if human.move > computer.move
+      human
+    elsif computer.move > human.move
+      computer
+    end
+  end
+
+  def display_game_winner
+    puts "#{game_winner} won this match!"
+  end
+
+  def update_score
+    if winner == human
+      score[:human] += 1
+    elsif winner == computer
+      score[:computer] += 1
+    end
+  end
+
+  def setup_new_match
+    clear_screen
+    self.score = { human: 0, computer: 0 }
+    self.game_winner = nil
+  end
+
+  def play_round
+    until game_winner
+      human.choose
+      computer.choose
+      display_moves
+      update_score
+      display_winner
+      display_score
+      history.remember(self)
+      @game_winner = human.name if score[:human] == WINNING_SCORE
+      @game_winner = computer.name if score[:computer] == WINNING_SCORE
+    end
+    history.display_history
   end
 
   def play
-    human.choose
-    computer.choose
-    display_moves
-    update_score
-    display_winner
-    display_score
-    history.remember(self)
+    display_welcome_message
+    loop do
+      play_round
+      display_game_winner
+      break unless play_again?
+      setup_new_match
+    end
+    display_goodbye_message
   end
 end
 
