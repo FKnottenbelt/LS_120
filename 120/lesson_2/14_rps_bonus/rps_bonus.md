@@ -57,6 +57,4 @@ can have a very high tendency to choose "scissors", and rarely "rock",
 but never "paper". You can come up with the rules or personalities for
 each robot. How would you approach a feature like this?
 
-# TO DO
 
-- check attr_accessor for really needed
