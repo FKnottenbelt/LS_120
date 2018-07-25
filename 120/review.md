@@ -99,3 +99,6 @@ A constructor is a special kind of a method. It is automatically called when an 
 
 ## find out how to test user input loops with wrong input
 will have to wait to 130...
+
+## quizz lesson nr 2
+see file: Collaborator object (lesson forum).rb
