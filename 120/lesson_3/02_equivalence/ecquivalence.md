@@ -244,10 +244,17 @@ else
 end
 ```
 
-Behind the scenes, the case statement is using the === method to compare each when clause with num. In this example, the when clauses contain only ranges, so Range#=== is used for each clause. Typically, you do not have to override the default === behavior, as you likely wouldn't use your custom classes in a case statement. It's sometimes useful to remember that === is used for comparison in case statements, though.
+Behind the scenes, the case statement is using the === method to
+compare each when clause with num. In this example, the when clauses
+contain only ranges, so Range#=== is used for each clause. Typically,
+you do not have to override the default === behavior, as you likely
+wouldn't use your custom classes in a case statement. It's sometimes
+useful to remember that === is used for comparison in case statements,
+though.
 
-In order to visualize how the case statement uses ===, consider the following interpretation using an if statement:
-
+In order to visualize how the case statement uses ===, consider the
+following interpretation using an if statement:
+```ruby
 num = 25
 
 if (1..50) === num
@@ -257,46 +264,72 @@ elsif (51..100) === num
 else
   puts "not in range"
 end
-
-In this example, the === method is invoked on a range and passes in the argument num. Now, === doesn't compare two objects the same way that == compares two objects. When === compares two objects, such as (1..50) and 25, it's essentially asking "if (1..50) is a group, would 25 belong in that group?" In this case, the answer is "yes". For further clarification, consider the following code:
-
+```
+In this example, the === method is invoked on a range and passes in
+the argument num. Now, === doesn't compare two objects the same way
+that == compares two objects. When === compares two objects, such
+as (1..50) and 25, it's essentially asking "if (1..50) is a group,
+would 25 belong in that group?" In this case, the answer is "yes".
+For further clarification, consider the following code:
+```
 String === "hello" # => true
 String === 15      # => false
+```
+On line 1, true is returned because "hello" is an instance of String,
+even though "hello" doesn't equal String. Similarly, false is returned
+on line 2 because 15 is an integer, which doesn't equal String and isn't
+an instance of the String class.
 
-On line 1, true is returned because "hello" is an instance of String, even though "hello" doesn't equal String. Similarly, false is returned on line 2 because 15 is an integer, which doesn't equal String and isn't an instance of the String class.
+Sidenote: the === operator in JavaScript is very different from its
+function in Ruby. Do not get the two confused.
 
-Sidenote: the === operator in JavaScript is very different from its function in Ruby. Do not get the two confused.
-eql?
+## eql?
 
-Finally, we get to the last equality comparison method: eql?. The eql? method determines if two objects contain the same value and if they're of the same class. This method is used most often by Hash to determine equality among its members. It's not used very often.
-Summary
+Finally, we get to the last equality comparison method: eql?. The eql?
+method determines if two objects contain the same value and if they're
+of the same class. This method is used most often by Hash to determine
+equality among its members. It's not used very often.
 
-This is probably too much to know about how Ruby handles equality, so we'll try to summarize the important points:
-Most Important
+## Summary
 
-==
+This is probably too much to know about how Ruby handles equality,
+so we'll try to summarize the important points:
 
-    the == operator compares two objects' values, and is frequently used.
-    the == operator is actually a method. Most built-in Ruby classes, like Array, String, Fixnum, etc override the == method to specify how to compare objects of those classes.
-    if you need to compare custom objects, you should override the == method.
-    understanding how this method works is the most important part of this assignment.
+### Most Important
 
-Less Important
+#### == method
 
-equal?
+- the == operator compares two objects' values, and is frequently used.
+- the == operator is actually a method. Most built-in Ruby classes, like
+  Array, String, Fixnum, etc override the == method to specify how to
+  compare objects of those classes.
+- If you need to compare custom objects, you should override the ==
+  method.
+- understanding how this method works is the most important part of this
+  assignment.
 
-    the equal? method goes one level deeper than == and determines whether two variables not only have the same value, but also whether they point to the same object.
-    do not override equal?.
-    the equal? method is not used very often.
-    calling object_id on an object will return the object's unique numerical value. Comparing two objects' object_id has the same effect as comparing them with equal?.
+### Less Important
 
-===
+#### equal?
 
-    used implicitly in case statements.
-    like ==, the === operator is actually a method.
-    you rarely need to call this method explicitly, and only need to implement it in your custom classes if you anticipate your objects will be used in case statements, which is probably pretty rare.
+- the equal? method goes one level deeper than == and determines whether
+  two variables not only have the same value, but also whether they
+  point to the same object.
+- do not override equal?.
+- the equal? method is not used very often.
+- calling object_id on an object will return the object's unique
+  numerical value. Comparing two objects' object_id has the same effect
+  as comparing them with equal?.
 
-eql?
+#### === method
 
-    used implicitly by Hash.
-    very rarely used explicitly.
+- used implicitly in case statements.
+- like ==, the === operator is actually a method.
+- you rarely need to call this method explicitly, and only need to
+  implement it in your custom classes if you anticipate your objects
+  will be used in case statements, which is probably pretty rare.
+
+#### eql?
+
+- used implicitly by Hash.
+- very rarely used explicitly.
