@@ -102,3 +102,8 @@ will have to wait to 130...
 
 ## quizz lesson nr 2
 see file: Collaborator object (lesson forum).rb
+
+## lexical scope?
+http://blog.honeybadger.io/lexical-scoping-and-ruby-class-variables/
+/120/lesson_3/03_variable_scope/variable_scope.md
+
