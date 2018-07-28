@@ -105,5 +105,6 @@ see file: Collaborator object (lesson forum).rb
 
 ## lexical scope?
 http://blog.honeybadger.io/lexical-scoping-and-ruby-class-variables/
-/120/lesson_3/03_variable_scope/variable_scope.md
+/120/lesson_3/03_variable_scope/variable_scope.mdf
+file: lexcical scope (ls forum).rb
 

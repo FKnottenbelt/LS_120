@@ -167,3 +167,68 @@ constants is pretty easy: it's available in class methods or instance methods
 (which implies it's accessible from objects). Where constant resolution gets
 really tricky is when inheritance is involved, and that's when we need to
 remember that unlike other variables, constants have **lexical scope**.
+
+### lexical scope
+lexical scoping refers to grouping things together based on where they
+appear in the code, not on where they belong in an abstract object
+model.(http://blog.honeybadger.io/lexical-scoping-and-ruby-class-variables/)
+
+```ruby
+class B
+  # x and y share the same lexical scope
+  x = 1
+  y = 1
+end
+
+class B
+  # z has a different lexical scope from x and y, even though it's in the same class.
+  z = 3
+end
+```
+
+LS TA:
+Lexical scoping is when you have nested scopes and the child scopes have
+access to the local variables defined in their parent scopes. Methods do
+not have lexical scope in respect to local variables since you cannot
+access local variables defined outside of the method without them being
+passed in.
+
+Example 1:
+```ruby
+a = 12
+
+3.times do |index|
+  puts "#{index} + #{a} = #{index + a}"
+end
+
+# 0 + 12 = 12
+# 1 + 12 = 13
+# 2 + 12 = 14
+```
+`a` being accessible inside of the block scope is an example of lexical
+scoping.
+
+Example 2:
+```ruby
+a = 12
+
+3.times do |index|
+  3.times do |inner_index|
+    puts "#{inner_index} + #{index} + #{a} = #{inner_index + index + a}"
+  end
+end
+
+# 0 + 0 + 12 = 12
+# 1 + 0 + 12 = 13
+# 2 + 0 + 12 = 14
+# 0 + 1 + 12 = 13
+# 1 + 1 + 12 = 14
+# 2 + 1 + 12 = 15
+# 0 + 2 + 12 = 14
+# 1 + 2 + 12 = 15
+# 2 + 2 + 12 = 16
+```
+As you can see, no matter how many scopes we nest, a is available. In
+the nested scope, we also have access to the index variable which was
+defined in its parent scope. The opposite is not true though. You cannot
+access inner_index and index in their parent scopes.
