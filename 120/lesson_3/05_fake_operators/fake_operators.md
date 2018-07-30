@@ -189,3 +189,93 @@ integers are objects of the Fixnum class, they have access to the
 Fixnum instance methods. In the case of 1.+(1), the method we're
 using is Fixnum#+. In ruby, a Fixnum is a specific kind of integer.
 
+Side note: Float and Bignum are the other kinds of numbers. Float
+is used for floating point precision numbers. Bignum is not used
+very often except when you need very large numbers.
+
+So when should we write a + method for our own objects? Let's look
+at the standard library for some inspiration:
+
+- Fixnum#+: increments the value by value of the argument,
+  returning a new integer
+- String#+: concatenates with argument, returning a new string
+- Array#+: concatenates with argument, returning a new array
+- Date#+: increments the date in days by value of the argument,
+  returning a new date
+
+Do you see a pattern? **The functionality of the + should be either
+incrementing or concatenation with the argument.** You are, of
+course, free to implement it however you wish, but it's probably
+a good idea to follow the general usage of the standard libraries.
+Here's an example:
+```ruby
+class Team
+  attr_accessor :name, :members
+
+  def initialize(name)
+    @name = name
+    @members = []
+  end
+
+  def <<(person)
+    members.push person
+  end
+
+  def +(other_team)
+    members + other_team.members
+  end
+end
+
+# we'll use the same Person class from earlier
+
+cowboys = Team.new("Dallas Cowboys")
+cowboys << Person.new("Troy Aikman", 48)
+cowboys << Person.new("Emmitt Smith", 46)
+cowboys << Person.new("Michael Irvin", 49)
+
+niners = Team.new("San Francisco 49ers")
+niners << Person.new("Joe Montana", 59)
+niners << Person.new("Jerry Rice", 52)
+niners << Person.new("Deion Sanders", 47)
+```
+Study the code above -- it's all our set up code. We haven't
+actually used the Team#+ method yet. All we've done so far is
+take a shot at implementing it, then created some objects in
+preparation to use it. Now the question is: how do we use the
+Team#+ method we just wrote?
+
+Let's take a shot.
+```ruby
+dream_team = cowboys + niners               # what is dream_team?
+```
+Remember that cowboys + niners is the same as cowboys.+(niners),
+so in order to understand what that expression returns, we have to
+study Team#+. If we look at the implementation, we can see that
+it returns a new Array object. Therefore, dream_team from the
+above example is an array of Person objects.
+
+Now, that may be what you meant to implement, and from a pure
+technical standpoint, that is perfectly valid. But does that match
+the general pattern we saw from the standard library? No, it
+doesn't. The Fixnum#+ method returns a new Fixnum object; the
+String#+ method returns a new String object; the Date#+ method
+returns a new Date object.
+
+Our Team#+ method should return a new Team object. The
+Team#initialize method, however, requires a name, which makes it
+a little awkward. We could do more refactoring to improve it,
+but that will deviate too much from the main point of this section.
+We'll just initialize the team name to "Temporary Team" for now.
+```ruby
+class Team
+  # ... rest of class omitted for brevity
+
+  def +(other_team)
+    temp_team = Team.new("Temporary Team")
+    temp_team.members = members + other_team.members
+    temp_team
+  end
+end
+```
+Now, dream_team is no longer an array, but a Team object, which
+is what we'd expect when we use Team#+.
