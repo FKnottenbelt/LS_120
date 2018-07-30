@@ -279,3 +279,90 @@ end
 ```
 Now, dream_team is no longer an array, but a Team object, which
 is what we'd expect when we use Team#+.
+
+# Element setter and getter methods
+
+At this point, you've likely used element setter and getter
+methods a lot already, probably mostly by way of working with
+arrays. Out of all the fake operators, perhaps `[]` and `[]=` are
+the most surprising. Part of the reason is because the syntactical
+sugar given to these two methods is so extreme. For example:
+```ruby
+my_array = %w(first second third fourth) # ["first", "second", "third", "fourth"]
+
+# element reference
+my_array[2]                                 # => "third"
+my_array.[](2)                              # => "third"
+```
+The above two examples of using `Array#[]` to reference an element
+are identical, yet they look dramatically different. How did the
+2 get in between the square brackets? That's Ruby giving us a nice
+syntax.
+
+But Ruby goes even one step farther for `Array#[]=`.
+```ruby
+# element assignment
+my_array[4] = "fifth"
+puts my_array.inspect   # => ["first", "second", "third", "fourth",
+                        #     "fifth"]
+
+my_array.[]=(5, "sixth")
+puts my_array.inspect   # => ["first", "second", "third", "fourth",
+                        #     "fifth", "sixth"]
+```
+I think we can agree that the my_array[4] = "fifth" syntax reads
+much more naturally, but this syntax manipulation is also why
+sometimes it's hard to understand where certain code comes from.
+
+If we want to use the element setter and getter methods in our
+class, we first have to make sure we're working with a class that
+represents a collection. Again, these are normal instance methods
+, so we can make them do anything. But let's follow the lead of
+the Ruby standard library, and build them as simple getter
+(reference) and setter (assignment) methods for elements in our
+collection.
+
+```ruby
+class Team
+  # ... rest of code omitted for brevity
+
+  def [](idx)
+    members[idx]
+  end
+
+  def []=(idx, obj)
+    members[idx] = obj
+  end
+end
+```
+Here, we're just taking advantage of the fact that @members is
+an array, so we can push the real work to the Array#[] and
+Array#[]= methods. After writing these two methods, we can:
+```ruby
+# assume set up from earlier
+cowboys.members                # => ... array of 3 Person objects
+
+cowboys[1]                     # => #<Person:0x007fae9295d830
+                               #    @name="Emmitt Smith", @age=46>
+cowboys[3] = Person.new("JJ", 72)
+cowboys[3]                     # => #<Person:0x007fae9220fa88
+                               #      @name="JJ", @age=72>
+```
+Notice that we can now do both element reference and assignment
+using Team#[] and Team#[]=, respectively. This syntactical sugar
+adds a new readability aspect to our code.
+
+## Summary
+
+In this assignment, we saw how many operators are in fact methods
+that Ruby gives special treatment to. Because they are methods,
+we can implement them in our classes and take advantage of the
+special syntax for our own objects. If we do that, we must be
+careful to follow conventions established in the Ruby standard
+library. Otherwise, using those methods will be very confusing.
+
+The most important thing for now is being able to read Ruby code.
+Learning how to write your own fake operators will take more time,
+but the goal right now is to alleviate confusion about why you
+see certain syntax, but can't understand what's happening.
+Hopefully this assignment shed some light on that.
