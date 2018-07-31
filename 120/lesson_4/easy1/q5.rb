@@ -33,5 +33,9 @@ orange    = Fruit.new("apple")
 
 p hot_pizza.instance_variables
 p orange.instance_variables
+# [:@name]
+# []
+
+
 # A
 # Pizza, because it has a @
