@@ -112,3 +112,9 @@ file: lexcical scope (ls forum).rb
 
 ## benefits of using Object Oriented Programming in Ruby
 lesson 4, easy 2, q10
+
+## talking about code
+~/120/lesson_4/easy3/q1.rb
+~/120/lesson_4/easy2/q7.rb
+~/120/lesson_4/easy2/q3.rb
+~/120/lesson_4/easy2/q1.rb
