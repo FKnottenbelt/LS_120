@@ -109,3 +109,6 @@ http://blog.honeybadger.io/lexical-scoping-and-ruby-class-variables/
 file: lexcical scope (ls forum).rb
 
 ## quizz lesson nr 3
+
+## benefits of using Object Oriented Programming in Ruby
+lesson 4, easy 2, q10
