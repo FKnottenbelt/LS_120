@@ -30,3 +30,9 @@ class Cat
     @age += 1
   end
 end
+
+# ls
+=begin
+This means in this case self and @ are the same thing and
+can be used interchangeably.
+=end
