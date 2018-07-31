@@ -118,3 +118,6 @@ lesson 4, easy 2, q10
 ~/120/lesson_4/easy2/q7.rb
 ~/120/lesson_4/easy2/q3.rb
 ~/120/lesson_4/easy2/q1.rb
+
+#
+/120/lesson_4/easy3/q2.rb
