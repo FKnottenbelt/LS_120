@@ -125,3 +125,4 @@ lesson 4, easy 2, q10
 
 #
 /120/lesson_4/easy3/q2.rb
+/120/lesson_4/medium1/q5.rb
