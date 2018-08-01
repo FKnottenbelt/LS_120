@@ -90,6 +90,7 @@ A constructor is a special kind of a method. It is automatically called when an 
 
 ## Privacy
 120/small_problems/07_medium1/01_privacy.rb
+120/lesson_4/medium1/q3.rb
 
 ## Fixed Array
 120/small_problems/07_medium1/02_fixed_array.rb
