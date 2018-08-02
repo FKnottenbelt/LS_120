@@ -175,6 +175,8 @@ game = TTTGame.new
 game.play
 
 Watch and type along with the below videos.
+note: work from the play method one step at a time, just
+enough to get that method working.
 
 ### Step 1 - Display a board
 make your square 5 spaces wide and 3 high
@@ -186,7 +188,8 @@ by being lazy:
    @squares = {}
   (1..9).each { |key| @squares[key] = Square.new(INITIAL_MARKER) }
 
-Step 3 - Human moves
+### Step 3 - Human moves
+
 Step 4 - Computer moves
 Step 5 - Take turns
 Step 6 - Break when board is full
