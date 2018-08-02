@@ -176,11 +176,16 @@ game.play
 
 Watch and type along with the below videos.
 
-Step 1 - Display a board
+### Step 1 - Display a board
 make your square 5 spaces wide and 3 high
 move your X onto 3rd space
 
-Step 2 - Setup Board and Square classes
+### Step 2 - Setup Board and Square classes
+fill in your hash ( { 1 => Square.new(' '), etc} )
+by being lazy:
+   @squares = {}
+  (1..9).each { |key| @squares[key] = Square.new(INITIAL_MARKER) }
+
 Step 3 - Human moves
 Step 4 - Computer moves
 Step 5 - Take turns
