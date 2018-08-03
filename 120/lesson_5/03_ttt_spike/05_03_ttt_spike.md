@@ -192,10 +192,9 @@ by being lazy:
 use break and commenting out the not yet build methods to
 move through your programm under construction
 
-### Step 4 - Computer moves
-nb: to do computer can override human move...
+### Step 4 - Computer moves.
 
-Step 5 - Take turns
+### Step 5 - Take turns
 Step 6 - Break when board is full
 Step 7 - Detect winner
 Step 8 - Refactor detect_winner
