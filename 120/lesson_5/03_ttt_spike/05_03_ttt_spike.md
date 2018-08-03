@@ -203,7 +203,8 @@ state of the game.
 (display results now just gives the display board and the message
 that the board is full.)
 
-Step 7 - Detect winner
+### Step 7 - Detect winner
+
 Step 8 - Refactor detect_winner
 Step 9 - Play again
 At about 08:12 into this video, the instructor enters a
