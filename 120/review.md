@@ -129,3 +129,7 @@ lesson 4, easy 2, q10
 /120/lesson_4/hard1/q2.rb
 /120/lesson_4/hard1/q3.rb
 /120/lesson_4/hard1/q4.rb
+
+# ruby tricky code
+05_03_ttt_spike.md step 8
+make into a Anki card?

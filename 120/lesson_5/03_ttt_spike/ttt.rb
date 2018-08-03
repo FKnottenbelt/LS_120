@@ -29,16 +29,21 @@ class Board
     !!detect_winner
   end
 
+  def count_human_marker(squares)
+    squares.map(&:marker).count(TTTGame::HUMAN_MARKER)
+  end
+
+  def count_computer_marker(squares)
+    squares.map(&:marker).count(TTTGame::COMPUTER_MARKER)
+  end
+
   def detect_winner
     WINNING_LINES.each do |line|
-      if @squares[line[0]].marker == TTTGame::HUMAN_MARKER &&
-         @squares[line[1]].marker == TTTGame::HUMAN_MARKER &&
-         @squares[line[2]].marker == TTTGame::HUMAN_MARKER
-            return TTTGame::HUMAN_MARKER
-      elsif @squares[line[0]].marker == TTTGame::COMPUTER_MARKER &&
-            @squares[line[1]].marker == TTTGame::COMPUTER_MARKER &&
-            @squares[line[2]].marker == TTTGame::COMPUTER_MARKER
-              return TTTGame::COMPUTER_MARKER
+      selection = @squares.values_at(*line)
+      if count_human_marker(selection) == 3
+        return TTTGame::HUMAN_MARKER
+      elsif count_computer_marker(selection) == 3
+        return TTTGame::COMPUTER_MARKER
       end
     end
     nil
