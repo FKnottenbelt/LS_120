@@ -195,7 +195,14 @@ move through your programm under construction
 ### Step 4 - Computer moves.
 
 ### Step 5 - Take turns
-Step 6 - Break when board is full
+refactor as you go
+
+### Step 6 - Break when board is full
+have every thing, like your messages, reflect the current
+state of the game.
+(display results now just gives the display board and the message
+that the board is full.)
+
 Step 7 - Detect winner
 Step 8 - Refactor detect_winner
 Step 9 - Play again
