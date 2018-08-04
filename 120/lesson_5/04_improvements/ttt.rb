@@ -105,8 +105,8 @@ class TTTGame
     system("cls") || system("clear")
   end
   # rubocop: disable Metrics/AbcSize
-  def display_board(clear = true)
-    clear_screen if clear
+  def display_board(options = { clear_screen: true })
+    clear_screen if options[:clear_screen]
     puts "You are a #{human.marker}. Computer is #{computer.marker}."
     puts ""
     puts "     |     |"
@@ -170,7 +170,7 @@ class TTTGame
     display_welcome_message
 
     loop do
-      display_board(false)
+      display_board(clear_screen: false)
 
       loop do
         human_moves
