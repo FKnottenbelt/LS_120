@@ -104,9 +104,14 @@ class TTTGame
   def clear_screen
     system("cls") || system("clear")
   end
+
+  def clear_screen_and_display_board
+    clear_screen
+    display_board
+  end
+
   # rubocop: disable Metrics/AbcSize
-  def display_board(options = { clear_screen: true })
-    clear_screen if options[:clear_screen]
+  def display_board
     puts "You are a #{human.marker}. Computer is #{computer.marker}."
     puts ""
     puts "     |     |"
@@ -143,7 +148,7 @@ class TTTGame
   end
 
   def display_result
-    display_board
+    clear_screen_and_display_board
     case board.detect_winner
     when human.marker
       puts "You won"
@@ -170,7 +175,7 @@ class TTTGame
     display_welcome_message
 
     loop do
-      display_board(clear_screen: false)
+      display_board
 
       loop do
         human_moves
@@ -178,7 +183,7 @@ class TTTGame
 
         computer_moves
         break if board.someone_won? || board.full?
-        display_board
+        clear_screen_and_display_board
       end
       display_result
       break unless play_again?

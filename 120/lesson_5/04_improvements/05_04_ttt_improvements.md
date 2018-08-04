@@ -77,3 +77,35 @@ display_board(a: 1, b: 2) |	same effect as above, except the options hash will n
 Now that we can call display_board(clear_screen: false), we stand
 a much better chance at remembering what this method does in the
 future. The code is almost self documenting.
+
+## - 3 clear_screen_and_display_board.
+Though an improvement, the necessity to even pass in a qualifier
+to the display_board method points to a deeper problem. The method
+doesn't take a large number of options; it just takes 1 option.
+That option serves as a fork in the method: one fork clears the
+screen, then displays the board, while the other fork just displays
+the board. Let's create two methods: display_board and
+clear_screen_and_display_board. The former only displays the
+board, while the latter clears the screen first.
+
+##### possible solution:
+```ruby
+def clear_screen_and_display_board
+  clear
+  display_board
+end
+
+def display_board
+  # only code to display the board
+end
+```
+
+We also have to replace all previous calls to display_board
+with clear_screen_and_display_board. And finally, we have to
+replace display_board(clear_screen: false) with our new
+display_board.
+
+Now, all the methods are named appropriately, and we can invoke
+them without having to refer to their implementation. Even six
+months from now.
+
