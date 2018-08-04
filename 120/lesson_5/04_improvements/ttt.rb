@@ -52,6 +52,26 @@ class Board
   def reset
     (1..9).each { |key| @squares[key] = Square.new }
   end
+
+  # rubocop: disable Metrics/AbcSize
+  def draw
+    puts "     |     |"
+    puts "  #{board.get_square_at(1)}  |  #{board.get_square_at(2)}  |" +
+         "  #{board.get_square_at(3)}"
+    puts "     |     |"
+    puts "-----+-----+-----"
+    puts "     |     |"
+    puts "  #{board.get_square_at(4)}  |  #{board.get_square_at(5)}  |" +
+         "  #{board.get_square_at(6)}"
+    puts "     |     |"
+    puts "-----+-----+-----"
+    puts "     |     |"
+    puts "  #{board.get_square_at(7)}  |  #{board.get_square_at(8)}  |" +
+         "  #{board.get_square_at(9)}"
+    puts "     |     |"
+  end
+  # rubocop: enable Metrics/AbcSize
+
 end
 
 class Square
@@ -110,27 +130,14 @@ class TTTGame
     display_board
   end
 
-  # rubocop: disable Metrics/AbcSize
+
   def display_board
     puts "You are a #{human.marker}. Computer is #{computer.marker}."
     puts ""
-    puts "     |     |"
-    puts "  #{board.get_square_at(1)}  |  #{board.get_square_at(2)}  |" +
-         "  #{board.get_square_at(3)}"
-    puts "     |     |"
-    puts "-----+-----+-----"
-    puts "     |     |"
-    puts "  #{board.get_square_at(4)}  |  #{board.get_square_at(5)}  |" +
-         "  #{board.get_square_at(6)}"
-    puts "     |     |"
-    puts "-----+-----+-----"
-    puts "     |     |"
-    puts "  #{board.get_square_at(7)}  |  #{board.get_square_at(8)}  |" +
-         "  #{board.get_square_at(9)}"
-    puts "     |     |"
+    board.draw
     puts ""
   end
-  # rubocop: enable Metrics/AbcSize
+
 
   def human_moves
     puts "Choose a square (#{board.unmarked_keys.join(', ')}): "

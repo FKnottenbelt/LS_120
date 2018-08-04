@@ -205,3 +205,66 @@ def play
   display_goodbye_message
 end
 ```
+## 6 - Board#draw
+As we glance down the list of methods, it's surprising that
+we display the board in the TTTGame class. That seems like a
+responsibility of the Board class. We should be able to tell
+the board to "display yourself". Let's move the logic from
+display_board to Board#draw. We'll still keep the
+TTTGame#display_board method, though, because the TTTGame
+needs to tweak the output a little (eg, the marker prompt
+at the top, and the padding.)
+
+##### possible solution:
+```ruby
+class Board
+  # ... rest of class omitted for brevity
+
+  def draw
+    puts "     |     |"
+    puts "  #{get_square_at(1)}  |  #{get_square_at(2)}  |  #{get_square_at(3)}"
+    puts "     |     |"
+    puts "-----+-----+-----"
+    puts "     |     |"
+    puts "  #{get_square_at(4)}  |  #{get_square_at(5)}  |  #{get_square_at(6)}"
+    puts "     |     |"
+    puts "-----+-----+-----"
+    puts "     |     |"
+    puts "  #{get_square_at(7)}  |  #{get_square_at(8)}  |  #{get_square_at(9)}"
+    puts "     |     |"
+  end
+end
+```
+Notice that the Board#draw method above won't contain any of the
+extra messages. Instead, we'll leave that in the original
+TTTGame#display_board method, which is below.
+
+```ruby
+class TTTGame
+  # ... rest of class omitted for brevity
+
+  def display_board
+    puts "You're a #{human.marker}. Computer is a #{computer.marker}."
+    puts ""
+    board.draw
+    puts ""
+  end
+end
+```
+
+Now, the TTTGame#display_board just calls Board#draw. Why did we
+only move the board output to the Board#draw method, and not the
+extra information about the player and computer marker, and the
+extra puts "" before and after the display of the board? The answer
+has to do with organizing the code.
+
+Board#draw shouldn't know anything about player markers or extra
+padding. It should only be concerned with one thing: drawing the
+state of the board. You can almost think of this as the board's
+to_s method. It should be generic so that it can be used in a
+variety of yet unanticipated situations.
+
+TTTGame#display_board is where we're organizing all concerns
+related to presentation of the board in the Tic Tac Toe game
+flow. It's here that we know exactly what extra information we
+want in the context of a game.
