@@ -118,3 +118,90 @@ rename it to reflect what it does: winning_marker. This new name
 reminds us that the method will return the winning marker, or
 nil in the case of no winning marker. After you change the method
 definition, don't forget to also update all method invocations.
+
+## 5 - TTTGame#reset
+Our TTTGame#play method reads very well. Most methods there are
+declarative. That is, we are just giving high level commands,
+like "display_board", "human_moves", and we're not focused on
+the imperative step-by-step instructions of how to do those
+things. Operating at this higher level of abstraction allows us
+to orchestrate the sequence of actions and organize the game
+flow much easier. However, we deviate a bit towards the end of
+the method after play_again?.
+
+For example, the below code after play_again? is very imperative
+in nature
+```ruby
+def play
+  # ... rest of method omitted for brevity
+
+  break unless play_again?
+  board.reset
+  clear
+  puts "Let's play again!"
+  puts ""
+end
+```
+
+We should extract it to a well-named method to keep the
+TTTGame#play method at a declarative level. Let's move all of
+that into a method called TTTGame#reset.
+
+##### possible solution:
+Implementing this method is as simple as copying pasting the
+imperative part over to the new method.
+```ruby
+def reset
+  board.reset
+  clear
+  puts "Let's play again!"
+  puts ""
+end
+```
+
+This definitely works, but the reset method feels like it's
+doing a bit too much: it's affecting a change (resetting the
+board), as well as printing out some output. Let's move the two
+puts lines into another method.
+
+```ruby
+def reset
+  board.reset
+  clear
+end
+
+def display_play_again_message
+  puts "Let's play again!"
+  puts ""
+end
+```
+
+Now, if we invoke the above two methods, our TTTGame#play method
+reads very fluidly. It's almost like reading natural English.
+
+```ruby
+def play
+  clear
+  display_welcome_message
+
+  loop do
+    display_board
+
+    loop do
+      human_moves
+      break if board.someone_won? || board.full?
+
+      computer_moves
+      break if board.someone_won? || board.full?
+
+      clear_screen_and_display_board
+    end
+    display_result
+    break unless play_again?
+    reset
+    display_play_again_message
+  end
+
+  display_goodbye_message
+end
+```
