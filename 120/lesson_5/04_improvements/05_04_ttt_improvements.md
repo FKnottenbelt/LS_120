@@ -318,3 +318,44 @@ class Board
   end
 end
 ```
+
+## 8 - Board#[]=
+Though we no longer need the Board#get_square_at method, we still
+need the Board#set_square_at method. This is the method that gets
+invoked when either the human or the computer makes their move.
+The method, though, is a little clunky. Let's make it more
+idiomatic Ruby. Instead of calling this:
+`board.set_square_at(square, human.marker)`, let's update the board
+like this: `board[square] = human.marker`. That reads a lot better.
+
+##### possible solution:
+Recall from the "Fake Operators" assignment that we can facilitate
+the desired syntax by creating a Board#[]= method.
+
+```ruby
+class Board
+  # ... rest of class omitted for brevity
+
+   def []=(num, marker)
+    @squares[num].marker = marker
+  end
+end
+```
+
+Ruby sees the []= method and allows us to invoke it with a special
+syntax that resembles assignment. The result is code that reads
+more more fluidly (but more confusing for the beginner).
+
+We can now delete Board#set_squares_at, and change all its
+invocations with Board#[]=.
+
+so `board.set_square_at(square, human.marker)` becomes
+`board[square] = human.marker`
+and `board.set_square_at(board.unmarked_keys.sample,`
+`computer.marker)` becomes `board[board.unmarked_keys.sample]`
+`= computer.marker`
+so: board[num]=marker
+
+Note that if we ever need a getter method for the marker of a
+square, we can create a Board#[] method, which reads better than
+our old Board#get_square_at.
