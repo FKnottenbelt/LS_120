@@ -6,7 +6,7 @@ class Board
 
   def initialize
     @squares = {}
-    (1..9).each { |key| @squares[key] = Square.new }
+    reset
   end
 
   def get_square_at(key)
@@ -47,6 +47,10 @@ class Board
       end
     end
     nil
+  end
+
+  def reset
+    (1..9).each { |key| @squares[key] = Square.new }
   end
 end
 
@@ -101,8 +105,8 @@ class TTTGame
     system("cls") || system("clear")
   end
   # rubocop: disable Metrics/AbcSize
-  def display_board
-    clear_screen
+  def display_board(clear = true)
+    clear_screen if clear
     puts "You are a #{human.marker}. Computer is #{computer.marker}."
     puts ""
     puts "     |     |"
@@ -150,18 +154,40 @@ class TTTGame
     end
   end
 
-  def play
-    display_welcome_message
-    display_board
+  def play_again?
+    answer = nil
     loop do
-      human_moves
-      break if board.someone_won? || board.full?
-
-      computer_moves
-      break if board.someone_won? || board.full?
-      display_board
+      puts "Would you like to play again (y/n)"
+      answer = gets.chomp.downcase
+      break if %w(y n).include? answer
+      puts "Sorry, must be y or n"
     end
-    display_result
+    answer == 'y'
+  end
+
+  def play
+    clear_screen
+    display_welcome_message
+
+    loop do
+      display_board(false)
+
+      loop do
+        human_moves
+        break if board.someone_won? || board.full?
+
+        computer_moves
+        break if board.someone_won? || board.full?
+        display_board
+      end
+      display_result
+      break unless play_again?
+      board.reset
+      clear_screen
+      puts "Let's play again."
+      puts
+    end
+
     display_goodbye_message
   end
 end

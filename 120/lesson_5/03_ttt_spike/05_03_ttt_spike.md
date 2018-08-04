@@ -205,7 +205,7 @@ that the board is full.)
 
 ### Step 7 - Detect winner
 
-# Step 8 - Refactor detect_winner
+### Step 8 - Refactor detect_winner
 use the 'write it in methods you wished exsisted' method to
 refactor messy code
 
@@ -253,9 +253,7 @@ so `squares.map(&:marker)` gives: `["X", "O", "X"]`
 and adding count gives how many X'es:
 `squares.map(&:marker).count(TTTGame::HUMAN_MARKER`) gives `2`
 
-
-
-Step 9 - Play again
+### Step 9 - Play again
 At about 08:12 into this video, the instructor enters a
 system 'clear' statement after display_welcome_message. The
 order of these two statements should be reversed: the
