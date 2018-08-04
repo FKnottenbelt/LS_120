@@ -268,3 +268,53 @@ TTTGame#display_board is where we're organizing all concerns
 related to presentation of the board in the Tic Tac Toe game
 flow. It's here that we know exactly what extra information we
 want in the context of a game.
+
+## 7 - calling @squares directly
+After the changes in the previous step, we are now calling
+Board#get_square_at from the Board#draw method. Since Board#draw
+is an instance method, it has access to the @squares hash directly.
+Should Board#draw use get_square_at or interrogate @squares
+directly?
+
+##### possible solution:
+There's no definite rule for this, but if your class has getter
+and setter methods, you should probably use them. There are times
+to avoid the getter/setter methods, such as when those methods do
+some pre or post processing, and you wish to only work with the
+raw data in the instance variable.
+
+If your objects do not need to expose their internal instance
+variables to the outside, then you don't need getter or setter
+methods at all. In those situations, you can also access the
+instance variables directly. Note: this is only talking about
+referencing instance variables in the same class; this is not
+talking about reaching into an object from the outside and
+accessing or modifying its instance variables.
+
+In our situation, we no longer need the Board#get_square_at
+method at all, since the only place we used it was rendering
+of the board. Now that the board rendering code has been moved
+to Board#draw, we can remove the Board#get_square_at method
+altogether; there's no need for that method anymore.
+
+This implies that we can reference the @squares instance variable
+directly from Board#draw.
+```ruby
+class Board
+  # ... rest of class omitted for brevity
+
+  def draw
+    puts "     |     |"
+    puts "  #{@squares[1]}  |  #{@squares[2]}  |  #{@squares[3]}"
+    puts "     |     |"
+    puts "-----+-----+-----"
+    puts "     |     |"
+    puts "  #{@squares[4]}  |  #{@squares[5]}  |  #{@squares[6]}"
+    puts "     |     |"
+    puts "-----+-----+-----"
+    puts "     |     |"
+    puts "  #{@squares[7]}  |  #{@squares[8]}  |  #{@squares[9]}"
+    puts "     |     |"
+  end
+end
+```
