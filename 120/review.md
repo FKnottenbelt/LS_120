@@ -132,3 +132,7 @@ lesson 4, easy 2, q10
 
 # ruby tricky code
 05_03_ttt_spike.md step 8
+
+# namespaces
+see 05_05 point 3. Find out more. (example?)
+
