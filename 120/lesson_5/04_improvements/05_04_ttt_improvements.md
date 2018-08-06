@@ -453,6 +453,154 @@ update, we did not change the input or return values of the
 method at all, thereby saving us from having to make any
 changes to methods that rely on winning_marker, such as
 someone_won?. Our Board class now feels much cleaner and more
-general purpose. It's aware of generic board-related behaviors
-, and can return the winning marker, without mind to which
+general purpose. It's aware of generic board-related behaviors,
+and can return the winning marker, without mind to which
 exact marker it is.
+
+## 10 - current_player
+Our code is looking good, but there's a little bit of redundant
+code in the main game loop. The code below has a pattern that
+seems ripe for extraction, can you see it?
+```ruby
+loop do
+  human_moves
+  break if board.someone_won? || board.full?
+
+  computer_moves
+  break if board.someone_won? || board.full?
+
+  clear_screen_and_display_board
+end
+```
+
+It'd be nice to be able to introduce some notion of a
+"current player", and we could then remove the redundancy,
+like this:
+```ruby
+loop do
+  current_player_moves
+  break if board.someone_won? || board.full?
+  clear_screen_and_display_board if human_turn?
+end
+```
+
+The trick is to alternate the "current player" after each turn.
+How can we do this?
+
+##### possible solution:
+The first change we'll make is to introduce a new "state" in
+the game to keep track of who the current player is.
+
+```ruby
+class TTTGame
+  # ... rest of class omitted for brevity
+
+  def initialize
+    @board = Board.new
+    @human = Player.new(HUMAN_MARKER)
+    @computer = Player.new(COMPUTER_MARKER)
+    @current_marker = HUMAN_MARKER
+  end
+end
+```
+Notice that we're calling the new state @current_marker. Since we
+already have two constants HUMAN_MARKER and COMPUTER_MARKER that
+differentiates between the two players, we can piggyback on that
+to determine who the current player is. If we keep track of the
+current marker, we should be able to decide who should take the
+next move.
+
+Next, let's implement the current_player_moves method. This method
+will just inspect the @current_marker instance variable and call
+either human_moves or computer_moves.
+
+```ruby
+def current_player_moves
+  if @current_marker == HUMAN_MARKER
+    human_moves
+  else
+    computer_moves
+  end
+end
+```
+That looks reasonable enough. If it's currently the human's turn,
+call human_moves, otherwise call computer_moves. Next is the
+tricky part: don't forget to alternate the player!
+
+We can actually do this right in the same method, like this:
+```ruby
+def current_player_moves
+  if @current_marker == HUMAN_MARKER
+    human_moves
+    @current_marker = COMPUTER_MARKER
+  else
+    computer_moves
+    @current_marker = HUMAN_MARKER
+  end
+end
+```
+This will ensure that after the move has been executed, the
+@current_marker state is set to the other player.
+
+Next, let's implement the human_turn? method. We only want to
+print the board and clear the screen when it's the player's turn.
+Otherwise we'll get extra unneeded output.
+```ruby
+def human_turn?
+  @current_marker == HUMAN_MARKER
+end
+```
+Now that we have this method, we can also utilize it in our
+current_player_moves method as well.
+```ruby
+def current_player_moves
+  if human_turn?
+    human_moves
+    @current_marker = COMPUTER_MARKER
+  else
+    computer_moves
+    @current_marker = HUMAN_MARKER
+  end
+end
+```
+The last thing we need to do is make sure to reset the
+@current_marker to whoever the first player is after the game
+is over. Otherwise, the current player may not be consistent
+if we play again.
+```ruby
+def reset
+  board.reset
+  @current_marker = HUMAN_MARKER
+  clear
+end
+```
+Now this introduces a minor potential problem. Suppose we wanted
+to allow the computer to move first. If you didn't know the code
+well (or let's say you come back to it six months later), you
+might think that changing the @current_marker in the
+TTTGame#initialize method was enough. But it's very likely that
+you'd forget about the need to also make the same update in the
+TTTGame#reset method.
+
+Let's fix this by creating a new constant called FIRST_TO_MOVE
+and set that to HUMAN_MARKER. Then, in the initialize and reset
+methods, we'll set @current_marker to FIRST_TO_MOVE.
+```ruby
+class TTTGame
+  # ... rest of class omitted for brevity
+
+  FIRST_TO_MOVE = HUMAN_MARKER
+
+  def initialize
+    # ...
+    @current_marker = FIRST_TO_MOVE
+  end
+
+  def reset
+    # ...
+    @current_marker = FIRST_TO_MOVE
+  end
+end
+```
+Now, if you want the computer to move first, just change
+FIRST_TO_MOVE!
