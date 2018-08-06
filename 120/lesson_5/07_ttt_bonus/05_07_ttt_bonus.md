@@ -55,7 +55,10 @@ Then, you could use it in the game like this:
 prompt "Choose a position to place a piece:
 #{joinor(empty_squares(brd), ', ')}"
 ```
-
+### 2- Keep score
+Keep score of how many times the player and computer each win.
+Don't use global or constant variables. Make it so that the first
+player to 5 wins the game.
 
 
 

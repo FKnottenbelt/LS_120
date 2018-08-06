@@ -1,3 +1,25 @@
+module Gameable
+  def play_again?
+    answer = ''
+    loop do
+      puts "Would you like to play again? (y/n)"
+      answer = gets.chomp.downcase
+      break if %w[y yeah yes yep n no nope].include?(answer)
+      puts 'Please answer y (yes) or n (no)'
+    end
+    %w[y yeah yes yep].include?(answer)
+  end
+
+  def clear_screen
+    system("cls") || system("clear")
+  end
+
+  def joiner(arr, delimiter=', ', word='or')
+    arr << arr.pop(2).join(' ' + word + ' ')
+    arr.join(delimiter)
+  end
+end
+
 class Board
   WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] + # rows
                   [[1, 4, 7], [2, 5, 8], [3, 6, 9]] + # cols
@@ -97,29 +119,39 @@ class TTTGame
   HUMAN_MARKER = "X"
   COMPUTER_MARKER = "O"
   FIRST_TO_MOVE = HUMAN_MARKER
+  WINNING_SCORE = 2
 
-  attr_reader :board, :human, :computer
+  include Gameable
+
+  attr_reader :board, :human, :computer, :score, :game_winner
 
   def initialize
     @board = Board.new
     @human = Player.new(HUMAN_MARKER)
     @computer = Player.new(COMPUTER_MARKER)
     @current_marker = FIRST_TO_MOVE
+    @score = { human: 0, computer: 0 }
+    @game_winner = nil
+  end
+
+  def play_round
+    until game_winner
+      current_player_moves
+      break if board.someone_won? || board.full?
+      clear_screen_and_display_board
+    end
+
+    update_score
+    display_result
   end
 
   def play
-    clear
+    clear_screen
     display_welcome_message
 
     loop do
       display_board
-
-      loop do
-        current_player_moves
-        break if board.someone_won? || board.full?
-        clear_screen_and_display_board
-      end
-
+      play_round
       display_result
       break unless play_again?
       reset
@@ -141,7 +173,7 @@ class TTTGame
   end
 
   def clear_screen_and_display_board
-    clear
+    clear_screen
     display_board
   end
 
@@ -150,11 +182,6 @@ class TTTGame
     puts ""
     board.draw
     puts ""
-  end
-
-  def joiner(arr, delimiter=', ', word='or')
-    arr << arr.pop(2).join(' ' + word + ' ')
-    arr.join(delimiter)
   end
 
   def human_moves
@@ -183,8 +210,27 @@ class TTTGame
     end
   end
 
+  def update_score
+    if board.winning_marker == human.marker
+      score[:human] += 1
+    elsif board.winning_marker == computer.marker
+      score[:human] += 1
+    end
+  end
+
+  def display_score
+    puts "The score is: You #{score[:human]} -" +
+      " Computer #{score[:computer]}"
+  end
+
+  def declare_game_winner
+    @game_winner = human.name if score[:human] == WINNING_SCORE
+    @game_winner = computer.name if score[:computer] == WINNING_SCORE
+  end
+
   def display_result
     clear_screen_and_display_board
+    display_score
 
     case board.winning_marker
     when human.marker
@@ -196,26 +242,11 @@ class TTTGame
     end
   end
 
-  def play_again?
-    answer = nil
-    loop do
-      puts "Would you like to play again? (y/n)"
-      answer = gets.chomp.downcase
-      break if %w[y n].include? answer
-      puts "Sorry, must be y or n"
-    end
-
-    answer == 'y'
-  end
-
-  def clear
-    system "clear"
-  end
-
   def reset
     board.reset
     @current_marker = FIRST_TO_MOVE
-    clear
+    @score = { human: 0, computer: 0 }
+    clear_screen
   end
 
   def display_play_again_message
