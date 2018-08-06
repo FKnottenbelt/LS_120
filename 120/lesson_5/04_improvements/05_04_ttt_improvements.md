@@ -359,3 +359,100 @@ so: board[num]=marker
 Note that if we ever need a getter method for the marker of a
 square, we can create a Board#[] method, which reads better than
 our old Board#get_square_at.
+
+## 9 - decoupling Board#winning_marker
+The next improvement we'll make is related to our most complicated
+method: Board#winning_marker. The problem with this method is
+that it relies on knowledge of both the human and computer markers.
+This doesn't feel quite right. Why does the Board class have to
+know about specific markers in the TTTGame class? A board object
+contains the state of the board. It's responsible for knowing
+things related to a board: whether all squares are marked, how
+to draw itself, how many empty squares are left, and whether a
+marker has won. The goal of Board#winning_marker is to return
+some winning marker or nil, but in our implementation, we hardcoded
+the human and computer markers. This board's implementation is tied
+to the implementation of TTTGame class. But in this case, that's
+not necessary. We should change the implementation of
+Board#winning_marker to see if any marker, not just the human or
+computer's, has won. If so, return that marker, and if not, return
+nil.
+
+##### possible solution:
+First, we'll need to create a Square#marked method (it's not
+mandatory, but will help us write more concise code).
+
+```ruby
+class Square
+ # ... rest of class omitted for brevity
+
+  def marked?
+    marker != INITIAL_MARKER
+  end
+end
+```
+
+In our Board#winning_marker method, we can call the method we
+wished existed.
+
+```ruby
+def winning_marker
+  WINNING_LINES.each do |line|
+    squares = @squares.values_at(*line)
+    if three_identical_markers?(squares) # => we wish this method existed
+      return squares.first.marker        # => return the marker, whatever it is
+    end
+  end
+  nil
+end
+```
+
+Finally, we can implement the desired method.
+```ruby
+def three_identical_markers?(squares)
+  markers = squares.select(&:marked?).collect(&:marker)
+  return false if markers.size != 3
+  markers.min == markers.max
+end
+```
+Let's walk through the above three lines.
+
+The first line is dense. First, we select only the marked squares,
+using the newly created Square#marked? method. Next, we transform
+that array of marked squares into an array of markers, or strings.
+The array of strings is assigned to the markers variable.
+
+The second line is a guard. We can return false if there aren't
+three marked squares, because winning means 3 marked squares in
+a row.
+
+By the time we get to the third line, we know that we have a
+3-item array of strings. Now we just need to tell if these 3
+strings are the same. We're relying on Array#max and Array#min
+here. Given an array of strings, Array#max will return the string
+that starts with the letter closest to 'Z'. Array#min, however,
+will return the string that starts with the letter closest to 'A'.
+Therefore, if both of those methods return the same value, then
+all elements in the markers array are identical.
+
+There are lots of ways to determine if all elements in an array
+contains the same value, so we just picked one that looked
+cleanest. You could loop, of course. You could also do
+markers.uniq.size == 1. This relies on the fact that Array#uniq
+removes duplicate entries, so if there's only 1 element left,
+then all elements were the same.
+
+Finally, let's move the three_identical_markers? method to a
+private method, since it's not being invoked from outside the
+class.
+
+After implementing these changes, we can now also delete
+Board#count_human_marker and Board#count_computer_marker since
+they are no longer being used. Note that despite the dramatic
+update, we did not change the input or return values of the
+method at all, thereby saving us from having to make any
+changes to methods that rely on winning_marker, such as
+someone_won?. Our Board class now feels much cleaner and more
+general purpose. It's aware of generic board-related behaviors
+, and can return the winning marker, without mind to which
+exact marker it is.

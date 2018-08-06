@@ -35,11 +35,9 @@ class Board
 
   def winning_marker
     WINNING_LINES.each do |line|
-      selection = @squares.values_at(*line)
-      if count_human_marker(selection) == 3
-        return TTTGame::HUMAN_MARKER
-      elsif count_computer_marker(selection) == 3
-        return TTTGame::COMPUTER_MARKER
+      squares = @squares.values_at(*line)
+      if three_indentical_markers?(squares)
+        return squares.first.marker
       end
     end
     nil
@@ -68,6 +66,13 @@ class Board
   end
   # rubocop: enable Metrics/AbcSize
 
+  private
+  def three_indentical_markers?(squares)
+    markers = squares.select(&:marked?).map(&:marker)
+    return false if markers.size != 3
+    markers.min == markers.max
+  end
+
 end
 
 class Square
@@ -85,6 +90,10 @@ class Square
 
   def unmarked?
     marker == INITIAL_MARKER
+  end
+
+  def marked?
+    marker != INITIAL_MARKER
   end
 end
 
