@@ -20,8 +20,6 @@ module Gameable
   end
 end
 
-
-
 class Board
   WINNING_LINES = [[1, 2, 3], [4, 5, 6], [7, 8, 9]] + # rows
                   [[1, 4, 7], [2, 5, 8], [3, 6, 9]] + # cols
@@ -121,6 +119,7 @@ module MyDebugger
   SHOW = false
   CLEAR = true
 
+  # rubocop:disable Style/GuardClause
   def show(location = "")
     if SHOW == true
       p "---------------------"
@@ -130,6 +129,7 @@ module MyDebugger
       p '----------------------'
     end
   end
+  # rubocop:enable Style/GuardClause
 
   def clear_screen
     if CLEAR == true
@@ -158,40 +158,6 @@ class TTTGame
     @current_marker = FIRST_TO_MOVE
     @score = { human: 0, computer: 0 }
     @game_winner = nil
-  end
-
-  def play_turn
-    loop do
-      current_player_moves
-      break if board.someone_won? || board.full?
-      clear_screen_and_display_board
-    end
-  end
-
-  def reset_round
-    board.reset
-    @current_marker = FIRST_TO_MOVE
-  end
-
-  def display_next_round_message
-    puts "Next round!"
-    puts
-  end
-
-  def play_round
-    loop do
-      play_turn
-      update_score
-      declare_game_winner
-      break if game_winner
-      clear_screen_and_display_board
-      display_score
-      display_next_round_message
-      reset_round
-      display_board
-    end
-      clear_screen_and_display_board
-      display_result
   end
 
   def play
@@ -268,7 +234,7 @@ class TTTGame
   end
 
   def display_score
-    puts "The score is: You #{score[:human]} -" +
+    puts "The score is: You #{score[:human]} -" \
       " Computer #{score[:computer]}"
   end
 
@@ -302,6 +268,40 @@ class TTTGame
   def display_play_again_message
     puts "Let's play again!"
     puts ""
+  end
+
+  def play_turn
+    loop do
+      current_player_moves
+      break if board.someone_won? || board.full?
+      clear_screen_and_display_board
+    end
+  end
+
+  def reset_round
+    board.reset
+    @current_marker = FIRST_TO_MOVE
+  end
+
+  def display_next_round_message
+    puts "Next round!"
+    puts
+  end
+
+  def play_round
+    loop do
+      play_turn
+      update_score
+      declare_game_winner
+      break if game_winner
+      clear_screen_and_display_board
+      display_score
+      display_next_round_message
+      reset_round
+      display_board
+    end
+    clear_screen_and_display_board
+    display_result
   end
 end
 
