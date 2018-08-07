@@ -213,6 +213,7 @@ class TTTGame
 
   def display_welcome_message
     puts "Welcome to Tic Tac Toe!"
+    puts "First one to win #{WINNING_SCORE} games wins the match!"
     puts ""
   end
 
