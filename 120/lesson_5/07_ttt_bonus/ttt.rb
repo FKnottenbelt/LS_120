@@ -256,7 +256,7 @@ class TTTGame
     if board.winning_marker == human.marker
       score[:human] += 1
     elsif board.winning_marker == computer.marker
-      score[:human] += 1
+      score[:computer] += 1
     end
   end
 
