@@ -11,4 +11,3 @@ debug module weg halen
 
 # private
 see if more methods can be private
-(in board?)
