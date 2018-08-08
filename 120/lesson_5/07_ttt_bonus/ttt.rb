@@ -64,21 +64,6 @@ class Board
     nil
   end
 
-  def find_at_risk_squares
-    at_risk_squares = {}
-
-    WINNING_LINES.each do |line|
-      squares = @squares.values_at(*line)
-      marked_as = squares.select(&:marked?).map(&:marker).first
-
-      if identical_markers?(squares, 2)
-        at_risk_squares[marked_as] = empty_square(line)
-      end
-    end
-
-    at_risk_squares.empty? ? nil : at_risk_squares
-  end
-
   def winning_move(player_marker)
     squares = find_at_risk_squares
     return nil if !squares
@@ -91,6 +76,11 @@ class Board
     return squares[other_player_marker] if
       squares.keys.include?(other_player_marker)
     nil
+  end
+
+  def middle_square
+    middle_square = 5
+    unmarked_keys.include?(middle_square) ? middle_square : nil
   end
 
   def reset
@@ -119,6 +109,21 @@ class Board
     markers = squares.select(&:marked?).collect(&:marker)
     return false if markers.size != num_identical
     markers.min == markers.max
+  end
+
+  def find_at_risk_squares
+    at_risk_squares = {}
+
+    WINNING_LINES.each do |line|
+      squares = @squares.values_at(*line)
+      marked_as = squares.select(&:marked?).map(&:marker).first
+
+      if identical_markers?(squares, 2)
+        at_risk_squares[marked_as] = empty_square(line)
+      end
+    end
+
+    at_risk_squares.empty? ? nil : at_risk_squares
   end
 end
 
@@ -251,6 +256,7 @@ class TTTGame
   def computer_moves
     square = board.winning_move(computer.marker) ||
              board.blocking_move(human.marker) ||
+             board.middle_square ||
              board.unmarked_keys.sample
     board[square] = computer.marker
   end

@@ -135,10 +135,77 @@ def find_at_risk_square(line, board)
 end
 ```
 
+### 4- Computer AI: Offense
+The defensive minded AI is pretty cool, but it's still not performing
+as well as it could because if there are no impending threats, it
+will pick a square at random. We'd like to make a slight improvement
+on that. We're not going to add in any complicated algorithm (there's
+an extra bonus below on that), but all we want to do is piggy back on
+our find_at_risk_square from bonus #3 above and turn it into an
+attacking mechanism as well. The logic is simple: if the computer
+already has 2 in a row, then fill in the 3rd square, as opposed to
+moving at random.
 
+##### possible solution:
+First, we'll make some slight modifications to find_at_risk_square.
+We'll pass in the marker we're looking for, rather than hardcode
+it to look for the player's marker.
+```ruby
+def find_at_risk_square(line, board, marker)
+  if board.values_at(*line).count(marker) == 2
+    board.select{|k,v| line.include?(k) && v == INITIAL_MARKER}.keys.first
+  else
+    nil
+  end
+end
+```
+Now that we're passing in the marker, we can use it for both defense
+and offense. Only when there are no defensive or offensive moves
+will the computer pick a random square.
 
+```ruby
+def computer_places_piece!(brd)
+  square = nil
 
+  # defense first
+  WINNING_LINES.each do |line|
+    square = find_at_risk_square(line, brd, PLAYER_MARKER)
+    break if square
+  end
 
+  # offense
+  if !square
+    WINNING_LINES.each do |line|
+      square = find_at_risk_square(line, brd, COMPUTER_MARKER)
+      break if square
+    end
+  end
+
+  # just pick a square
+  if !square
+    square = empty_squares(brd).sample
+  end
+
+  brd[square] = COMPUTER_MARKER
+end
+```
+
+### 5- Computer turn refinements
+a) We actually have the offense and defense steps backwards. In other
+words, if the computer has a chance to win, it should take that move
+rather than defend. As we have coded it now, it will defend first.
+Update the code so that it plays the offensive move first.
+
+b) We can make one more improvement: pick square #5 if it's available.
+The AI for the computer should go like this: first, pick the winning
+move; then, defend; then pick square #5; then pick a random square.
+
+c) Can you change the game so that the computer moves first? Can you
+make this a setting at the top (i.e. a constant), so that you could
+play the game with either player or computer going first? Can you
+make it so that if the constant is set to "choose", then your game
+will prompt the user to determine who goes first? Valid options for
+the constant can be "player", "computer", or "choose".
 
 
 ================

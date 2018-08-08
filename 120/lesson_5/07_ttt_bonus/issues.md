@@ -9,3 +9,6 @@ clean up play loop (to much display?)
 pry weg halen
 debug module weg halen
 
+# private
+see if more methods can be private
+(in board?)
