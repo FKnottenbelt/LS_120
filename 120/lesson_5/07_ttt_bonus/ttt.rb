@@ -1,3 +1,4 @@
+require 'pry'
 module Gameable
   def play_again?
     answer = ''
@@ -49,8 +50,25 @@ class Board
   def winning_marker
     WINNING_LINES.each do |line|
       squares = @squares.values_at(*line)
-      if three_identical_markers?(squares)
+      if identical_markers?(squares, 3)
         return squares.first.marker
+      end
+    end
+    nil
+  end
+
+  def empty_square(line)
+    line.each do |position|
+      return position if unmarked_keys.include?(position)
+    end
+    nil
+  end
+
+  def find_at_risk_square
+    WINNING_LINES.each do |line|
+      squares = @squares.values_at(*line)
+      if identical_markers?(squares, 2)
+        return empty_square(line)
       end
     end
     nil
@@ -78,9 +96,9 @@ class Board
 
   private
 
-  def three_identical_markers?(squares)
+  def identical_markers?(squares, num_identical)
     markers = squares.select(&:marked?).collect(&:marker)
-    return false if markers.size != 3
+    return false if markers.size != num_identical
     markers.min == markers.max
   end
 end
@@ -116,7 +134,7 @@ class Player
 end
 
 module MyDebugger
-  SHOW = false
+  SHOW = true
   CLEAR = true
 
   # rubocop:disable Style/GuardClause
@@ -212,7 +230,12 @@ class TTTGame
   end
 
   def computer_moves
-    board[board.unmarked_keys.sample] = computer.marker
+    square = board.find_at_risk_square
+    if square
+      board[square] = computer.marker
+    else
+      board[board.unmarked_keys.sample] = computer.marker
+    end
   end
 
   def current_player_moves

@@ -60,9 +60,80 @@ Keep score of how many times the player and computer each win.
 Don't use global or constant variables. Make it so that the first
 player to 5 wins the game.
 
+### 3- Computer AI: Defense
+The computer currently picks a square at random. That's not very
+interesting. Let's make the computer defensive minded, so that if
+there's an immediate threat, then it will defend the 3rd square. We'll
+consider an "immediate threat" to be 2 squares marked by the opponent
+in a row. If there's no immediate threat, then it will just pick a
+random square.
 
+##### possible solution:
+As usual, we'll take the most obvious, non-clever approach first. In
+order to see if the player is about to win, we want to iterate through
+our WINNING_LINES and see if any of them are at risk of being filled;
+in other words, we can iterate through the WINNING_LINES and look fo
+r any lines that have 2 of their values marked by the player.
 
+Since our WINNING_LINES is an array of 3-element arrays, we can
+iterate through WINNING_LINES and pass in each element (again, which
+are 3-element arrays) into a method to see if any of those lines are
+at risk of being filled. That means we need a method to inspect the
+3-element array and tell us if 2 of those elements are marked by the
+player.
 
+Here's a stab.
+```ruby
+def find_at_risk_square(line, board)
+  if board.values_at(*line).count('X') == 2
+    board.select{|k,v| line.include?(k) && v == ' '}.keys.first
+  else
+    nil
+  end
+end
+```
+The trick to this code is the line:
+`board.select{|k,v| line.include?(k) && v == ' '}.keys.first`. See if
+you can use binding.pry to take that line apart and see what it's
+doing.
+
+Another interesting part of this code is the use of the splat operator
+(*) on line. The splat operator essentially "explodes" the line array
+into a comma-separated list. We have to use the splat operator because
+the values_at method doesn't take an array, but does take a
+comma-separated list of arguments. The splat operator does this
+conversion for us.
+
+Once you have defined the find_at_risk_square method, you can modify
+the computer_places_piece! method like this:
+
+```ruby
+def computer_places_piece!(brd)
+  square = nil
+  WINNING_LINES.each do |line|
+    square = find_at_risk_square(line, brd)
+    break if square
+  end
+
+  if !square
+    square = empty_squares(brd).sample
+  end
+
+  brd[square] = COMPUTER_MARKER
+end
+```
+Finally, after we verify the find_at_risk_square method works, we
+can use our constants:
+
+```ruby
+def find_at_risk_square(line, board)
+  if board.values_at(*line).count(PLAYER_MARKER) == 2
+    board.select{|k,v| line.include?(k) && v == INITIAL_MARKER}.keys.first
+  else
+    nil
+  end
+end
+```
 
 
 
