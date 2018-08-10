@@ -154,14 +154,15 @@ end
 
 class Human < Player
   def initialize
-    @marker = choose_marker
     @name = set_name
+    @marker = choose_marker
   end
 
   private
 
   def choose_marker
     answer = nil
+    print "Hello #{name}, "
     loop do
       puts "What marker would you like?"
       answer = gets.chomp
@@ -209,6 +210,8 @@ class TTTGame
   attr_reader :board, :human, :computer, :score, :game_winner
 
   def initialize
+    clear_screen
+    display_welcome_message
     @board = Board.new
     @human = Human.new
     @computer = Computer.new(human.marker)
@@ -219,7 +222,7 @@ class TTTGame
 
   def play
     clear_screen
-    display_welcome_message
+    display_lets_play
 
     loop do
       display_board
@@ -235,9 +238,13 @@ class TTTGame
   private
 
   def display_welcome_message
-    puts "Hello #{human.name}, welcome to Tic Tac Toe!"
+    puts "Welcome to Tic Tac Toe!"
     puts "First one to win #{WINNING_SCORE} games wins the match!"
     puts ""
+  end
+
+  def display_lets_play
+    puts "Okay #{human.name}, let's play!"
   end
 
   def display_goodbye_message
