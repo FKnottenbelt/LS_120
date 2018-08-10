@@ -160,6 +160,7 @@ class Human < Player
   end
 
   private
+
   def choose_marker
     answer = nil
     loop do
@@ -190,6 +191,7 @@ class Computer < Player
   end
 
   private
+
   def determine_marker(other_marker)
     other_marker == 'O' ? 'X' : 'O'
   end
