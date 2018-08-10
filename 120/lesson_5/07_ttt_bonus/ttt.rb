@@ -150,20 +150,33 @@ class Square
 end
 
 class Player
-  attr_reader :marker
+  attr_reader :marker, :name
 end
 
 class Human < Player
   def initialize
     @marker = choose_marker
+    @name = set_name
   end
 
+  private
   def choose_marker
     answer = nil
     loop do
       puts "What marker would you like?"
       answer = gets.chomp
-      break unless %w[' '].include?(answer) || answer.size <= 0
+      break unless answer == ' ' || answer.size <= 0
+      puts "Sorry, that is not a valid answer."
+    end
+    answer
+  end
+
+  def set_name
+    answer = nil
+    loop do
+      puts "What is your name?"
+      answer = gets.chomp
+      break unless answer == ' ' || answer.size <= 0
       puts "Sorry, that is not a valid answer."
     end
     answer
@@ -173,10 +186,16 @@ end
 class Computer < Player
   def initialize(other_marker)
     @marker = determine_marker(other_marker)
+    @name = set_name
   end
 
+  private
   def determine_marker(other_marker)
     other_marker == 'O' ? 'X' : 'O'
+  end
+
+  def set_name
+    ['Hal', 'Chappie', 'Sonny', 'Number 5'].sample
   end
 end
 
@@ -241,7 +260,7 @@ class TTTGame
   private
 
   def display_welcome_message
-    puts "Welcome to Tic Tac Toe!"
+    puts "Hello #{human.name}, welcome to Tic Tac Toe!"
     puts "First one to win #{WINNING_SCORE} games wins the match!"
     puts ""
   end
@@ -256,7 +275,7 @@ class TTTGame
   end
 
   def display_board
-    puts "You're a #{human.marker}. Computer is a #{computer.marker}."
+    puts "You're a #{human.marker}. #{computer.name} is a #{computer.marker}."
     puts ""
     board.draw
     puts ""
@@ -302,7 +321,7 @@ class TTTGame
 
   def display_score
     puts "The score is: You #{score[:human]} -" \
-      " Computer #{score[:computer]}"
+      " #{computer.name} #{score[:computer]}"
   end
 
   def declare_game_winner
