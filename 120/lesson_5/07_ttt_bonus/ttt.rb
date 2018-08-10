@@ -151,9 +151,32 @@ end
 
 class Player
   attr_reader :marker
+end
 
-  def initialize(marker)
-    @marker = marker
+class Human < Player
+  def initialize
+    @marker = choose_marker
+  end
+
+  def choose_marker
+    answer = nil
+    loop do
+      puts "What marker would you like?"
+      answer = gets.chomp
+      break unless %w[' '].include?(answer) || answer.size <= 0
+      puts "Sorry, that is not a valid answer."
+    end
+    answer
+  end
+end
+
+class Computer < Player
+  def initialize(other_marker)
+    @marker = determine_marker(other_marker)
+  end
+
+  def determine_marker(other_marker)
+    other_marker == 'O' ? 'X' : 'O'
   end
 end
 
@@ -183,8 +206,6 @@ module MyDebugger
 end
 
 class TTTGame
-  HUMAN_MARKER = "X"
-  COMPUTER_MARKER = "O"
   FIRST_TO_MOVE = 'player' # "player", "computer", or "choose"
   WINNING_SCORE = 2
 
@@ -195,8 +216,8 @@ class TTTGame
 
   def initialize
     @board = Board.new
-    @human = Player.new(HUMAN_MARKER)
-    @computer = Player.new(COMPUTER_MARKER)
+    @human = Human.new
+    @computer = Computer.new(human.marker)
     @current_marker = first_to_move
     @score = { human: 0, computer: 0 }
     @game_winner = nil
@@ -262,12 +283,12 @@ class TTTGame
   end
 
   def current_player_moves
-    if @current_marker == HUMAN_MARKER
+    if @current_marker == human.marker
       human_moves
-      @current_marker = COMPUTER_MARKER
+      @current_marker = computer.marker
     else
       computer_moves
-      @current_marker = HUMAN_MARKER
+      @current_marker = human.marker
     end
   end
 
@@ -326,7 +347,7 @@ class TTTGame
 
   def reset_round
     board.reset
-    @current_marker = first_to_move ##
+    @current_marker = first_to_move
   end
 
   def display_next_round_message
@@ -360,7 +381,7 @@ class TTTGame
         " (for computer)"
     end
 
-    answer == 'm' ? HUMAN_MARKER : COMPUTER_MARKER
+    answer == 'm' ? human.marker : computer.marker
   end
 
   def first_to_move
@@ -368,11 +389,11 @@ class TTTGame
     when 'choose'
       who_goes_first
     when 'player'
-      HUMAN_MARKER
+      human.marker
     when 'computer'
-      COMPUTER_MARKER
+      computer.marker
     else
-      HUMAN_MARKER
+      human.marker
     end
   end
 end
