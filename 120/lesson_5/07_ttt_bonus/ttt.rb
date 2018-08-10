@@ -1,4 +1,3 @@
-require 'pry'
 module Gameable
   def play_again?
     answer = ''
@@ -201,37 +200,11 @@ class Computer < Player
   end
 end
 
-module MyDebugger
-  SHOW = true
-  CLEAR = true
-
-  # rubocop:disable Style/GuardClause
-  def show(location = "")
-    if SHOW == true
-      p "---------------------"
-      p "location is: #{location}"
-      p "Score is #{@score}"
-      p "Game winner is #{@game_winner}"
-      p '----------------------'
-    end
-  end
-  # rubocop:enable Style/GuardClause
-
-  def clear_screen
-    if CLEAR == true
-      super
-    else
-      puts 'Clearing the screen'
-    end
-  end
-end
-
 class TTTGame
   FIRST_TO_MOVE = 'player' # "player", "computer", or "choose"
   WINNING_SCORE = 2
 
   include Gameable
-  include MyDebugger
 
   attr_reader :board, :human, :computer, :score, :game_winner
 
