@@ -185,7 +185,7 @@ end
 class TTTGame
   HUMAN_MARKER = "X"
   COMPUTER_MARKER = "O"
-  FIRST_TO_MOVE = HUMAN_MARKER
+  FIRST_TO_MOVE = 'player' # "player", "computer", or "choose"
   WINNING_SCORE = 2
 
   include Gameable
@@ -197,7 +197,7 @@ class TTTGame
     @board = Board.new
     @human = Player.new(HUMAN_MARKER)
     @computer = Player.new(COMPUTER_MARKER)
-    @current_marker = FIRST_TO_MOVE
+    @current_marker = first_to_move
     @score = { human: 0, computer: 0 }
     @game_winner = nil
   end
@@ -305,7 +305,7 @@ class TTTGame
 
   def reset
     board.reset
-    @current_marker = FIRST_TO_MOVE
+    @current_marker = first_to_move
     @score = { human: 0, computer: 0 }
     @game_winner = nil
     clear_screen
@@ -326,7 +326,7 @@ class TTTGame
 
   def reset_round
     board.reset
-    @current_marker = FIRST_TO_MOVE
+    @current_marker = first_to_move ##
   end
 
   def display_next_round_message
@@ -348,6 +348,32 @@ class TTTGame
     end
     clear_screen_and_display_board
     display_result
+  end
+
+  def who_goes_first
+    answer = nil
+    loop do
+      puts "Who should play first, you or the computer? (m/c)"
+      answer = gets.chomp.downcase
+      break if %w[m c].include?(answer)
+      puts "Sorry, that is not a valid answer. Choose m (for me) or c" \
+        " (for computer)"
+    end
+
+    answer == 'm' ? HUMAN_MARKER : COMPUTER_MARKER
+  end
+
+  def first_to_move
+    case FIRST_TO_MOVE
+    when 'choose'
+      who_goes_first
+    when 'player'
+      HUMAN_MARKER
+    when 'computer'
+      COMPUTER_MARKER
+    else
+      HUMAN_MARKER
+    end
   end
 end
 
