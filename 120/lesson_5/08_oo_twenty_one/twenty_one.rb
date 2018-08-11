@@ -1,18 +1,69 @@
+module Gameable
+  def play_again?
+    answer = ''
+    loop do
+      puts "Would you like to play again? (y/n)"
+      answer = gets.chomp.downcase
+      break if %w[y yeah yes yep n no nope].include?(answer)
+      puts 'Please answer y (yes) or n (no)'
+    end
+    %w[y yeah yes yep].include?(answer)
+  end
+
+  def clear_screen
+    system("cls") || system("clear")
+  end
+
+  def joiner(arr, delimiter=', ', word='or')
+    array = arr.dup
+    array << array.pop(2).join(' ' + word + ' ')
+    array.join(delimiter)
+  end
+end
+
 module Hand
+  BUST = 21
+
+  include Gameable
 
   def cards
     @cards ||= []
   end
 
   def total
+    @total ||= 0
     # definitely looks like we need to know about "cards" to produce some
     # total
   end
 
-  def add_card(card)
-    cards << card
+  def total=(n)
+    @total =  n
   end
 
+  def add_card(card)
+    cards << card
+    calculate_total
+  end
+
+  def hand
+    "#{joiner(cards,', ','and')}. Total is: #{total}"
+  end
+
+  def bust?
+    total > BUST ? true : false
+  end
+
+  private
+
+  def calculate_total
+    non_aces = cards.select { |card| card.picture != 'Ace'}
+    self.total = non_aces.map(&:value).sum
+
+    aces = cards.count { |card| card.picture == 'Ace'}
+    aces.times do
+      self.total + 11 > BUST ? (self.total += 1) : (self.total += 11)
+    end
+  end
 end
 
 class Player
@@ -32,13 +83,28 @@ class Player
   def busted?
   end
 
+  def show_hand
+    puts
+    puts "You have: #{hand}"
+  end
+
+  def ask_hit_or_stay
+    answer = ''
+    loop do
+      puts "Do you want to hit or stay? (h/s)"
+      answer = gets.chomp.downcase
+      break if %w[h s].include?(answer)
+      puts "Please type h for hit or s for stay"
+    end
+    answer
+  end
 end
 
 class Dealer
   include Hand
 
   def initialize
-    # seems like very similar to Player... do we even need this?
+
   end
 
   def deal
@@ -54,28 +120,8 @@ class Dealer
   def busted?
   end
 
-
-end
-
-module Gameable
-  def play_again?
-    answer = ''
-    loop do
-      puts "Would you like to play again? (y/n)"
-      answer = gets.chomp.downcase
-      break if %w[y yeah yes yep n no nope].include?(answer)
-      puts 'Please answer y (yes) or n (no)'
-    end
-    %w[y yeah yes yep].include?(answer)
-  end
-
-  def clear_screen
-    system("cls") || system("clear")
-  end
-
-  def joiner(arr, delimiter=', ', word='or')
-    arr << arr.pop(2).join(' ' + word + ' ')
-    arr.join(delimiter)
+  def show_hand
+    puts "Dealer has: #{hand}"
   end
 end
 
@@ -88,6 +134,16 @@ class Deck
     @cards = []
     build_up_new_deck
   end
+
+  def take_card
+    cards.shuffle!.pop
+  end
+
+  def no_cards_in_deck
+    cards.count
+  end
+
+  private
 
   def build_up_new_deck
     add_number_cards!
@@ -109,7 +165,7 @@ class Deck
     cards.each do |card|
       card.picture =
       case card.value
-      when 1  then 'Ace'
+      when 11 then 'Ace'
       when 11 then 'Jack'
       when 12 then 'Queen'
       when 13 then 'King'
@@ -151,7 +207,7 @@ class Game
   def start
     deal_cards
     show_initial_cards
-    # player_turn
+    player_turn
     # dealer_turn
     # show_result
   end
@@ -160,16 +216,30 @@ class Game
 
   def deal_cards
     2.times do
-      player.add_card(deck.cards.shuffle.pop)
-      dealer.add_card(deck.cards.shuffle.pop)
+      player.add_card(deck.take_card)
+      dealer.add_card(deck.take_card)
     end
   end
 
   def show_initial_cards
-    player_cards = joiner(player.cards,', ','and')
-    dealer_cards = joiner(dealer.cards,', ','and')
-    puts "Player has: #{player_cards}"
-    puts "Dealer has: #{dealer_cards}"
+    puts "Player has: #{player.hand}"
+    puts "Dealer has: #{dealer.hand}"
+  end
+
+  def player_turn
+    loop do
+      player.show_hand
+      #show_score(score)
+      answer = player.ask_hit_or_stay
+      if answer == 'h'
+        player.add_card(deck.take_card)
+        player.show_hand
+        # show message if bust (or win I guess)
+        break if player.bust?
+      else
+        break
+      end
+    end
   end
 end
 
