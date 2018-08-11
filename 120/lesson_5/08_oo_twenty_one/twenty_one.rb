@@ -1,33 +1,27 @@
 module Hand
 
+  def cards
+    @cards ||= []
+  end
+
   def total
     # definitely looks like we need to know about "cards" to produce some
     # total
   end
 
   def add_card(card)
-    @cards << card
+    cards << card
   end
 
 end
 
-class Participant
+class Player
   include Hand
 
-  attr_accessor :cards
-
   def initialize
-    @cards = []
+    # what would the "data" or "states" of a Player object entail?
+    # maybe cards? a name?
   end
-
-end
-
-class Player < Participant
-
-  # def initialize
-  #   # what would the "data" or "states" of a Player object entail?
-  #   # maybe cards? a name?
-  # end
 
   def hit
   end
@@ -40,11 +34,12 @@ class Player < Participant
 
 end
 
-class Dealer < Participant
+class Dealer
+  include Hand
 
-  # def initialize
-  #   # seems like very similar to Player... do we even need this?
-  # end
+  def initialize
+    # seems like very similar to Player... do we even need this?
+  end
 
   def deal
     # does the dealer or the deck deal?
