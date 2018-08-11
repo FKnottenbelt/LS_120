@@ -15,8 +15,9 @@ module Gameable
   end
 
   def joiner(arr, delimiter=', ', word='or')
-    arr << arr.pop(2).join(' ' + word + ' ')
-    arr.join(delimiter)
+    array = arr.dup
+    array << array.pop(2).join(' ' + word + ' ')
+    array.join(delimiter)
   end
 end
 
