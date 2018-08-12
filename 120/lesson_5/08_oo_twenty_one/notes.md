@@ -2,7 +2,6 @@ to think about / to do:
 
 remove no_cards_in_deck
 
-update joiner in ttt
 
 should player turn be in game?
 

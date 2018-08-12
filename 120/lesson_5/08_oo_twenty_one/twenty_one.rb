@@ -208,6 +208,25 @@ class Game
     deal_cards
     show_initial_cards
     player_turn
+
+    if player.bust?
+      puts "Oeps, you got a #{player.cards.last} and " \
+      "went bust... Dealer wins."
+      #score[:dealer] += 1
+      #show_score(score)
+    else
+      dealer_turn(deck, dealer)
+      if bust?(dealer)
+        puts 'Dealer went bust! You won!'
+        score[:player] += 1
+        show_score(score)
+      else
+        winner = declare_round_winner(player, dealer)
+        update_score(score, winner)
+        display_round_winner(player, dealer, winner, score)
+      end
+    end
+
     # dealer_turn
     # show_result
   end
@@ -233,8 +252,6 @@ class Game
       answer = player.ask_hit_or_stay
       if answer == 'h'
         player.add_card(deck.take_card)
-        player.show_hand
-        # show message if bust (or win I guess)
         break if player.bust?
       else
         break
