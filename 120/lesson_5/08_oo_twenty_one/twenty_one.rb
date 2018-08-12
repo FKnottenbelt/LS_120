@@ -260,9 +260,11 @@ class Game
     dealer_turn unless someone_bust?
     dealer_bust_actions if dealer.bust?
 
-    winner = declare_round_winner
-    update_score(winner)
-    display_round_winner(winner)
+    if !someone_bust?
+      winner = declare_round_winner
+      update_score(winner)
+      display_round_winner(winner)
+    end
   end
 
   def player_bust_actions
