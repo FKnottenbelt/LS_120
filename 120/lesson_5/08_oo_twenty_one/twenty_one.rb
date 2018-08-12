@@ -196,14 +196,7 @@ class Game
     display_welcome
 
     loop do
-      loop do
-        deal_cards
-        show_initial_dealer_card
-        play_round
-        break if someone_won?
-        reset_round
-      end
-
+      play_match
       winner = declare_match_winner
       display_match_winner(winner)
       break unless play_again?
@@ -214,6 +207,16 @@ class Game
   end
 
   private
+
+  def play_match
+    loop do
+      deal_cards
+      show_initial_dealer_card
+      play_round
+      break if someone_won?
+      reset_round
+    end
+  end
 
   def play_round
     player_turn
