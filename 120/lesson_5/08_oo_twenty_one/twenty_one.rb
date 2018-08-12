@@ -47,7 +47,7 @@ module Hand
   end
 
   def total=(n)
-    @total =  n
+    @total = n
   end
 
   def add_card(card)
@@ -56,7 +56,7 @@ module Hand
   end
 
   def hand
-    "#{joiner(cards,', ','and')}. Total is: #{total}"
+    "#{joiner(cards, ', ', 'and')}. Total is: #{total}"
   end
 
   def bust?
@@ -66,12 +66,12 @@ module Hand
   private
 
   def calculate_total
-    non_aces = cards.select { |card| card.picture != 'Ace'}
+    non_aces = cards.select { |card| card.picture != 'Ace' }
     self.total = non_aces.map(&:value).sum
 
-    aces = cards.count { |card| card.picture == 'Ace'}
+    aces = cards.count { |card| card.picture == 'Ace' }
     aces.times do
-      self.total + 11 > BUST ? (self.total += 1) : (self.total += 11)
+      total + 11 > BUST ? (self.total += 1) : (self.total += 11)
     end
   end
 end
@@ -140,7 +140,7 @@ class Deck
     loop do
       break if counter == 14
       SUITES.each do |suite|
-        self.cards << Card.new(counter, suite)
+        cards << Card.new(counter, suite)
       end
       counter += 1
     end
@@ -149,15 +149,14 @@ class Deck
   def add_picture_cards!
     cards.each do |card|
       card.picture =
-      case card.value
-      when 11 then 'Ace'
-      when 11 then 'Jack'
-      when 12 then 'Queen'
-      when 13 then 'King'
-      end
+        case card.value
+        when 1  then 'Ace'
+        when 11 then 'Jack'
+        when 12 then 'Queen'
+        when 13 then 'King'
+        end
     end
   end
-
 end
 
 class Card
@@ -400,6 +399,4 @@ class Game
   end
 end
 
-
 Game.new.start
-
