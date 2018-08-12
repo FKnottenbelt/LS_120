@@ -255,19 +255,26 @@ class Game
 
   def play_round
     player_turn
+    player_bust_actions if player.bust?
+    dealer_turn unless someone_bust?
+    dealer_bust_actions if dealer.bust?
+    #winner stuff:
+    winner = declare_round_winner
+    update_score(winner)
+    display_round_winner(winner)
 
-    if player.bust?
-      player_bust_actions
-    else
-      dealer_turn
-      if dealer.bust?
-        dealer_bust_actions
-      else
-       winner = declare_round_winner
-       update_score(winner)
-       display_round_winner(winner)
-      end
-    end
+    # if player.bust?
+    #   player_bust_actions
+    # else
+    #   dealer_turn
+    #   if dealer.bust?
+    #     dealer_bust_actions
+    #   else
+    #   winner = declare_round_winner
+    #   update_score(winner)
+    #   display_round_winner(winner)
+    #   end
+    # end
   end
 
   def player_bust_actions
