@@ -239,6 +239,7 @@ class Game
       deal_cards
       show_initial_dealer_card
 
+
       player_turn
 
       if player.bust?
@@ -287,6 +288,7 @@ class Game
   def player_turn
     loop do
       player.show_hand
+      break if someone_bust?
       answer = player.ask_hit_or_stay
       if answer == 'h'
         player.add_card(deck.take_card)
@@ -299,6 +301,7 @@ class Game
 
   def dealer_turn
     loop do
+      break if someone_bust?
       action = dealer.hit_or_stay
       if action == 'hit'
         dealer.add_card(deck.take_card)
@@ -364,6 +367,10 @@ class Game
     message << "The winner of this match is: #{winner}!"
     message << "score: player: #{score[:player]} - dealer: #{score[:dealer]}"
     multi_line_prompt(message)
+  end
+
+  def someone_bust?
+    player.bust? || dealer.bust?
   end
 end
 
