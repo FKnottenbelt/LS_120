@@ -234,7 +234,6 @@ class Game
     display_welcome
 
     loop do
-
       loop do
         deal_cards
         show_initial_dealer_card
@@ -258,17 +257,11 @@ class Game
     player_turn
 
     if player.bust?
-      puts
-      puts "Oeps, you got a #{player.cards.last} and " \
-      "went bust... Dealer wins."
-      score[:dealer] += 1
-      show_score
+      player_bust_actions
     else
       dealer_turn
       if dealer.bust?
-        puts 'Dealer went bust! You won!'
-        score[:player] += 1
-        show_score
+        dealer_bust_actions
       else
        winner = declare_round_winner
        update_score(winner)
@@ -277,15 +270,23 @@ class Game
     end
   end
 
+  def player_bust_actions
+    display_player_bust
+    update_score('dealer')
+    show_score
+  end
+
+  def dealer_bust_actions
+    display_dealer_bust
+    update_score('player')
+    show_score
+  end
+
   def deal_cards
     2.times do
       player.add_card(deck.take_card)
       dealer.add_card(deck.take_card)
     end
-  end
-
-  def show_initial_dealer_card
-    dealer.show_one_card
   end
 
   def player_turn
@@ -314,12 +315,6 @@ class Game
     end
   end
 
-  def show_score
-    puts "The rounds score is (get #{MATCH} to win): " \
-    "player: #{score[:player]} - dealer: #{score[:dealer]}"
-    puts
-  end
-
   def reset
     self.deck = Deck.new
     player.cards = []
@@ -328,20 +323,13 @@ class Game
 
   def reset_round
     reset
-    puts '-----------'
-    puts "Next round!"
-    puts '-----------'
+    display_next_round
   end
 
   def reset_match
     reset
     self.score = { player: 0, dealer: 0 }
-    clear_screen
-    message = []
-    message << '-----------'
-    message << "New Match!"
-    message << '-----------'
-    multi_line_prompt(message)
+    display_new_match
   end
 
   def declare_round_winner
@@ -368,6 +356,20 @@ class Game
   def update_score(winner)
     return if winner == 'tie'
     score[winner.to_sym] += 1
+  end
+
+  def someone_bust?
+    player.bust? || dealer.bust?
+  end
+
+  def someone_won?
+    score.values.include?(MATCH)
+  end
+
+  ###  Display messages ##############
+
+  def show_initial_dealer_card
+    dealer.show_one_card
   end
 
   def display_round_winner(winner)
@@ -404,12 +406,35 @@ class Game
     puts "Thank you for playing Twenty-One. Good bye!"
   end
 
-  def someone_bust?
-    player.bust? || dealer.bust?
+  def display_player_bust
+    puts
+    puts "Oeps, you got a #{player.cards.last} and " \
+      "went bust... Dealer wins."
   end
 
-  def someone_won?
-    score.values.include?(MATCH)
+  def display_dealer_bust
+    puts 'Dealer went bust! You won!'
+  end
+
+  def show_score
+    puts "The rounds score is (get #{MATCH} to win): " \
+    "player: #{score[:player]} - dealer: #{score[:dealer]}"
+    puts
+  end
+
+  def display_new_match
+    clear_screen
+    message = []
+    message << '-----------'
+    message << "New Match!"
+    message << '-----------'
+    multi_line_prompt(message)
+  end
+
+  def display_next_round
+    puts '-----------'
+    puts "Next round!"
+    puts '-----------'
   end
 end
 
