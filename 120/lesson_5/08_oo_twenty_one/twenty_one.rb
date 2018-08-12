@@ -44,8 +44,6 @@ module Hand
 
   def total
     @total ||= 0
-    # definitely looks like we need to know about "cards" to produce some
-    # total
   end
 
   def total=(n)
@@ -81,20 +79,6 @@ end
 class Player
   include Hand
 
-  def initialize
-    # what would the "data" or "states" of a Player object entail?
-    # maybe cards? a name?
-  end
-
-  def hit
-  end
-
-  def stay
-  end
-
-  def busted?
-  end
-
   def show_hand
     puts
     puts "You have: #{hand}"
@@ -116,23 +100,6 @@ class Dealer
   DEALER_MAX = 17
 
   include Hand
-
-  def initialize
-
-  end
-
-  def deal
-    # does the dealer or the deck deal?
-  end
-
-  def hit
-  end
-
-  def stay
-  end
-
-  def busted?
-  end
 
   def show_hand
     puts "Dealer has: #{hand}"
@@ -159,10 +126,6 @@ class Deck
 
   def take_card
     cards.shuffle!.pop
-  end
-
-  def no_cards_in_deck
-    cards.count
   end
 
   private
@@ -290,6 +253,7 @@ class Game
     loop do
       player.show_hand
       break if someone_bust?
+
       answer = player.ask_hit_or_stay
       if answer == 'h'
         player.add_card(deck.take_card)
@@ -303,6 +267,7 @@ class Game
   def dealer_turn
     loop do
       break if someone_bust?
+
       action = dealer.hit_or_stay
       if action == 'hit'
         dealer.add_card(deck.take_card)
