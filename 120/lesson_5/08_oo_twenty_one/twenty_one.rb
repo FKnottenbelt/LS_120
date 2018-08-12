@@ -231,9 +231,7 @@ class Game
 
   def start # match
     clear_screen
-    # display welcome
-    puts
-    puts "Welcome to TwentyOne"
+    display_welcome
 
     loop do # round
       deal_cards
@@ -368,6 +366,19 @@ class Game
     message << "score: player: #{score[:player]} - dealer: #{score[:dealer]}"
     multi_line_prompt(message)
   end
+
+  def display_welcome
+    bust = Player::BUST
+    puts <<-MSG
+                         Welcome to Twenty-One!
+                  First to win #{MATCH} rounds, wins the match
+    You are trying to get a card total as close as possible to #{bust}
+            If you go over you are bust and lose the round
+
+
+            MSG
+  end
+
 
   def someone_bust?
     player.bust? || dealer.bust?
