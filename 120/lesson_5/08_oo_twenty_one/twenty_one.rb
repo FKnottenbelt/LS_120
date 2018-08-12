@@ -219,8 +219,8 @@ class Game
   MATCH = 2
   include Gameable
 
-  attr_reader :player, :dealer, :score
-  attr_accessor :deck
+  attr_reader :player, :dealer
+  attr_accessor :deck, :score
 
   def initialize
     @deck = Deck.new
@@ -229,48 +229,53 @@ class Game
     @score = { player: 0, dealer: 0 }
   end
 
-  def start # match
+  def start
     clear_screen
     display_welcome
 
-    loop do # round
-      deal_cards
-      show_initial_dealer_card
+    loop do
 
-
-      player_turn
-
-      if player.bust?
-        puts
-        puts "Oeps, you got a #{player.cards.last} and " \
-        "went bust... Dealer wins."
-        score[:dealer] += 1
-        show_score
-      else
-        dealer_turn
-        if dealer.bust?
-          puts 'Dealer went bust! You won!'
-          score[:player] += 1
-          show_score
-        else
-         winner = declare_round_winner
-         update_score(winner)
-         display_round_winner(winner)
-        end
+      loop do
+        deal_cards
+        show_initial_dealer_card
+        play_round
+        break if someone_won?
+        reset_round
       end
 
-      break if score.values.include?(MATCH) # somebody won
+      winner = declare_match_winner
+      display_match_winner(winner)
       break unless play_again?
+      reset_match
+    end
 
-      reset
-    end # round
-
-    winner = declare_match_winner
-    display_match_winner(winner)
-    puts "Thank you for playing Twenty-One. Good bye!"
+    display_goodbye
   end
 
   private
+
+  def play_round
+    player_turn
+
+    if player.bust?
+      puts
+      puts "Oeps, you got a #{player.cards.last} and " \
+      "went bust... Dealer wins."
+      score[:dealer] += 1
+      show_score
+    else
+      dealer_turn
+      if dealer.bust?
+        puts 'Dealer went bust! You won!'
+        score[:player] += 1
+        show_score
+      else
+       winner = declare_round_winner
+       update_score(winner)
+       display_round_winner(winner)
+      end
+    end
+  end
 
   def deal_cards
     2.times do
@@ -319,9 +324,24 @@ class Game
     self.deck = Deck.new
     player.cards = []
     dealer.cards = []
+  end
+
+  def reset_round
+    reset
     puts '-----------'
     puts "Next round!"
     puts '-----------'
+  end
+
+  def reset_match
+    reset
+    self.score = { player: 0, dealer: 0 }
+    clear_screen
+    message = []
+    message << '-----------'
+    message << "New Match!"
+    message << '-----------'
+    multi_line_prompt(message)
   end
 
   def declare_round_winner
@@ -370,6 +390,7 @@ class Game
   def display_welcome
     bust = Player::BUST
     puts <<-MSG
+
                          Welcome to Twenty-One!
                   First to win #{MATCH} rounds, wins the match
     You are trying to get a card total as close as possible to #{bust}
@@ -379,9 +400,16 @@ class Game
             MSG
   end
 
+  def display_goodbye
+    puts "Thank you for playing Twenty-One. Good bye!"
+  end
 
   def someone_bust?
     player.bust? || dealer.bust?
+  end
+
+  def someone_won?
+    score.values.include?(MATCH)
   end
 end
 
