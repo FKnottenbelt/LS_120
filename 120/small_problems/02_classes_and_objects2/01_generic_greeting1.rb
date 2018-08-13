@@ -17,3 +17,17 @@ class Cat
 end
 
 Cat.generic_greeting
+
+kitty = Cat.new
+#p kitty.generic_greeting # => undefined method `generic_greeting' for #<Cat:0x007fbdd3875e40> (NoMethodError)
+
+#####
+# Further Exploration
+
+# What happens if you run kitty.class.generic_greeting? Can you
+# explain this result?
+
+p kitty.class
+# Cat
+kitty.class.generic_greeting
+#'Hello! I'm a cat!'
