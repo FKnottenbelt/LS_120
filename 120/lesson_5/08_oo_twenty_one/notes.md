@@ -1,3 +1,3 @@
 to think about / to do:
 
-- rubocop
+- rubocop Style/GuardClause

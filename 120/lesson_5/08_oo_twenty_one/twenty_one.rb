@@ -225,11 +225,10 @@ class Game
     dealer_turn unless someone_bust?
     dealer_bust_actions if dealer.bust?
 
-    if !someone_bust?
-      winner = declare_round_winner
-      update_score(winner)
-      display_round_winner(winner)
-    end
+    return if someone_bust?
+    winner = declare_round_winner
+    update_score(winner)
+    display_round_winner(winner)
   end
 
   def player_bust_actions
@@ -257,12 +256,9 @@ class Game
       break if someone_bust?
 
       answer = player.ask_hit_or_stay
-      if answer == 'h'
-        player.add_card(deck.take_card)
-        break if player.bust?
-      else
-        break
-      end
+      break if answer != 'h'
+      player.add_card(deck.take_card)
+      break if player.bust?
     end
   end
 
@@ -271,11 +267,8 @@ class Game
       break if someone_bust?
 
       action = dealer.hit_or_stay
-      if action == 'hit'
-        dealer.add_card(deck.take_card)
-      else
-        break
-      end
+      dealer.add_card(deck.take_card) if action == 'hit'
+      break if action != 'hit'
     end
   end
 
