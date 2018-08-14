@@ -136,3 +136,5 @@ lesson 4, easy 2, q10
 # namespaces
 see 05_05 point 3. Find out more. (example?)
 
+# look at
+/120/small_problems/07_medium1/05b_ls_stack_machine.rb
