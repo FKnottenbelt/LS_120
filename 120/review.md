@@ -129,6 +129,7 @@ lesson 4, easy 2, q10
 /120/lesson_4/hard1/q2.rb
 /120/lesson_4/hard1/q3.rb
 /120/lesson_4/hard1/q4.rb
+/120/small_problems/07_medium1/08_ranking_cards.rb
 
 # ruby tricky code
 05_03_ttt_spike.md step 8
@@ -138,3 +139,4 @@ see 05_05 point 3. Find out more. (example?)
 
 # look at
 /120/small_problems/07_medium1/05b_ls_stack_machine.rb
+and 06_number_guesser1
