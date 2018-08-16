@@ -240,11 +240,16 @@ class Deck
 end
 
 class PokerHand
-  attr_reader :hand
+  attr_reader :hand, :kinds
 
   def initialize(deck)
     @hand = []
-    5.times{ hand << deck.draw }
+    @kinds = Hash.new(0)
+    5.times do
+      card = deck.draw
+      hand << card
+      self.kinds[card.rank] += 1
+    end
   end
 
   def print
@@ -295,11 +300,6 @@ class PokerHand
   end
 
   def four_of_a_kind?
-    hand_ranks = hand.map(&:rank)
-    kinds = Hash.new{0}
-    hand_ranks.each do |rank|
-      kinds[rank] += 1
-    end
     kinds.values.sort == [1, 4]
   end
 
@@ -317,29 +317,14 @@ class PokerHand
   end
 
   def three_of_a_kind?
-    hand_ranks = hand.map(&:rank)
-    kinds = Hash.new{0}
-    hand_ranks.each do |rank|
-      kinds[rank] += 1
-    end
-     kinds.values.sort.include?(3)
+    kinds.values.sort.include?(3)
   end
 
   def two_pair?
-    hand_ranks = hand.map(&:rank)
-    kinds = Hash.new{0}
-    hand_ranks.each do |rank|
-      kinds[rank] += 1
-    end
     kinds.values.sort == [1, 2, 2]
   end
 
   def pair?
-    hand_ranks = hand.map(&:rank)
-    kinds = Hash.new{0}
-    hand_ranks.each do |rank|
-      kinds[rank] += 1
-    end
     kinds.values.sort.include?(2)
   end
 end

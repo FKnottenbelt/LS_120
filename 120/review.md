@@ -140,3 +140,6 @@ see 05_05 point 3. Find out more. (example?)
 # look at
 /120/small_problems/07_medium1/05b_ls_stack_machine.rb
 and 06_number_guesser1
+
+# monkey patching
+https://stackoverflow.com/questions/4470108/when-monkey-patching-a-method-can-you-call-the-overridden-method-from-the-new-i#4471202
