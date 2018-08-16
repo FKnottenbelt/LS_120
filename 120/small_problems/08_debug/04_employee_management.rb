@@ -188,6 +188,5 @@ miller_contracting.add(natasha) # => Employee added.
 
 miller_contracting.display_all_employees
 
-
 # In order to make this work, we can make serial_number a
 # protected method.
