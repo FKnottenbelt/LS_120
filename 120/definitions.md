@@ -75,6 +75,10 @@ Unlike classes, modules don’t have instances; instead, you
 specify that you want to add the functionality of a particular
 module to that of a class or of a specific object.
 
+A module is a collection of behaviors that is useable in other
+classes via mixins. A module is "mixed in" to a class using
+the include method invocation.
+
 # instance method
 Methods of this kind, defined inside a class and intended for
 use by all instances of the class, are called instance methods.
