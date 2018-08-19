@@ -124,3 +124,46 @@ the current or default object
 
 self inside a class or module definition?: the class or
 module object
+
+# collaborator objects
+Objects that are stored as state within another object are
+also called "collaborator objects".
+```ruby
+class Library
+  attr_accessor :books
+  def initialize
+    @books = []
+  end
+
+  def add_book(new_book)
+    books << new_book
+  end
+
+  def list_books
+    puts "Books in the library:"
+    books.each do |book|
+      puts book
+    end
+  end
+end
+
+class Book
+  attr_reader :title, :author
+
+  def initialize(title, author)
+    @title = title
+    @author = author
+  end
+
+  def to_s
+    "#{title} by #{author}"
+  end
+end
+
+lib = Library.new
+book1 = Book.new("A fresh new day", "John Johnson")
+book2 = Book.new("Time Management", "Kerel Janssen")
+lib.add_book(book1)
+lib.add_book(book2)
+lib.list_books
+```
