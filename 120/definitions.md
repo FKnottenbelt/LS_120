@@ -16,18 +16,6 @@ We can build applications faster as we can reuse pre-written code.
 As the software becomes more complex this complexity can be more
 easily managed.
 
-# Polymorphism
-is the ability for data to be represented as many different types.
-"Poly" stands for "many" and "morph" stands for "forms". OOP
-gives us flexibility in using pre-written code for new purposes.
-- overide methods
-- inheritance
-- module mixins (behavior sharing)
-
-The polymorphism is the process of using an operator or
-function in different ways for different data input.
-
-
 # 4 basic OOP programming concepts
 - Abstraction
 - Polymorphism
@@ -45,6 +33,28 @@ from other objects.
 
 The inheritance is a way to form new classes using classes
 that have already been defined.
+
+# Polymorphism
+`Polymorphism` is the ability for data to be represented as many
+different types. "Poly" stands for "many" and "morph" stands for
+"forms". OOP gives us flexibility in using pre-written code for new
+purposes.
+- overide methods
+- inheritance
+- module mixins (behavior sharing)
+
+The polymorphism is the process of using an operator or
+function in different ways for different data input.
+
+# Encapsulation
+`Encapsulation` is hiding pieces of functionality and making it
+unavailable to the rest of the code base. It is a form of data
+protection, so that data cannot be manipulated or changed
+without obvious intention. It is what defines the boundaries
+in your application and allows your code to achieve new levels
+of complexity. Ruby, like many other OO languages,
+accomplishes this task by creating objects, and exposing
+interfaces (i.e., methods) to interact with those objects.
 
 # objects
 Defining a class lets you group behaviors (methods) into
@@ -78,6 +88,27 @@ module to that of a class or of a specific object.
 A module is a collection of behaviors that is useable in other
 classes via mixins. A module is "mixed in" to a class using
 the include method invocation.
+
+```ruby
+module Swimmable
+  def swim
+    puts "I, the #{self.class}, can swim!"
+  end
+end
+
+class Cat
+  include Swimmable
+end
+
+class Dog
+  include Swimmable
+end
+
+kitty = Cat.new
+kitty.swim
+dog = Dog.new
+dog.swim
+```
 
 # instance method
 Methods of this kind, defined inside a class and intended for
@@ -166,4 +197,52 @@ book2 = Book.new("Time Management", "Kerel Janssen")
 lib.add_book(book1)
 lib.add_book(book2)
 lib.list_books
+```
+# Reading OO code
+```ruby
+class Dog
+  def initialize(name)
+    @name = name
+  end
+
+  def say_hello
+    puts "Woof! My name is #{@name}."
+  end
+end
+```
+"This code defines a `Dog` class
+with two methods:
+
+- The `#initialize` method that initializes a new Dog object,
+  which it does by assigning the instance variable `@name` to
+  the dog's name specified by the argument.(parameter?!?)
+- The `#say_hello` instance method which prints a message that
+  includes the dog's name in place of `#{@name}`. `#say_hello`
+  returns `nil`."
+
+# super
+super is a method that will search the method lookup path for a
+method with the same name and then invoke it.
+```ruby
+class Animal
+  attr_accessor :name
+
+  def initialize(name)
+    @name = name
+    @location = 'Earth'
+  end
+end
+
+class GoodDog < Animal
+  def initialize(name, color)
+    super(name)
+    @color = color
+  end
+end
+
+bruno = GoodDog.new('Bruno','brown')
+p bruno
+#<GoodDog:0x00000000f4d210 @name="Bruno", @location="Earth",
+# @color="brown">
+
 ```
