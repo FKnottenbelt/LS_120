@@ -56,6 +56,12 @@ of complexity. Ruby, like many other OO languages,
 accomplishes this task by creating objects, and exposing
 interfaces (i.e., methods) to interact with those objects.
 
+# classes
+A typical class consists of a collection of method definitions.
+Classes usually exist for the purpose of being instantiated—
+that is, of having objects created that are instances of the
+class.
+
 # objects
 Defining a class lets you group behaviors (methods) into
 convenient bundles, so that you can quickly create many
@@ -65,12 +71,24 @@ what you’re trying to do in your program. But you don’t have
 to do that with every object if you model your domain into
 classes.
 
-# classes
-A typical class consists of a collection of method definitions.
-Classes usually exist for the purpose of being instantiated—
-that is, of having objects created that are instances of the
-class.
+```ruby
+class Cat
+  attr_reader :name
 
+  def initialize(name)
+    @name = name
+  end
+
+  def hunt
+    puts "getting mouse!"
+  end
+end
+
+stripe = Cat.new('Stripe')
+black = Cat.new('Black')
+stripe.hunt
+black.hunt
+```
 # constructors
 A constructor is a special kind of a method. It is automatically
 called when an object is created. Constructors do not return
@@ -390,6 +408,14 @@ A `private method` is a methods that is doing work in the class but
 doesn't need to be available to the rest of the program.
 You can only access it from within the class. Not straight from instances
 of the class.
+
+NB: you can't have anything 'before the dot' when calling a private method.
+Or in official speak: a private method can never be called with an
+explicit receiver.
+So: no self.
+(we CAN call a private method from within a class it is declared in as
+well as all subclasses of this class e.g.)
+
 ```ruby
 class Animal
   def initialize(name)
