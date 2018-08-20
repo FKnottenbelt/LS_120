@@ -128,9 +128,9 @@ module Mammal
   end
 end
 ```
-Benefits: 
+Benefits:
 - easy to recognize related classes
-- reduces the likelihood of our classes colliding with other 
+- reduces the likelihood of our classes colliding with other
   similarly named classes in our codebase.
 
 ```ruby
@@ -150,6 +150,35 @@ end
 Tools::Hammer
 Piano::Hammer
 ```
+
+Also use modules for containers of methods. Very useful for
+methods that seem out of place within your code.
+```ruby
+module HandyMethods
+  def self.clear_screen
+    system("cls") || system("clear")
+  end
+
+  def joiner(arr, delimiter=', ', word='or')
+    array = arr.dup
+    array << array.pop(2).join(' ' + word + ' ')
+    array.join(delimiter)
+  end
+end
+
+class Game
+  include HandyMethods
+
+  def give_choice(choices)
+    joiner(choices)
+  end
+end
+
+action = HandyMethods.clear_screen
+game = Game.new
+p game.give_choice([1,2,3])
+```
+
 
 # Inheritance and modules
 Ruby implements inheritance via class inheritance and mixing in
