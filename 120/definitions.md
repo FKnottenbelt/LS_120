@@ -179,7 +179,6 @@ game = Game.new
 p game.give_choice([1,2,3])
 ```
 
-
 # Inheritance and modules
 Ruby implements inheritance via class inheritance and mixing in
 modules.
@@ -379,3 +378,76 @@ p bruno
 # @color="brown">
 
 ```
+# Private, Protected, Public
+Access for methods can be restricted by public, private or protected
+methods.
+
+A `public method` is a method that is available to anyone who knows
+either the class name or the object's name.
+Default Ruby methods are public.
+
+A `private method` is a methods that is doing work in the class but
+doesn't need to be available to the rest of the program.
+You can only access it from within the class. Not straight from instances
+of the class.
+```ruby
+class Animal
+  def initialize(name)
+    @name = name
+  end
+
+  def get_name
+    name
+  end
+
+  private
+  attr_reader :name
+end
+
+cat = Animal.new('kitty')
+p cat.get_name
+p cat.name # <private method `name' called for #<Animal:0x00000001e4b898
+# @name="kitty"> (NoMethodError)
+```
+
+A `protected` method
+From outside the class, protected methods act just like private
+methods. From inside the class, protected methods are accessible just like
+public methods.
+Most often used to compare values of two different instances with another.
+(when we don't want things to be public, because that obviously will always
+work)
+
+Any instance of a class can call a protected method on another
+instance of the class.
+
+```ruby
+class Person
+  attr_writer :age
+
+  def older_than?(other)
+    age > other.age
+  end
+
+  protected
+  attr_reader :age
+end
+
+person1 = Person.new
+person1.age = 17
+
+person2 = Person.new
+person2.age = 26
+
+puts person1.older_than?(person2)
+```
+When a method is private, only the class - not instances of the class
+- can access it. However, when a method is protected, only instances of
+the class or a subclass can call the method. This means we can easily
+share sensitive data between instances of the same class type.
+
+Here we compares the ages of two people. The getter method is protected,
+though, which means we can only access it from another instance of the
+same class. Therefore, we have to invoke older_than? on an existing
+instance, and pass in another instance as an argument. We can then
+compare the two ages to determine who is older.
