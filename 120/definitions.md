@@ -110,6 +110,110 @@ dog = Dog.new
 dog.swim
 ```
 
+You can also use modules for namespacing. That is to use modules to
+group related classes.
+
+```ruby
+module Mammal
+  class Dog
+    def speak(sound)
+      # your code here
+    end
+  end
+
+  class Cat
+    def say_name(name)
+      # your code here
+    end
+  end
+end
+```
+Benefits: 
+- easy to recognize related classes
+- reduces the likelihood of our classes colliding with other 
+  similarly named classes in our codebase.
+
+```ruby
+module Tools
+  class Hammer
+    puts "Use me to do things like hammer in nails"
+  end
+end
+
+module Piano
+  class Hammer
+    puts "Use me to make music"
+  end
+end
+
+# use namespace resolution operator to call.
+Tools::Hammer
+Piano::Hammer
+```
+
+# Inheritance and modules
+Ruby implements inheritance via class inheritance and mixing in
+modules.
+
+- You can only subclass from one class. But you can mix in as many
+  modules as you'd like.
+- If it's an `is-a` relationship, choose class inheritance.
+- If it's a `has-a` relationship, choose modules. Example: a dog
+  "is an" animal; a dog "has an" ability to swim.
+- You cannot instantiate modules (i.e., no object can be created
+  from a module). Modules are used only for namespacing and grouping
+  common methods together.
+
+```ruby
+module Swimmable
+  def swim
+    puts "#{self.class.name} can swim"
+  end
+end
+
+class Mammal
+  def initialize(name)
+    @name = name
+  end
+
+  def pregancy
+    puts "Our females grow our babies in their belly"
+  end
+end
+
+class Dog < Mammal
+  include Swimmable
+
+  def hunt
+    puts "I can hunt"
+  end
+end
+
+class Fish
+  include Swimmable
+
+  def initialize(name)
+    @name = name
+  end
+
+  def lay_eggs
+    puts "We grow our babies in the eggs we lay"
+  end
+end
+
+fido = Dog.new("Fido")
+nemo = Fish.new("Nemo")
+fido.swim
+nemo.swim
+fido.pregancy
+nemo.lay_eggs
+
+# Dog can swim
+# Fish can swim
+# Our females grow our babies in their belly
+# We grow our babies in the eggs we lay
+```
+
 # instance method
 Methods of this kind, defined inside a class and intended for
 use by all instances of the class, are called instance methods.
@@ -245,66 +349,4 @@ p bruno
 #<GoodDog:0x00000000f4d210 @name="Bruno", @location="Earth",
 # @color="brown">
 
-```
-# Inheritance and modules
-Ruby implements inheritance via class inheritance and mixing in
-modules.
-
-- You can only subclass from one class. But you can mix in as many
-  modules as you'd like.
-- If it's an `is-a` relationship, choose class inheritance.
-- If it's a `has-a` relationship, choose modules. Example: a dog
-  "is an" animal; a dog "has an" ability to swim.
-- You cannot instantiate modules (i.e., no object can be created
-  from a module). Modules are used only for namespacing and grouping
-  common methods together.
-
-```ruby
-module Swimmable
-  def swim
-    puts "#{self.class.name} can swim"
-  end
-end
-
-class Mammal
-  def initialize(name)
-    @name = name
-  end
-
-  def pregancy
-    puts "Our females grow our babies in their belly"
-  end
-end
-
-class Dog < Mammal
-  include Swimmable
-
-  def hunt
-    puts "I can hunt"
-  end
-end
-
-class Fish
-  include Swimmable
-
-  def initialize(name)
-    @name = name
-  end
-
-  def lay_eggs
-    puts "We grow our babies in the eggs we lay"
-  end
-end
-
-fido = Dog.new("Fido")
-nemo = Fish.new("Nemo")
-fido.swim
-nemo.swim
-fido.pregancy
-nemo.lay_eggs
-
-# Dog can swim
-# Fish can swim
-# Our females grow our babies in their belly
-# We grow our babies in the eggs we lay
 ```
