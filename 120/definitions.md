@@ -16,6 +16,7 @@ We can build applications faster as we can reuse pre-written code.
 As the software becomes more complex this complexity can be more
 easily managed.
 
+
 # 4 basic OOP programming concepts
 - Abstraction
 - Polymorphism
@@ -286,6 +287,28 @@ particular configuration of methods and instance variables.
 But it’s a useful term, and Ruby does embed the concept of
 attributes in the language, in the form of shortcuts that
 help you write the methods that implement them.
+
+# method lookup path
+The method lookup path is the order in which Ruby will traverse the
+class hierarchy to look for methods to invoke.
+To see the method lookup path, we can use the .ancestors class method.
+So call on Class! (not object)
+```ruby
+class Pet ; end
+class Dog < Pet ; end
+class Bulldog < Dog ;end
+p Bulldog.ancestors  # => [Bulldog, Dog, Pet, Object, Kernel, BasicObject]
+```
+Note that this method returns an array, and that all classes
+sub-class from Object.
+
+# States an behaviors
+`States` track attributes for individual objects. Instance variables (the
+attributes) keep track of states (values of the attributes). State is
+unique for each object.
+
+`Behaviours` are what objects are capable of doing. Instance methods expose
+behaviour for objects. Behaviour is common for all objects of a class.
 
 # exception
 Exceptions are objects that signal deviations from the normal
