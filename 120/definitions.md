@@ -288,6 +288,54 @@ But it’s a useful term, and Ruby does embed the concept of
 attributes in the language, in the form of shortcuts that
 help you write the methods that implement them.
 
+# getters and setters
+getter and setter methods are methods that expose attributes to
+other objects. Getters lets you read them, setters lets you change 
+the attribute.
+You can write them in long form. For example here is a getter for
+name:
+```ruby
+def name
+  @name
+end
+```
+Or you can use accessor methods (the short form so to say)
+```ruby
+attr_reader :name     # short for get_name plus @name
+attr_writer :name     # short for set_name us @name
+attr_accessor :name   # short for get_name & set_name plus @name
+```  
+Getters and setters in action:
+```ruby
+class GoodDog
+  attr_reader :name     # short for get_name plus @name
+  attr_writer :name     # short for set_name us @name
+  attr_accessor :name   # short for get_name & set_name plus @name
+  def initialize(name)
+    @name = name
+  end
+
+  def name  # short for get_name
+    @name
+  end
+
+  def name=(name) # short for set_name
+    @name = name
+  end
+
+  def speak
+    "#{name} says arf!"
+  end
+end
+
+sparky = GoodDog.new("Sparky")
+puts sparky.speak
+puts sparky.name
+sparky.name = "Spartacus"
+puts sparky.name
+```
+
+
 # method lookup path
 The method lookup path is the order in which Ruby will traverse the
 class hierarchy to look for methods to invoke.
