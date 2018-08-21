@@ -310,6 +310,27 @@ unique for each object.
 `Behaviours` are what objects are capable of doing. Instance methods expose
 behaviour for objects. Behaviour is common for all objects of a class.
 
+```ruby
+class Cat
+  attr_reader :name
+
+  def initialize(name)
+    @name = name
+  end
+
+  def hunt
+    puts "getting mouse!"
+  end
+end
+
+stripe = Cat.new('Stripe')
+black = Cat.new('Black')
+stripe.hunt     # common behavior
+black.hunt      # common behavior
+p stripe.name   # unique state
+p black.name    # unique state
+```
+
 # exception
 Exceptions are objects that signal deviations from the normal
 flow of program execution. Exceptions are raised, thrown or
