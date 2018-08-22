@@ -123,6 +123,8 @@ A typical class consists of a collection of method definitions.
 Classes usually exist for the purpose of being instantiated—
 that is, of having objects created that are instances of the
 class.
+You can think of classes as basic outlines of what an object 
+should be made of and what it should be able to do.
 
 # objects
 Defining a class lets you group behaviors (methods) into
