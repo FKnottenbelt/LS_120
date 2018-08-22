@@ -12,7 +12,7 @@ self.
 If you see variables called type or category, take note!
 
 Message forwarding via classical inheritance takes place between
-classes. Because ducktypes cut across classes, the do not use
+classes. Because ducktypes cuts across classes, they do not use
 classical inheritance to share common behavior. Duck types share
 code via Modules.
 

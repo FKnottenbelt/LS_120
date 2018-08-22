@@ -57,6 +57,40 @@ of complexity. Ruby, like many other OO languages,
 accomplishes this task by creating objects, and exposing
 interfaces (i.e., methods) to interact with those objects.
 
+# Inheritance
+The inheritance is a way to form new classes using classes
+that have already been defined.
+This way we can reuse common code and still have specialiced code
+for our subclasses. And our subclasses can override superclass code
+if needed
+
+```ruby
+class Animal
+  def speak
+    puts "I can speak"
+  end
+end
+
+class Wolf < Animal
+  def hunt
+    puts "I'm a predator"
+  end
+end
+
+class Deer < Animal
+  def hunt
+    puts "I'm prey"
+  end
+end
+
+wolfie = Wolf.new
+bambi = Deer.new
+wolfie.speak
+wolfie.hunt
+bambi.speak
+bambi.hunt
+```
+
 # classes
 A typical class consists of a collection of method definitions.
 Classes usually exist for the purpose of being instantiated—
@@ -409,6 +443,36 @@ the current or default object
 
 self inside a class or module definition?: the class or
 module object
+```ruby
+ class Cat
+    @@cat_count = 0   # Class variable
+    attr_accessor :name
+
+    def initialize(name)
+      @@cat_count += 1
+      @name = name
+    end
+
+    def count       # instance method, call from object
+      @@cat_count
+    end
+
+    def self.count  # Class method, call from Class
+      @@cat_count
+    end
+
+    def change_name(new_name)
+      self.name = new_name
+    end
+  end
+
+p Cat.count   # calling self.count
+cat = Cat.new('Kitty')
+p cat.count   # callin count
+cat.name=("fluffy")
+cat.change_name("spiky")
+p cat.name
+```
 
 # collaborator objects
 Objects that are stored as state within another object are
