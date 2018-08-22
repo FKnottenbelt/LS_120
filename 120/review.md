@@ -74,18 +74,24 @@ Mr. James
 ## 4 - Nobility
 120/small_problems/06_easy2/10_nobility.rb
 
-## Operator overloading (??)
+## Operator overloading
 unclear if I need this.
 https://strugglingwithruby.blogspot.com/2010/04/operator-overloading.html
 see also
 https://www.tutorialspoint.com/ruby/ruby_object_oriented.htm
 
-## constructors (??)
+## constructors
 what is a constructor?
-The new method is a constructor: a method whose purpose is to manufacture and return to you a new instance of the class, a newly minted object.
+The new method is a constructor: a method whose purpose is to
+manufacture and return to you a new instance of the class, a
+newly minted object.
 
 erhm? vs:
-A constructor is a special kind of a method. It is automatically called when an object is created. Constructors do not return values. The purpose of the constructor is to initiate the state of an object. The constructor in Ruby is called initialize. Constructors do not return any values.
+A constructor is a special kind of a method. It is automatically
+called when an object is created. Constructors do not return values.
+The purpose of the constructor is to initiate the state of an object.
+The constructor in Ruby is called initialize. Constructors do not
+return any values.
 (zetcode and www.tutorialspoint.com)
 
 ## Privacy
@@ -104,7 +110,7 @@ will have to wait to 130...
 ## quizz lesson nr 2
 see file: Collaborator object (lesson forum).rb
 
-## lexical scope?
+## lexical scope
 http://blog.honeybadger.io/lexical-scoping-and-ruby-class-variables/
 /120/lesson_3/03_variable_scope/variable_scope.mdf
 file: lexcical scope (ls forum).rb
