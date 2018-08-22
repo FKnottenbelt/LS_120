@@ -47,6 +47,33 @@ purposes.
 The polymorphism is the process of using an operator or
 function in different ways for different data input.
 
+```ruby
+class Animal
+  def speak
+    puts "I can speak"
+  end
+end
+
+class Wolf < Animal
+  def hunt
+    puts "I'm a predator"
+  end
+end
+
+class Deer < Animal
+  def hunt
+    puts "I'm prey"
+  end
+end
+
+wolfie = Wolf.new
+bambi = Deer.new
+wolfie.speak
+wolfie.hunt
+bambi.speak
+bambi.hunt
+```
+
 # Encapsulation
 `Encapsulation` is hiding pieces of functionality and making it
 unavailable to the rest of the code base. It is a form of data
