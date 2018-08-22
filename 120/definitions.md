@@ -708,3 +708,93 @@ p a_car.change_tires
 a_truck = Truck.new
 p a_truck.change_tires
 ```
+
+# Fake operators (03_05)
+`Fake operators` are not really operators, but methods we can override.
+
+```ruby
+class Cat
+  attr_reader :age
+
+  def initialize(name, age)
+    @name = name
+    @age = age
+  end
+
+  def ==(other)  # overriding BasicObject#==
+    age == other.age
+  end
+end
+
+fluffy = Cat.new('fluffy', 6)
+kitty = Cat.new('kitty', 6)
+p fluffy == kitty  # now comparing age instead of object-id
+str1 = "hello"
+str2 = "hello"
+p str1 == str2 # String#== overrides BasicObject#== to compare values
+
+p fluffy.equal?(kitty)  # false: not same object
+```
+
+# Truthiness (03_01)
+true -> TrueClass
+false -> FalseClass
+true or false are not nil
+false.to_s => 'false'
+```
+true.class          # => TrueClass
+true.nil?           # => false
+true.to_s           # => "true"
+true.methods        # => list of methods you can call on the true object
+
+false.class         # => FalseClass
+false.nil?          # => false
+false.to_s          # => "false"
+false.methods       # => list of methods you can call on the false object
+```
+see 109..
+`short circuiting`: will stop evaluating expressions once it can
+guarantee the return value.
+
+
+# Equality (03_02)
+```
+str1 = "something"
+str2 = "something"
+str1 == str2            # => true
+
+int1 = 1
+int2 = 1
+int1 == int2            # => true
+
+sym1 = :something
+sym2 = :something
+sym1 == sym2            # => true
+```
+the == method compares the two variables' values whereas
+the equal? method determines whether the two variables point to the
+same object.
+
+```ruby
+class Cat
+  attr_reader :age
+
+  def initialize(name, age)
+    @name = name
+    @age = age
+  end
+
+  def ==(other)  # overriding BasicObject#==
+    age == other.age
+  end
+end
+
+fluffy = Cat.new('fluffy', 6)
+kitty = Cat.new('kitty', 6)
+p fluffy == kitty  # now comparing age instead of object-id
+str1 = "hello"
+str2 = "hello"
+p str1 == str2 # String#== overrides BasicObject#== to compare values
+
+p fluffy.equal?(kitty)  # false: not same object
+```
