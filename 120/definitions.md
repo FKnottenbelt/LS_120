@@ -288,9 +288,12 @@ But it’s a useful term, and Ruby does embed the concept of
 attributes in the language, in the form of shortcuts that
 help you write the methods that implement them.
 
+class variables: 03_04
+instance variables: 03_04
+
 # getters and setters
 getter and setter methods are methods that expose attributes to
-other objects. Getters lets you read them, setters lets you change 
+other objects. Getters lets you read them, setters lets you change
 the attribute.
 You can write them in long form. For example here is a getter for
 name:
@@ -299,12 +302,20 @@ def name
   @name
 end
 ```
-Or you can use accessor methods (the short form so to say)
+The long form is usefull if for example you want to show a modified
+version of your instance variable to other objects:
+```ruby
+def name
+  "Honarable " + @name
+end
+```
+
+You can use accessor methods (the short form so to say)
 ```ruby
 attr_reader :name     # short for get_name plus @name
 attr_writer :name     # short for set_name us @name
 attr_accessor :name   # short for get_name & set_name plus @name
-```  
+```
 Getters and setters in action:
 ```ruby
 class GoodDog
@@ -335,6 +346,7 @@ sparky.name = "Spartacus"
 puts sparky.name
 ```
 
+NB: setters need self
 
 # method lookup path
 The method lookup path is the order in which Ruby will traverse the
@@ -569,3 +581,39 @@ though, which means we can only access it from another instance of the
 same class. Therefore, we have to invoke older_than? on an existing
 instance, and pass in another instance as an argument. We can then
 compare the two ages to determine who is older.
+
+# Constants (03_04)
+Constants are defined with uppercase letters.
+They contain variables that are not meant to change.
+
+Unlike instance methods or instance variables, constants are not
+evaluated at runtime, so their lexical scope - or, where they are
+used in the code - is very important.
+Constants have lexical scope
+Constant resolution will look at the lexical scope first, and then
+look at the inheritance hierarchy.
+
+```ruby
+module Maintenance
+  def change_tires
+    "Changing #{self.class::WHEELS} tires."
+  end
+end
+
+class Vehicle
+  WHEELS = 4
+end
+
+class Car < Vehicle
+  include Maintenance
+end
+
+class Truck < Vehicle
+  include Maintenance
+end
+
+a_car = Car.new
+p a_car.change_tires
+a_truck = Truck.new
+p a_truck.change_tires
+```
