@@ -410,6 +410,9 @@ puts sparky.name
 ```
 
 NB: setters need self
+NB2: in getter and setters themselves you have to 
+refer to the instance variable with the @ to avoid 
+going into 'stack level to deep' errors.
 
 # method lookup path
 The method lookup path is the order in which Ruby will traverse the

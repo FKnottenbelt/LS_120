@@ -51,6 +51,7 @@ puts "There are #{Hybrid.total_count} hybrids on the road!"
 
 ## more class variable versus class instance variable
 see ~/ls_solo/OOP_manning/more_on_class_variables.rb
+=> is 'family things'
 
 ## Accessor methods
 #=> 120/small_problems/04_accessor_methods/07_prefix_the_name.rb
@@ -75,7 +76,6 @@ Mr. James
 120/small_problems/06_easy2/10_nobility.rb
 
 ## Operator overloading
-unclear if I need this.
 https://strugglingwithruby.blogspot.com/2010/04/operator-overloading.html
 see also
 https://www.tutorialspoint.com/ruby/ruby_object_oriented.htm
