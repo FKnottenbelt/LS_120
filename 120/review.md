@@ -102,7 +102,7 @@ return any values.
 120/small_problems/07_medium1/02_fixed_array.rb
 
 ## practicing classes and objects
-~/ls_solo/120/lesson_2/01_classes_and_objects
+/120/lesson_2/01_classes_and_objects
 
 ## find out how to test user input loops with wrong input
 will have to wait to 130...
@@ -149,3 +149,5 @@ and 06_number_guesser1
 
 # monkey patching
 https://stackoverflow.com/questions/4470108/when-monkey-patching-a-method-can-you-call-the-overridden-method-from-the-new-i#4471202
+
+# quizz lesson nr 5

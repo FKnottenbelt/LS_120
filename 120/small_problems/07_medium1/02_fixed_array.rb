@@ -181,3 +181,22 @@ new Array, and don't have to worry about this.
 Finally, we can implement #to_s by calling Array#to_s on the return
 value of #to_a.
 =end
+
+# option 2
+require 'forwardable'
+
+class FixedArray
+  extend Forwardable
+  attr_accessor :array
+
+  def_delegators :@array, :[]=, :to_s
+  def_delegator :@array, :fetch, :[]
+
+  def initialize(n)
+    @array = [nil] * n
+  end
+
+  def to_a
+    @array.clone
+  end
+end
