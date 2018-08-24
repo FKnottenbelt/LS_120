@@ -107,15 +107,10 @@ return any values.
 ## find out how to test user input loops with wrong input
 will have to wait to 130...
 
-## quizz lesson nr 2
-see file: Collaborator object (lesson forum).rb
-
 ## lexical scope
 http://blog.honeybadger.io/lexical-scoping-and-ruby-class-variables/
 /120/lesson_3/03_variable_scope/variable_scope.mdf
 file: lexcical scope (ls forum).rb
-
-## quizz lesson nr 3
 
 ## benefits of using Object Oriented Programming in Ruby
 lesson 4, easy 2, q10
@@ -150,4 +145,7 @@ and 06_number_guesser1
 # monkey patching
 https://stackoverflow.com/questions/4470108/when-monkey-patching-a-method-can-you-call-the-overridden-method-from-the-new-i#4471202
 
-# quizz lesson nr 5
+# quizzes
+nr 2 (ee file: Collaborator object (lesson forum).rb)
+nr 3
+nr 5
