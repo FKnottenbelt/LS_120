@@ -123,7 +123,7 @@ A typical class consists of a collection of method definitions.
 Classes usually exist for the purpose of being instantiated—
 that is, of having objects created that are instances of the
 class.
-You can think of classes as basic outlines of what an object 
+You can think of classes as basic outlines of what an object
 should be made of and what it should be able to do.
 
 # objects
@@ -351,8 +351,44 @@ But it’s a useful term, and Ruby does embed the concept of
 attributes in the language, in the form of shortcuts that
 help you write the methods that implement them.
 
-class variables: 03_04
-instance variables: 03_04
+`class variables`: 03_04
+  - Class variables start with `@@` and are scoped at the class
+    level. They exhibit two main behaviors:
+    - all objects share 1 copy of the class variable. (they can
+      share state between objects). NB: also shared by all objects
+      of inheriting classes.
+    - class methods can access class variables, regardless of
+      where it's  initialized.
+  - The class variable is loaded when the class is evaluated
+    by Ruby
+
+really scary example:
+```ruby
+class Dog
+  @@dogs = 2
+
+  def self.dogs
+    @@dogs
+  end
+end
+
+class SmallDog < Dog
+  @@dogs = 4
+end
+
+p Dog.dogs # 4
+
+```
+
+`instance variables`: 03_04
+  - Instance variables are variables that start with `@ `and are
+    scoped at the object level. They are used to track individual
+    object state, and do not cross over between objects.
+  - we must first call the method that initializes the instance
+    variable. Once we've done that, the instance can access
+    that instance variable. [you can access, but will give nil. If you
+    p the object however, you won't see uninitialized ivars]
+  - Uninitialized instance variables return nil.
 
 # getters and setters
 getter and setter methods are methods that expose attributes to
@@ -410,8 +446,8 @@ puts sparky.name
 ```
 
 NB: setters need self
-NB2: in getter and setters themselves you have to 
-refer to the instance variable with the @ to avoid 
+NB2: in getter and setters themselves you have to
+refer to the instance variable with the @ to avoid
 going into 'stack level to deep' errors.
 
 # method lookup path
