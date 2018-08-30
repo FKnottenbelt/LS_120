@@ -9,7 +9,7 @@ It allows us to only expose functionality to the parts of code that
 need it, meaning namespace issues are much harder to come across.
 
 It allows us to easily give functionality to different parts of an
-application without duplication.
+application without duplication. (DRY code, maintanability)
 
 We can build applications faster as we can reuse pre-written code.
 
@@ -676,6 +676,40 @@ A `protected` method
 From outside the class, protected methods act just like private
 methods. From inside the class, protected methods are accessible just like
 public methods.
+
+```ruby
+class Lady
+  attr_reader :name
+
+  def initialize(name, age)
+    @name = name
+    @age = age
+    puts age
+  end
+
+  def ask_age(other)
+    puts other.age
+  end
+
+  protected
+  attr_reader :age
+end
+
+class Gentleman
+  def ask_age(other)
+    puts other.age
+  end
+end
+
+mary = Lady.new("mary", 40)
+eva = Lady.new('eva',50)
+robert = Gentleman.new
+p mary.name
+#p mary.age
+mary.ask_age(eva)
+robert.ask_age(eva)
+```
+
 Most often used to compare values of two different instances with another.
 (when we don't want things to be public, because that obviously will always
 work)
@@ -713,6 +747,7 @@ though, which means we can only access it from another instance of the
 same class. Therefore, we have to invoke older_than? on an existing
 instance, and pass in another instance as an argument. We can then
 compare the two ages to determine who is older.
+
 
 # Constants (03_04)
 Constants are defined with uppercase letters.
