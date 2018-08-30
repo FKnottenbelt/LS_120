@@ -760,6 +760,9 @@ Constants have lexical scope
 Constant resolution will look at the lexical scope first, and then
 look at the inheritance hierarchy.
 
+Accessible from all objects and subclasses
+call outside class: Class::Constant
+
 ```ruby
 module Maintenance
   def change_tires
