@@ -1,3 +1,31 @@
+### Table of Content
+
+* [Benefits of using Object Oriented Programming](#benefits-of-using-object-oriented-programming)
+* [4 basic OOP programming concepts](#4-basic-oop-programming-concepts)
+* [Polymorphism](#polymorphism)
+* [Encapsulation](#encapsulation)
+* [Inheritance](#inheritance)
+* [classes](#classes)
+* [objects](#objects)
+* [constructors](#constructors)
+* [module](#module)
+* [Inheritance and modules](#inheritance-and-modules)
+* [instance method](#instance-method)
+* [attribute](#attribute)
+* [getters and setters](#getters-and-setters)
+* [method lookup path](#method-lookup-path)
+* [States and behaviors](#states-and-behaviors)
+* [exception](#exception)
+* [self](#self)
+* [collaborator objects](#collaborator-objects)
+* [Reading OO code](#reading-oo-code)
+* [super](#super)
+* [Private, Protected, Public](#private-protected-public)
+* [Constants](#constants)
+* [Fake operators](#fake-operators)
+* [Truthiness](#truthiness)
+* [Equality](#equality)
+
 # Benefits of using Object Oriented Programming
 
 Creating objects allows programmers to think more abstractly about the
@@ -464,7 +492,7 @@ p Bulldog.ancestors  # => [Bulldog, Dog, Pet, Object, Kernel, BasicObject]
 Note that this method returns an array, and that all classes
 sub-class from Object.
 
-# States an behaviors
+# States and behaviors
 `States` track attributes for individual objects. Instance variables (the
 attributes) keep track of states (values of the attributes). State is
 unique for each object.
@@ -749,7 +777,8 @@ instance, and pass in another instance as an argument. We can then
 compare the two ages to determine who is older.
 
 
-# Constants (03_04)
+# Constants
+(03_04)
 Constants are defined with uppercase letters.
 They contain variables that are not meant to change.
 
@@ -788,7 +817,8 @@ a_truck = Truck.new
 p a_truck.change_tires
 ```
 
-# Fake operators (03_05)
+# Fake operators
+(03_05)
 `Fake operators` are not really operators, but methods we can override.
 
 ```ruby
@@ -815,7 +845,8 @@ p str1 == str2 # String#== overrides BasicObject#== to compare values
 p fluffy.equal?(kitty)  # false: not same object
 ```
 
-# Truthiness (03_01)
+# Truthiness
+(03_01)
 true -> TrueClass
 false -> FalseClass
 true or false are not nil
@@ -836,7 +867,8 @@ see 109..
 guarantee the return value.
 
 
-# Equality (03_02)
+# Equality
+(03_02)
 ```
 str1 = "something"
 str2 = "something"
